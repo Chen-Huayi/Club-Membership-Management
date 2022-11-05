@@ -4,8 +4,6 @@ const router = express.Router()
 const MemberHandler=require('../models/MemberHandler')
 
 // http://localhost:8000/api/member
-router.post('/signup', MemberHandler.addNewMember)
-
 router.get('/list', MemberHandler.viewMemberList)
 
 // router.put('/update/:id', MemberHandler.updateInfo)
