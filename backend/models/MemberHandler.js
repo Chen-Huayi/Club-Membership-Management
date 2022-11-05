@@ -4,23 +4,19 @@ const userSchema = require('../schema/user')
 const userModel = mongoose.model('users', userSchema)
 
 
-const getUserByRole=async (user_role)=>{
-    let members=null
-    try {
-        members=await userModel.find({user_role})
-    } catch (err){
-        throw Error(err)
-    }
-    return members
+
+exports.viewMemberList=async (req, res)=>{
+    const user_role=req.body.user_role
+    const members=await userModel.find({user_role})
+    res.send({
+        member_list: members
+    })
 }
 
-
-exports.viewMemberList=(req, res)=>{
-    getUserByRole('Club Member').then(list=>{
-        res.send({
-            member_list: list
-        })
-    })
+exports.displayProfile=async (req, res)=>{
+    const user_id=req.body.user_id
+    const profile=await userModel.findOne({user_id})
+    res.send(profile)
 }
 
 exports.updateInfo=(req, res)=>{
@@ -35,6 +31,4 @@ exports.sendGroupEmail=(req, res)=>{
     res.send('ok')
 }
 
-exports.displayProfile=(req, res)=>{
-    res.send('ok')
-}
+

@@ -85,7 +85,7 @@ exports.signup=(req, res)=>{
         },
         (err)=>{
             if (!err)
-                console.log(`Register (${user_role}: ${user_id}) successfully!`)
+                console.log(`Register [${user_role}: ${user_id}] successfully!`)
             else
                 console.log(err)
         }
@@ -93,22 +93,21 @@ exports.signup=(req, res)=>{
     res.send('6')
 }
 
+
 exports.login=(req, res)=>{
     const user_id=req.body.user_id   // '919602906'
     const password=req.body.password   // '123456'
-    // res.send('ok')
 
     getUserById(user_id).then(user => {
         if (!user)
             return res.handleMessage('Wrong User ID!')
 
         if (user.password!==password){
-            updateById(res, user._id, {$inc: {fail_login_count: 1}}, 'Fail login count +1')
+            updateById(res, user._id, {$inc: {fail_login_count: 1}}, `[${user_id}] Failure login count +1`)
             return res.handleMessage('Wrong Password!')
         }
 
-        console.log(`${user_id} login successfully!`)
-        updateById(res, user._id, {fail_login_count: 0}, ''/*'Fail login count return 0'*/)
+        updateById(res, user._id, {fail_login_count: 0}, `[${user_id}] login successfully!`)
         const userObj = {...user._doc, password:''}
         const {fail_login_count, __v, ...rest} = userObj
 
