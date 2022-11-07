@@ -3,7 +3,6 @@ const app=express()
 const cors = require('cors')
 const joi = require('joi')
 const userRouter=require('./router/UserRouter')
-const memberRouter=require('./router/MemberRouter')
 
 app.use(cors())
 app.use(express.json())
@@ -21,7 +20,6 @@ app.use((req, res, next)=>{
 })
 
 app.use('/api', userRouter);
-app.use('/api/member', memberRouter);
 
 app.use((err, req, res, next)=>{
     if (err instanceof joi.ValidationError){  // Error caused by failed validation

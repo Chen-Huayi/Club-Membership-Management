@@ -2,9 +2,8 @@ import React, {useState} from "react";
 import {NavLink, useNavigate} from "react-router-dom";
 import "./NavLinks.css";
 import {useStore} from "../store";
-import {Dropdown, Form, Input, Modal, Popconfirm} from "antd";
+import {Dropdown, Form, Input, message, Modal, Popconfirm} from "antd";
 import {DownOutlined, LoginOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons";
-import axios from "axios";
 
 const formItemLayout = {
     labelCol: {
@@ -15,60 +14,11 @@ const formItemLayout = {
     }
 }
 
-
-export default function NavLinks() {
-    const {loginStore}=useStore()
-    const navigate=useNavigate()
-
-    const onConfirm = ()=>{
-        loginStore.logOut()
-        window.location.reload()
-    }
-
-    // Setting Menu button: has two functionalities
-    const items = [
-        {
-            label: <a /*onClick={updateProfile}*/ style={{width: "120px"}}>Update profile</a>
-        },
-        {
-            label: <ResetPwd style={{width: "120px"}}>Reset password</ResetPwd>
-        }
-    ]
-
-    return (
-        <ul className="nav-links">
-            {!loginStore.token && (
-                <li>
-                    <NavLink to="/login"><LoginOutlined /> Login</NavLink>
-                </li>
-            )}
-            {loginStore.token && (
-                <li>
-                    <Dropdown menu={{items}} trigger={['click']}>
-                        <a onClick={(e) => e.preventDefault()} >
-                            <UserOutlined/>
-                            <DownOutlined/>
-                        </a>
-                    </Dropdown>
-                </li>
-            )}
-            {loginStore.token && (
-                <li>
-                    <a>
-                        <Popconfirm onConfirm={onConfirm} title="Ready to exit?" okText="Exit" cancelText="Cancel">
-                            <LogoutOutlined />
-                        </Popconfirm>
-                    </a>
-                </li>
-            )}
-        </ul>
-    )
-}
-
-
+// Show update password dialog
 const ResetPwd = () => {
     const [form] = Form.useForm()
     const [open, setOpen] = useState(false)
+    const {updateStore, loginStore}=useStore()
 
     const showDialog = () => {
         setOpen(true)
@@ -77,13 +27,20 @@ const ResetPwd = () => {
     const handleOk = async () => {
         await form.validateFields()
             .then(value => {
-                console.log('value:', value)
-                // TODO 访问数据库
-                // axios.post('/api/member/updatepwd', value)
+                const userInfo={...value, user_id: loginStore.user_id}
+
+                updateStore.updatePassword(userInfo)
+                    .then(result=>{
+                        if (result.status===0)
+                            message.success(result.message)
+                        else
+                            message.error(result.message)
+                    })
                 setOpen(false)
             }).catch(reason => {
                 console.log('Validate Failed:', reason)
             })
+        form.resetFields()
     }
 
     const handleCancel = () => {
@@ -149,5 +106,56 @@ const ResetPwd = () => {
                 </Form>
             </Modal>
         </>
-    );
-};
+    )
+}
+
+// Setting Menu button: has two functionalities
+const items = [
+    {
+        label: <a /*onClick={updateProfile}*/ style={{width: "120px"}}>Update profile</a>
+    },
+    {
+        label: <ResetPwd style={{width: "120px"}}>Reset password</ResetPwd>
+    }
+]
+
+export default function NavLinks() {
+    const {loginStore}=useStore()
+
+    const onConfirm = ()=>{
+        loginStore.logOut()
+        window.location.reload()
+    }
+
+    return (
+        <ul className="nav-links">
+            {!loginStore.token && (
+                <li>
+                    <NavLink to="/login"><LoginOutlined /> Login</NavLink>
+                </li>
+            )}
+            {loginStore.token && (
+                <li>
+                    <Dropdown menu={{items}} trigger={['click']}>
+                        <a onClick={(e) => e.preventDefault()} >
+                            <UserOutlined/>
+                            <DownOutlined/>
+                        </a>
+                    </Dropdown>
+                </li>
+            )}
+            {loginStore.token && (
+                <li>
+                    <a>
+                        <Popconfirm onConfirm={onConfirm} title="Ready to exit?" okText="Exit" cancelText="Cancel">
+                            <LogoutOutlined />
+                        </Popconfirm>
+                    </a>
+                </li>
+            )}
+        </ul>
+    )
+}
+
+
+

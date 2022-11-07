@@ -20,7 +20,6 @@ const getUserById=async (user_id)=>{
     return user
 }
 
-
 const updateById = (res, id, update, msg) => {
     userModel.findByIdAndUpdate(id, update, (err)=>{
         if (err){
@@ -59,7 +58,6 @@ exports.signup=(req, res)=>{
 
 }
 
-
 exports.login=(req, res)=>{
     const userInfo=req.body
     const user_id=userInfo.user_id
@@ -95,3 +93,58 @@ exports.login=(req, res)=>{
     })
 
 }
+
+
+exports.viewMemberList=async (req, res)=>{
+    const user_role=req.body.user_role
+    const members=await userModel.find({user_role})
+    res.send({
+        member_list: members
+    })
+}
+
+exports.displayProfile=async (req, res)=>{
+    const user_id=req.body.user_id
+    const profile=await userModel.findOne({user_id})
+    res.send(profile)
+}
+
+exports.updateUserProfile =async (req, res)=>{
+    res.send('ok')
+}
+
+exports.updatePassword =async (req, res)=>{
+    const user_id=req.body.user_id
+    const oldPassword=req.body.oldPassword
+    const newPassword=req.body.newPassword
+
+    getUserById(user_id).then(user=>{
+        if (!user){
+            return res.handleMessage('User does not exist!')
+        }
+        if (oldPassword!==user.password){
+            return res.handleMessage('The old password is wrong!')
+        }
+        if (oldPassword===newPassword){
+            return res.handleMessage('The old password and new password are same!')
+        }
+        updateById(res, user._id, {$set: {password: newPassword}}, 'Password changed!')
+
+        res.handleMessage('Password changed!', 0)
+    })
+
+}
+
+exports.updateInfo=(req, res)=>{
+    res.send('ok')
+}
+
+exports.removeMember=(req, res)=>{
+    res.send('ok')
+}
+
+exports.sendGroupEmail=(req, res)=>{
+    res.send('ok')
+}
+
+

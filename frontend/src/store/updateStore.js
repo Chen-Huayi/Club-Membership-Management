@@ -2,17 +2,16 @@ import {makeAutoObservable} from "mobx";
 import {http} from "../utils";
 
 class UpdateStore{
-    updateForm = {}
     constructor() {
         makeAutoObservable(this)
     }
 
     updateUserInfo = async (values)=>{
-        this.updateForm = await http.post('/api/updateinfo', values)
+        return await http.post('/api/member/updateprofile', values)
     }
 
     updatePassword = async (values)=>{
-        this.updateForm = await http.post('/api/updatepwd', values)
+        return await http.post('/api/member/updatepwd', values)
     }
 
 }
