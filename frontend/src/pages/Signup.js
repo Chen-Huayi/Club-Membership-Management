@@ -29,10 +29,10 @@ function Signup() {
 
     const onFinish = async (values) => {
         await signupStore.signup(values)
-            .then(response=>{
-                const msg=response.message
+            .then(value=>{
+                const msg=value.message
 
-                if (response.status===0){
+                if (value.status===0){
                     navigate('/')
                     message.success(msg)
                 } else {
@@ -66,11 +66,7 @@ function Signup() {
                     <Form.Item
                         name="firstname"
                         label="First Name"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your User ID!',
-                            },
+                        rules={[{required: true, message: 'Please enter your first name!'},
                         ]}
                     >
                         <Input />
@@ -83,12 +79,7 @@ function Signup() {
                     <Form.Item
                         name="lastname"
                         label="Last Name"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your User ID!',
-                            },
-                        ]}
+                        rules={[{required: true, message: 'Please enter your last name!'}]}
                     >
                         <Input />
                     </Form.Item>
@@ -97,14 +88,8 @@ function Signup() {
                         name="email"
                         label="E-mail"
                         rules={[
-                            {
-                                type: 'email',
-                                message: 'The input is not valid E-mail!',
-                            },
-                            {
-                                required: true,
-                                message: 'Please input your E-mail!',
-                            },
+                            {type: 'email', message: 'The input is not valid E-mail!',},
+                            {required: true, message: 'Please enter your E-mail!'}
                         ]}
                     >
                         <Input />
@@ -114,12 +99,7 @@ function Signup() {
                         name="user_id"
                         label="User ID"
                         tooltip="Create your custom member ID"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your User ID!',
-                            },
-                        ]}
+                        rules={[{required: true, message: 'Please enter your User ID!'}]}
                     >
                         <Input />
                     </Form.Item>
@@ -128,11 +108,8 @@ function Signup() {
                         name="password"
                         label="Password"
                         rules={[
-                            {
-                                min: 6,
-                                required: true,
-                                message: 'Please input your password!',
-                            },
+                            {min: 6, message: 'Your password should be at least 6 characters!'},
+                            {required: true, message: 'Please enter your password!'}
                         ]}
                         hasFeedback
                     >
@@ -145,32 +122,24 @@ function Signup() {
                         dependencies={['password']}
                         hasFeedback
                         rules={[
-                            {
-                                required: true,
-                                message: 'Please confirm your password!',
-                            },
+                            {required: true, message: 'Please confirm your password!'},
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
                                     if (!value || getFieldValue('password') === value) {
                                         return Promise.resolve();
                                     }
-                                    return Promise.reject(new Error('The two passwords that you entered do not match!'));
-                                },
-                            }),
+                                    return Promise.reject(new Error('The two passwords that you entered do not match!'))
+                                }
+                            })
                         ]}
                     >
-                        <Input.Password />
+                        <Input.Password type="password" placeholder="Retype your new password" maxLength={ 20 }/>
                     </Form.Item>
 
                     <Form.Item
                         name="address_line1"
                         label="Address line 1"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your address!',
-                            },
-                        ]}
+                        rules={[{required: true, message: 'Please enter your address!'}]}
                     >
                         <Input />
                     </Form.Item>
@@ -186,12 +155,7 @@ function Signup() {
                     <Form.Item
                         name="address_city"
                         label="City"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your city!',
-                            },
-                        ]}
+                        rules={[{required: true, message: 'Please enter your city!'}]}
                     >
                         <Input />
                     </Form.Item>
@@ -199,12 +163,7 @@ function Signup() {
                     <Form.Item
                         name="address_country"
                         label="Country"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your country!',
-                            },
-                        ]}
+                        rules={[{required: true, message: 'Please enter your country!'}]}
                     >
                         <Input />
                     </Form.Item>
@@ -212,12 +171,7 @@ function Signup() {
                     <Form.Item
                         name="address_postalcode"
                         label="Postal Code"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your postal code!',
-                            },
-                        ]}
+                        rules={[{required: true, message: 'Please enter your postal code!'}]}
                     >
                         <Input />
                     </Form.Item>
@@ -225,12 +179,7 @@ function Signup() {
                     <Form.Item
                         name="phone"
                         label="Phone Number"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your phone number!',
-                            },
-                        ]}
+                        rules={[{required: true, message: 'Please enter your phone number!'}]}
                     >
                         <Input style={{width: '100%',}}/>
                     </Form.Item>
@@ -238,12 +187,7 @@ function Signup() {
                     <Form.Item
                         name="birthday"
                         label="Birthday"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please select your birthday!',
-                            },
-                        ]}
+                        rules={[{required: true, message: 'Please select your birthday!'}]}
                     >
                         <DatePicker />
                     </Form.Item>
@@ -251,12 +195,7 @@ function Signup() {
                     <Form.Item
                         name="gender"
                         label="Gender"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please select gender!',
-                            },
-                        ]}
+                        rules={[{required: true, message: 'Please select gender!'}]}
                     >
                         <Select placeholder="select gender" style={{width: '150px'}}>
                             <Option value="male">Male</Option>
@@ -268,12 +207,7 @@ function Signup() {
                     <Form.Item
                         name="user_role"
                         label="Your Role"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please select role!',
-                            },
-                        ]}
+                        rules={[{required: true, message: 'Please select role!'}]}
                     >
                         <Select placeholder="select role" style={{width: '150px'}}>
                             <Option value="Membership Admin">Membership Admin</Option>
@@ -286,16 +220,15 @@ function Signup() {
                     <Form.Item
                         name="agreement"
                         valuePropName="checked"
-                        rules={[
-                            {
-                                validator: (_, value) =>
-                                    value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
-                            },
+                        rules={[{
+                            validator: (_, value) =>
+                                value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
+                            }
                         ]}
                         {...tailFormItemLayout}
                     >
                         <Checkbox>
-                            I have read the <a href="frontend/src/pages/Signup#">agreement</a>
+                            I have read the <a href="#">agreement</a>
                         </Checkbox>
                     </Form.Item>
 

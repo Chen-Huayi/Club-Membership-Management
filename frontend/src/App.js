@@ -1,6 +1,6 @@
 import React from "react"
 import {Route, Routes, unstable_HistoryRouter as HistoryRouter} from "react-router-dom"
-import MainNavigation from "./components/Navigation/MainNavigation"
+import MainNavigation from "./navigation/MainNavigation"
 import Home from "./pages/Home"
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
@@ -16,7 +16,7 @@ import Login from "./pages/Login"
 // import { useAuth } from "./components/auth-hook";
 // import {AuthComponent} from './components/AuthComponent'
 // import {useStore} from "./store";
-import {history} from "./tools/history"
+import {history} from "./utils/history"
 
 
 

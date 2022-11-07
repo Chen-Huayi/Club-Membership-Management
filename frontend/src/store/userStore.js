@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {http} from "../tools";
+import {http} from "../utils";
 
 class UserStore {
     userInfo={}
@@ -8,8 +8,6 @@ class UserStore {
     }
 
     getUserInfo = async() =>{
-        // const res = await http.get('http://geek.itheima.net/v1_0/user/profile')
-        // this.userInfo = res.data
         this.userInfo = await http.get('/api/profile')
     }
 

@@ -8,6 +8,10 @@ router.get('/list', MemberHandler.viewMemberList)
 
 router.get('/profile', MemberHandler.displayProfile)
 
+router.post('/updateprofile', MemberHandler.updateUserProfile)
+
+router.post('/updatepwd', MemberHandler.updatePassword)
+
 // router.put('/update/:id', MemberHandler.updateInfo)
 router.patch('/update/:id', MemberHandler.updateInfo)
 

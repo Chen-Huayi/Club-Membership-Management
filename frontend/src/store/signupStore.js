@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {http} from "../tools";
+import {http} from "../utils";
 
 class SignupStore {
     constructor() {

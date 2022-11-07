@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {firstname, http, lastname, removeToken, setValue, token} from '../tools';
+import {firstname, http, lastname, removeToken, setValue, token} from '../utils';
 
 class LoginStore{
     token=token || ''
@@ -10,14 +10,14 @@ class LoginStore{
 
     login = async (values)=>{
         await http.post('/api/login', values)
-            .then(response=>{
-                if (response.status===1){
+            .then(value=>{
+                if (value.status===1){
                     this.token=''
                 }else {
-                    this.token=response.token
-                    this.user_name=response.firstname+' '+response.lastname
+                    this.token=value.token
+                    this.user_name=value.firstname+' '+value.lastname
                 }
-                setValue(response)
+                setValue(value)
             })
     }
 

@@ -16,10 +16,9 @@ function Login (){
         await loginStore.login(values)
 
         if (loginStore.token!==''){
-            navigate('/', {replace: true})
+            navigate('/')
             message.success('Successfully login!')
         }else {
-            navigate('/login', {replace: true})
             form.setFieldsValue({password: ''})
             message.error('Invalid username or password!')
         }
@@ -52,12 +51,7 @@ function Login (){
                 <Form.Item
                     className="input-form"
                     name="user_id"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your Username!',
-                        },
-                    ]}
+                    rules={[{required: true, message: 'Please input your Username!'}]}
                 >
                     <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="User ID" />
                 </Form.Item>
@@ -66,14 +60,8 @@ function Login (){
                     className="input-form"
                     name="password"
                     rules={[
-                        {
-                            required: true,
-                            message: 'Please input your Password!',
-                        },
-                        {
-                            min: 6,
-                            message: 'Please input valid Password!',
-                        }
+                        {required: true, message: 'Please input your Password!'},
+                        {min: 6, message: 'Please input valid Password!'}
                     ]}
                 >
                     <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="Password"/>

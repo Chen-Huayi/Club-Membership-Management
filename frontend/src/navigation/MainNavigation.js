@@ -9,7 +9,7 @@ export default function MainNavigation() {
     return (
         <MainHeader>
             <h1 className="main-navigation__title">
-                <a href="/">
+                <a href="/frontend/public">
                     Green Space Club
                 </a>
             </h1>
