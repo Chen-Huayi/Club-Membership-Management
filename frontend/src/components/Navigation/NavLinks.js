@@ -1,26 +1,41 @@
-import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
-import { AuthContext } from "../context/auth-context";
-
+import React from "react";
+import {NavLink, useNavigate} from "react-router-dom";
 import "./NavLinks.css";
+import {useStore} from "../../store";
+import {Popconfirm} from "antd";
+import {LoginOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons";
 
 export default function NavLinks() {
-    const auth = useContext(AuthContext);
+    const {loginStore}=useStore()
+    const navigate=useNavigate()
+
+    const onConfirm = ()=>{
+        loginStore.logOut()
+        window.location.reload()
+    }
+
+
     return (
         <ul className="nav-links">
-            {!auth.isLoggedIn && (
+            {!loginStore.token && (
                 <li>
-                    <NavLink to="/login">Login</NavLink>
+                    <NavLink to="/login"><LoginOutlined /> Login</NavLink>
                 </li>
             )}
-            {auth.isLoggedIn && (
+            {loginStore.token && (
                 <li>
-                    <NavLink to={`/account`}>My Account</NavLink>
+                    <NavLink to={`/account`}><UserOutlined /></NavLink>
                 </li>
             )}
-            {auth.isLoggedIn && (
+            {loginStore.token && (
                 <li>
-                    <button onClick={auth.logout}>Logout</button>
+                    <a onClick={()=>{}}>
+                        <Popconfirm
+                            onConfirm={onConfirm}
+                            title="Ready to exit?" okText="Exit" cancelText="Cancel">
+                            <LogoutOutlined />
+                        </Popconfirm>
+                    </a>
                 </li>
             )}
         </ul>

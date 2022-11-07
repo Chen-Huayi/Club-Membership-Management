@@ -1,4 +1,4 @@
-import {getToken} from '../utils';
+import {token} from '../tools';
 import {Navigate} from 'react-router-dom'
 
 
@@ -6,8 +6,7 @@ import {Navigate} from 'react-router-dom'
 // Login：<><Layout/></>
 // Not login：<Navigate to="/login" replace />
 function AuthComponent({children}){
-    const isToken=getToken()
-    if (isToken){
+    if (token){
         return <>{children}</>
     }else {
         return <Navigate to="/login" replace/>

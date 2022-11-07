@@ -1,16 +1,16 @@
 import axios from 'axios'
-import {getToken} from "./token";
+import {token} from "./token";
 import {history} from "./history";
 
 const http = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:8000',
     timeout: 3000
 })
 // Add request interceptors
 http.interceptors.request.use((config)=> {
-    const token = getToken()
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`
+    const myToken = token
+    if (myToken) {
+        config.headers.Authorization = `Bearer ${myToken}`
     }
     return config
 }, (error)=> {
@@ -19,7 +19,7 @@ http.interceptors.request.use((config)=> {
 
 // Add response interceptors
 http.interceptors.response.use((response)=> {
-    // This function is triggered for any status code between 200 and 299
+    // This function is triggered for any status code between 200 and 300 (code>=200 && code<300)
     return response.data
 }, (error)=> {
     // Triggered for any status code outside the 299 range

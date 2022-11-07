@@ -1,4 +1,4 @@
-require('../db/server')
+require('../db/mongo_server')
 const mongoose = require('mongoose');
 const bcrypt=require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -61,8 +61,9 @@ exports.signup=(req, res)=>{
 
 
 exports.login=(req, res)=>{
-    const user_id=req.body.user_id   // '919602906'
-    const password=req.body.password   // '123456'
+    const userInfo=req.body
+    const user_id=userInfo.user_id
+    const password=userInfo.password
 
     getUserById(user_id).then(user => {
         if (!user)
@@ -76,6 +77,7 @@ exports.login=(req, res)=>{
         updateById(res, user._id, {fail_login_count: 0}, `[${user_id}] login successfully!`)
         const userObj = {...user._doc, password:''}
         const {fail_login_count, __v, ...rest} = userObj
+        const {firstname, lastname}=rest
 
         const tokenStr=jwt.sign(
             rest,
@@ -85,45 +87,11 @@ exports.login=(req, res)=>{
 
         res.send({
             status: 0,
-            token: 'Bearer '+tokenStr
+            token: 'Bearer '+tokenStr,
+            user_id,
+            firstname,
+            lastname
         })
     })
 
 }
-
-
-
-
-// const user_id = 'C120106'
-// const user_role = 'Membership Admin'
-// const firstname = '泽炜'
-// const middle_name=''
-// const lastname = '盛'
-// const gender= 'Male'
-// const birthday= '2000/3/28'
-// const address_line1= '后坂新村'
-// const address_line2= ''
-// const address_line3= ''
-// const address_city= 'Fuzhou'
-// const address_country= 'China'
-// const address_postalcode= '350000'
-// const email = '919602906@qq.com'
-// const phone = '18846063519'
-// const password = '123456'
-
-// const user_id = 'C120442'
-// const user_role = 'Club Member'
-// const firstname = '启航'
-// const middle_name=''
-// const lastname = '陈'
-// const gender= 'Male'
-// const birthday= '2000/4/16'
-// const address_line1= '融侨-奥体园著'
-// const address_line2= ''
-// const address_line3= ''
-// const address_city= 'Fuzhou'
-// const address_country= 'China'
-// const address_postalcode= '350000'
-// const email = '1577878867@qq.com'
-// const phone = '17720795991'
-// const password = '123456'

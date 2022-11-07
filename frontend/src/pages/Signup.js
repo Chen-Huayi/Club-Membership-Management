@@ -2,8 +2,7 @@ import {Button, Card, Checkbox, DatePicker, Form, Input, message, Select} from '
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import './Signup.css'
-import axios from "axios";
-// import {useStore} from 'store';
+import {useStore} from '../store';
 
 const { Option } = Select
 const formItemLayout = {
@@ -22,20 +21,22 @@ const tailFormItemLayout = {
 }
 
 
-function Signup(props) {
+function Signup() {
     const [form] = Form.useForm()
     const navigate=useNavigate()
-    // const {registerStore}=useStore()
+    const {signupStore}=useStore()
+
 
     const onFinish = async (values) => {
-        await axios.post(`${props.url}/api/signup`, values)
-            .then((response)=>{
-                const msg=response.data.message
+        await signupStore.signup(values)
+            .then(response=>{
+                const msg=response.message
 
-                if (response.data.status===0){
+                if (response.status===0){
                     navigate('/')
                     message.success(msg)
                 } else {
+                    form.setFieldsValue({user_id: ''})
                     message.error(msg)
                 }
             })
@@ -294,7 +295,7 @@ function Signup(props) {
                         {...tailFormItemLayout}
                     >
                         <Checkbox>
-                            I have read the <a href="#">agreement</a>
+                            I have read the <a href="frontend/src/pages/Signup#">agreement</a>
                         </Checkbox>
                     </Form.Item>
 

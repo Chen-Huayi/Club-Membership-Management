@@ -1,6 +1,8 @@
 .nav-links {
     list-style: none;
-    margin: 0;
+    /*margin: 0 50px;*/
+    margin-right: 40px;
+    margin-top: 10px;
     padding: 0;
     width: 100%;
     height: 100%;
@@ -11,7 +13,7 @@
 }
 
 .nav-links li {
-    margin: 1rem;
+    font-size: 35px;
 }
 
 .nav-links a {
@@ -22,11 +24,10 @@
 }
 
 .nav-links a:hover,
-.nav-links a:active,
 .nav-links a.active {
-    background: #f4d35e;
-    border-color: #292929;
-    color: #292929;
+    /*background: #f4d35e;*/
+    border-color: transparent;
+    color: #20c7ff;
 }
 
 .nav-links button {
