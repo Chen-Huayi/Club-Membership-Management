@@ -3,7 +3,7 @@ import "./RegisterButton.css";
 
 export default function RegisterButton() {
     return (
-        <a className="RegBtn" href="/Signup" role="button">
+        <a className="RegBtn" href="/signup" role="button">
             Sign Up
         </a>
     );
