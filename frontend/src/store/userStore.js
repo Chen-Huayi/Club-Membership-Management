@@ -2,13 +2,18 @@ import {makeAutoObservable} from "mobx";
 import {http} from "../utils";
 
 class UserStore {
-    userInfo={}
+    userInfo
     constructor() {
         makeAutoObservable(this)
     }
 
-    getUserInfo = async() =>{
-        this.userInfo = await http.get('/api/profile')
+    getUserInfo = async(user_id) =>{
+        console.log(user_id)
+        const result=await http.get('/api/member/list', user_id)
+        // this.userInfo=await http.get('/api/member/profile', user_id)
+        console.log(result)
+        return result
+        // return await http.get('/api/member/profile', user_id)
     }
 
     clearUserInfo = async() =>{

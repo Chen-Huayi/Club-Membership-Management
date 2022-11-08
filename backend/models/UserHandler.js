@@ -10,10 +10,7 @@ const userModel = mongoose.model('users', userSchema)
 const getUserById=async (user_id)=>{
     let user=null
     try {
-        const result=await userModel.find({user_id})
-        if (result.length!==0){
-            user=result[0]
-        }
+        user=await userModel.findOne({user_id})
     } catch (err){
         throw Error(err)
     }
@@ -51,7 +48,6 @@ exports.signup=(req, res)=>{
                 res.handleMessage('Register successfully!', 0)
             })
         }
-
     })
 
 }
@@ -61,51 +57,74 @@ exports.login=(req, res)=>{
     const user_id=userInfo.user_id
     const password=userInfo.password
 
-    getUserById(user_id).then(user => {
-        if (!user)
-            return res.handleMessage('Wrong User ID!')
+    getUserById(user_id)
+        .then(user => {
+            if (!user)
+                return res.handleMessage('Wrong User ID!')
 
-        if (user.password!==password){
-            updateByObjId(res, user._id, {$inc: {fail_login_count: 1}}, `[${user_id}] Failure login count +1`)
-            return res.handleMessage('Wrong Password!')
-        }
+            if (user.password!==password){
+                updateByObjId(res, user._id, {$inc: {fail_login_count: 1}}, `[${user_id}] Failure login count +1`)
+                return res.handleMessage('Wrong Password!')
+            }
 
-        updateByObjId(res, user._id, {fail_login_count: 0}, `[${user_id}] login successfully!`)
-        const userObj = {...user._doc, password:''}
-        const {fail_login_count, __v, ...rest} = userObj
-        const {firstname, lastname, user_role}=rest
+            updateByObjId(res, user._id, {fail_login_count: 0}, `[${user_id}] login successfully!`)
+            const userObj = {...user._doc, password:''}
+            const {fail_login_count, __v, ...rest} = userObj
+            const {firstname, lastname, user_role}=rest
 
-        const tokenStr=jwt.sign(
-            rest,
-            config.jwtSecretKey,
-            {expiresIn: config.expiresIn}
-        )
+            const tokenStr=jwt.sign(
+                rest,
+                config.jwtSecretKey,
+                {expiresIn: config.expiresIn}
+            )
 
-        res.send({
-            status: 0,
-            token: 'Bearer '+tokenStr,
-            user_id,
-            firstname,
-            lastname,
-            user_role
+            res.send({
+                status: 0,
+                token: 'Bearer '+tokenStr,
+                user_id,
+                firstname,
+                lastname,
+                user_role
+            })
         })
-    })
-
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 
-exports.getMemberList=async (req, res)=>{
+exports.getMemberList = (req, res)=>{
+    console.log(req.body, req.params)
     const user_role=req.body.user_role
-    const members=await userModel.find({user_role})
+    const members = userModel.find({user_role})
+
     res.send({
         member_list: members
     })
 }
 
-exports.getProfile=async (req, res)=>{
+exports.getProfile= (req, res)=>{
+    console.log(req.body, req.params)
+
     const user_id=req.body.user_id
-    const profile=await userModel.findOne({user_id})
-    res.send(profile)
+    // console.log(user_id, 107)
+
+    getUserById(user_id)
+        .then(user=>{
+            if (!user){
+                return res.handleMessage('User does not exist!')
+            }
+            const {firstname, middle_name, lastname, gender, birthday, address_line1, address_line2,
+                address_line3, address_city, address_country, address_postalcode, email, phone}=user
+
+            res.send({
+                firstname, middle_name, lastname, gender, birthday, address_line1, address_line2,
+                address_line3, address_city, address_country, address_postalcode, email, phone
+            })
+        })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 exports.updateUserProfile = (req, res)=>{
@@ -113,14 +132,17 @@ exports.updateUserProfile = (req, res)=>{
     const data=req.body
     const userInfo={...data, birthday: new Date(req.body.birthday).toLocaleDateString()}
 
-    getUserById(user_id).then(user=>{
-        if (!user){
-            return res.handleMessage('User does not exist!')
-        }
-        updateByObjId(res, user._id, {$set: {...userInfo}}, 'Profile Updated!')
-        res.handleMessage('Profile Updated!', 0)
-    })
-
+    getUserById(user_id)
+        .then(user=>{
+            if (!user){
+                return res.handleMessage('User does not exist!')
+            }
+            updateByObjId(res, user._id, {$set: {...userInfo}}, 'Profile Updated!')
+            res.handleMessage('Profile Updated!', 0)
+        })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 exports.updatePassword = (req, res)=>{
@@ -128,20 +150,23 @@ exports.updatePassword = (req, res)=>{
     const oldPassword=req.body.oldPassword
     const newPassword=req.body.newPassword
 
-    getUserById(user_id).then(user=>{
-        if (!user){
-            return res.handleMessage('User does not exist!')
-        }
-        if (oldPassword!==user.password){
-            return res.handleMessage('The old password is wrong!')
-        }
-        if (oldPassword===newPassword){
-            return res.handleMessage('The old password and new password are same!')
-        }
-        updateByObjId(res, user._id, {$set: {password: newPassword}}, 'Password changed!')
-        res.handleMessage('Password changed!', 0)
-    })
-
+    getUserById(user_id)
+        .then(user=>{
+            if (!user){
+                return res.handleMessage('User does not exist!')
+            }
+            if (oldPassword!==user.password){
+                return res.handleMessage('The old password is wrong!')
+            }
+            if (oldPassword===newPassword){
+                return res.handleMessage('The old password and new password are same!')
+            }
+            updateByObjId(res, user._id, {$set: {password: newPassword}}, 'Password changed!')
+            res.handleMessage('Password changed!', 0)
+        })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 exports.updateInfo=(req, res)=>{

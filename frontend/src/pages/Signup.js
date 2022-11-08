@@ -39,7 +39,9 @@ function Signup() {
                     message.error(value.message)
                 }
             })
-
+            .catch(err => {
+                throw Error(err)
+            })
     }
 
 

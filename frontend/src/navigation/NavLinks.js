@@ -38,7 +38,8 @@ const UpdateInfo =  () => {
                             message.error(result.message)
                     })
                 setOpen(false)
-            }).catch(reason => {
+            })
+            .catch(reason => {
                 console.log('Validate Failed:', reason)
             })
     }
@@ -189,7 +190,8 @@ const ResetPwd = () => {
                             message.error(result.message)
                     })
                 setOpen(false)
-            }).catch(reason => {
+            })
+            .catch(reason => {
                 console.log('Validate Failed:', reason)
             })
     }

@@ -24,6 +24,9 @@ class LoginStore{
                 }
                 setValue(value)
             })
+            .catch(err => {
+                throw Error(err)
+            })
     }
 
     logOut = ()=>{
