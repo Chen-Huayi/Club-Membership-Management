@@ -1,8 +1,8 @@
 import {http} from './http'
-import {token, user_id, firstname, lastname, setValue, removeToken} from './token'
+import {token, user_id, firstname, lastname, user_role,setValue, removeToken} from './token'
 
 export {
-    http, token, user_id, firstname, lastname,
+    http, token, user_id, firstname, lastname, user_role,
     setValue, removeToken
 }
 

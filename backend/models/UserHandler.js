@@ -73,7 +73,7 @@ exports.login=(req, res)=>{
         updateByObjId(res, user._id, {fail_login_count: 0}, `[${user_id}] login successfully!`)
         const userObj = {...user._doc, password:''}
         const {fail_login_count, __v, ...rest} = userObj
-        const {firstname, lastname}=rest
+        const {firstname, lastname, user_role}=rest
 
         const tokenStr=jwt.sign(
             rest,
@@ -86,7 +86,8 @@ exports.login=(req, res)=>{
             token: 'Bearer '+tokenStr,
             user_id,
             firstname,
-            lastname
+            lastname,
+            user_role
         })
     })
 

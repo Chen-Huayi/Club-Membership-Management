@@ -16,12 +16,22 @@ function Login (){
         await loginStore.login(values)
 
         if (loginStore.token!==''){
-            navigate('/')
+            const role=loginStore.user_role
+
+            if (role==='Club Member'){
+                navigate('/')
+                window.location.reload()
+            }else if (role==='Membership Admin'){
+                navigate('/')
+            }else if (role==='System Admin'){
+                navigate('/')
+            }else if (role==='Management User'){
+                navigate('/')
+            }
             message.success('Successfully login!')
-            window.location.reload()
         }else {
             form.setFieldsValue({password: ''})
-            message.error('Invalid username or password!')
+            message.error('Invalid User ID or Password!')
         }
     }
 
