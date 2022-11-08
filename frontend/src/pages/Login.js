@@ -18,6 +18,7 @@ function Login (){
         if (loginStore.token!==''){
             navigate('/')
             message.success('Successfully login!')
+            window.location.reload()
         }else {
             form.setFieldsValue({password: ''})
             message.error('Invalid username or password!')

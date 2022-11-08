@@ -30,14 +30,13 @@ function Signup() {
     const onFinish = async (values) => {
         await signupStore.signup(values)
             .then(value=>{
-                const msg=value.message
 
                 if (value.status===0){
                     navigate('/')
-                    message.success(msg)
+                    message.success(value.message)
                 } else {
                     form.setFieldsValue({user_id: ''})
-                    message.error(msg)
+                    message.error(value.message)
                 }
             })
 
@@ -88,7 +87,7 @@ function Signup() {
                         name="email"
                         label="E-mail"
                         rules={[
-                            {type: 'email', message: 'The input is not valid E-mail!',},
+                            {type: 'email', message: 'The input is not valid E-mail!'},
                             {required: true, message: 'Please enter your E-mail!'}
                         ]}
                     >
@@ -181,7 +180,7 @@ function Signup() {
                         label="Phone Number"
                         rules={[{required: true, message: 'Please enter your phone number!'}]}
                     >
-                        <Input style={{width: '100%',}}/>
+                        <Input style={{width: '100%'}}/>
                     </Form.Item>
 
                     <Form.Item
