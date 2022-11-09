@@ -70,7 +70,7 @@ exports.login=(req, res)=>{
             updateByObjId(res, user._id, {fail_login_count: 0}, `[${user_id}] login successfully!`)
             const userObj = {...user._doc, password:''}
             const {fail_login_count, __v, ...rest} = userObj
-            const {firstname, lastname, user_role}=rest
+            const {firstname, lastname, user_role, membership_status}=rest
 
             const tokenStr=jwt.sign(
                 rest,
@@ -84,7 +84,8 @@ exports.login=(req, res)=>{
                 user_id,
                 firstname,
                 lastname,
-                user_role
+                user_role,
+                membership_status
             })
         })
         .catch(err => {
@@ -94,9 +95,7 @@ exports.login=(req, res)=>{
 
 
 exports.getMemberList = (req, res)=>{
-    console.log(req.body, req.params)
-    const user_role=req.body.user_role
-    const members = userModel.find({user_role})
+    const members =  userModel.find({user_role: 'Club Member'})
 
     res.send({
         member_list: members
@@ -104,21 +103,18 @@ exports.getMemberList = (req, res)=>{
 }
 
 exports.getProfile= (req, res)=>{
-    console.log(req.body, req.params)
-
     const user_id=req.body.user_id
-    // console.log(user_id, 107)
 
     getUserById(user_id)
         .then(user=>{
             if (!user){
                 return res.handleMessage('User does not exist!')
             }
-            const {firstname, middle_name, lastname, gender, birthday, address_line1, address_line2,
+            const {firstname, middle_name, lastname, gender, address_line1, address_line2,
                 address_line3, address_city, address_country, address_postalcode, email, phone}=user
 
             res.send({
-                firstname, middle_name, lastname, gender, birthday, address_line1, address_line2,
+                firstname, middle_name, lastname, gender, address_line1, address_line2,
                 address_line3, address_city, address_country, address_postalcode, email, phone
             })
         })

@@ -8,12 +8,7 @@ class UserStore {
     }
 
     getUserInfo = async(user_id) =>{
-        console.log(user_id)
-        const result=await http.get('/api/member/list', user_id)
-        // this.userInfo=await http.get('/api/member/profile', user_id)
-        console.log(result)
-        return result
-        // return await http.get('/api/member/profile', user_id)
+        return await http.post('/api/member/profile', user_id)
     }
 
     clearUserInfo = async() =>{

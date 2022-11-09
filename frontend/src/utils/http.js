@@ -6,11 +6,11 @@ const http = axios.create({
     baseURL: 'http://localhost:8000',
     timeout: 3000
 })
+
 // Add request interceptors
 http.interceptors.request.use((config)=> {
-    const myToken = token
-    if (myToken) {
-        config.headers.Authorization = `Bearer ${myToken}`
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
     }
     return config
 }, (error)=> {

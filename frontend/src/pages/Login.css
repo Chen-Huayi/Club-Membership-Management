@@ -1,35 +1,29 @@
-body{
-    background-image: url('../assets/login.jpg');
-    position: relative;
-    background-size: cover;
-    width: 100%;
-    height: 100%;
-}
+/*body{*/
+    /*background-image: url('../assets/login.jpg');*/
+    /*position: relative;*/
+    /*background-size: cover;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+/*}*/
 
 .login-page{
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 15%;
-    width: 350px;
+    padding-top: 150px;
+    margin: 0 auto;
+    width: 400px;
 }
-
 .login-heading{
     text-align: center;
     font-size: 25px;
     font-weight: bold;
     margin-bottom: 30px;
 }
-.input-form{
+.input-form {
     border-radius: 0.4em;
     border: solid #d9d9d9;
     position: relative;
 }
-
-.login-form-forgot{
-    font-weight: bold;
-    padding-left:  7em;
+.login-form-button{
+    width: 400px;
 }
 
-.register-link{
-    margin-left: 1em;
-}
+

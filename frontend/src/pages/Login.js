@@ -1,12 +1,38 @@
-import {LockOutlined, UserOutlined} from '@ant-design/icons';
-import {Button, Checkbox, Form, Input, message} from 'antd';
-import React from 'react';
+import {
+    FacebookOutlined,
+    GoogleOutlined,
+    LockOutlined,
+    MobileOutlined,
+    TwitterOutlined,
+    UserOutlined
+} from '@ant-design/icons';
+import {Button, Checkbox, Col, Form, Input, message, Row, Space, Tabs} from 'antd';
+import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import './Login.css'
-import {useStore} from "../store";
+import {useStore} from '../store';
+
+const iconStyles = {
+    marginInlineStart: '16px',
+    color: 'rgba(0, 0, 0, 0.2)',
+    fontSize: '24px',
+    verticalAlign: 'middle',
+    cursor: 'pointer',
+}
+const types = [
+    {
+        key: 'account',
+        label: 'Account/Password ',
+    },
+    {
+        key: 'phone',
+        label: 'Phone',
+    }
+]
 
 
-function Login (){
+export default function Login() {
+    const [loginType, setLoginType] = useState('account');
     const navigate=useNavigate()
     const {loginStore}=useStore()
     const [form] = Form.useForm();
@@ -19,8 +45,7 @@ function Login (){
             const role=loginStore.user_role
 
             if (role==='Club Member'){
-                navigate('/')
-                window.location.reload()
+                navigate('/home')
             }else if (role==='Membership Admin'){
                 navigate('/')
             }else if (role==='System Admin'){
@@ -29,74 +54,121 @@ function Login (){
                 navigate('/')
             }
             message.success('Successfully login!')
+            window.location.reload()
         }else {
             form.setFieldsValue({password: ''})
             message.error('Invalid User ID or Password!')
         }
     }
 
-
     const onFinishFailed = (err) =>{
         console.log('Failed: ', err)
     }
-
 
     const redirectToSignup=()=>{
         navigate('/signup')
     }
 
-
     return (
-        <div className="login-page">
+        <div className="login-page" style={{ backgroundColor: 'white'}}>
             <div className="login-heading">LOGIN TO ACCOUNT</div>
             <Form
-                name="normal_login"
-                className="login-form"
-                initialValues={{
-                    remember: true,
-                }}
-                form={form}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
+                form={form}
+                initialValues={{
+                    remember: true
+                }}
             >
-                <Form.Item
-                    className="input-form"
-                    name="user_id"
-                    rules={[{required: true, message: 'Please input your Username!'}]}
-                >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="User ID" />
-                </Form.Item>
+                <Tabs centered activeKey={loginType} onChange={(activeKey) => setLoginType(activeKey)} items={types} />
 
-                <Form.Item
-                    className="input-form"
-                    name="password"
-                    rules={[
-                        {required: true, message: 'Please input your Password!'},
-                        {min: 6, message: 'Please input valid Password!'}
-                    ]}
-                >
-                    <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="Password"/>
-                </Form.Item>
-                <Form.Item>
-                    <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>Remember me</Checkbox>
+                {loginType === 'account' && (<>
+                    <Form.Item
+                        className="input-form"
+                        name="user_id"
+                        rules={[{
+                            required: true,
+                            message: 'Please enter your id!'
+                        }]}
+                    >
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="admin or user id" />
                     </Form.Item>
 
-                    <a className="login-form-forgot" href="">
-                        Forgot password?
-                    </a>
-                </Form.Item>
+                    <Form.Item
+                        className="input-form"
+                        name="password"
+                        rules={[{
+                            required: true,
+                            message: 'Please enter your Password!'
+                        }, {
+                            min: 6,
+                            message: 'Please enter valid Password!'
+                        }]}
+                    >
+                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="password"/>
+                    </Form.Item>
+
+                    <Form.Item>
+                        <Form.Item name="remember" valuePropName="checked" noStyle>
+                            <Checkbox><b>Remember me</b></Checkbox>
+                        </Form.Item>
+                        <a className="login-form-forgot" href="" style={{float: 'right'}}>
+                            <b>Forgot password?</b>
+                        </a>
+                    </Form.Item>
+
+                </>)}
+
+                {loginType === 'phone' && (<>
+                    <Form.Item
+                        name="phone"
+                        rules={[{
+                            required: true,
+                            message: 'Please enter your phone number',
+                        }, {
+                            min: 10,
+                            message: 'Phone number is invalid!',
+                        }]}
+                    >
+                        <Input prefix={<MobileOutlined className="prefixIcon"/>} placeholder="phone number" />
+                    </Form.Item>
+
+                    <Form.Item>
+                        <Row gutter={8}>
+                            <Col span={15}>
+                                <Form.Item
+                                    name="captcha"
+                                    noStyle
+                                    rules={[{
+                                            required: true,
+                                            message: 'Please input the captcha you got!',
+                                    }]}
+                                >
+                                    <Input prefix={<LockOutlined className="prefixIcon"/>} placeholder="Enter captcha" />
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Button> <b><a href="#">Get your captcha</a></b></Button>
+                            </Col>
+                        </Row>
+                    </Form.Item>
+                </>)}
 
                 <Form.Item>
-                    <span className="login-submit-button">
-                        <Button type="primary" htmlType="submit" className="login-form-button" shape="round">Log in</Button>
-                    </span>
-                    <span className="register-link">
-                        Or <a onClick={redirectToSignup}><b>Register Now!</b></a>
-                    </span>
+                    <Button type="primary" htmlType="submit" className="login-form-button" shape="round" size="large"><b>Log in</b></Button>
                 </Form.Item>
+
             </Form>
+            <div style={{marginBottom: 20, fontSize: 'large'}}>
+                Don't have an account? <a onClick={redirectToSignup}><b>Register Now!</b></a>
+            </div>
+
+            <Space style={{fontSize: 'large'}}>
+                Other Login Methods
+                <GoogleOutlined style={iconStyles}/>
+                <FacebookOutlined style={iconStyles}/>
+                <TwitterOutlined style={iconStyles}/>
+            </Space>
         </div>
     )
 }
-export default Login;

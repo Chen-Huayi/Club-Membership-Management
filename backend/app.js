@@ -3,12 +3,31 @@ const app=express()
 const cors = require('cors')
 const joi = require('joi')
 const userRouter=require('./router/UserRouter')
+const bodyParser = require("body-parser");
+const PORT=8000
 
+// Cross-Origin Resource Sharing
 app.use(cors())
-app.use(express.json())
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "*");
+//     res.header(
+//         "Access-Control-Allow-Methods",
+//         "GET, POST, PATCH, DELETE, OPTIONS"
+//     )
+//     // handle preflight request
+//     if (req.method === "OPTIONS") {
+//         return res.status(200).send();
+//     }
+//     next()
+// })
+
+// content-type interceptor
+app.use(bodyParser.json())
 // app.use(express.urlencoded({ extended: false }))
 
 
+// Handle message middlewares (include both success and failure event)
 app.use((req, res, next)=>{
     res.handleMessage= (err, status=1)=>{
         res.send({
@@ -19,8 +38,10 @@ app.use((req, res, next)=>{
     next()
 })
 
+// Main router (Start here)
 app.use('/api', userRouter);
 
+// Errors middlewares
 app.use((err, req, res, next)=>{
     if (err instanceof joi.ValidationError){  // Error caused by failed validation
         return res.handleMessage(err)
@@ -30,6 +51,8 @@ app.use((err, req, res, next)=>{
     res.handleMessage(err)  // Unknown error
 })
 
-app.listen(8000, ()=>{
-    console.log('Server is running at http://localhost:8000')
+// Listen at 8000 port
+app.listen(PORT, (err)=>{
+    if (err) console.log(err)
+    console.log(`Server is running at http://localhost:${PORT}`)
 })
