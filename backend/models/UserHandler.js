@@ -110,13 +110,38 @@ exports.getProfile= (req, res)=>{
             if (!user){
                 return res.handleMessage('User does not exist!')
             }
-            const {firstname, middle_name, lastname, gender, address_line1, address_line2,
-                address_line3, address_city, address_country, address_postalcode, email, phone}=user
+            const {
+                user_id, firstname, middle_name, lastname, gender, birthday, address_line1,
+                address_line2, address_line3, address_city, address_country, address_postalcode,
+                email, phone, registered_date, effective_date, expire_date, membership_status
+            } = user
 
             res.send({
-                firstname, middle_name, lastname, gender, address_line1, address_line2,
-                address_line3, address_city, address_country, address_postalcode, email, phone
+                user_id, firstname, middle_name, lastname, gender, birthday, address_line1,
+                address_line2, address_line3, address_city, address_country, address_postalcode,
+                email, phone, registered_date, effective_date, expire_date, membership_status
             })
+        })
+        .catch(err => {
+            throw Error(err)
+        })
+}
+
+exports.updateSingleAttribute=(req, res)=>{
+    let {user_id, attribute, value}=req.body
+    console.log(user_id, attribute, value)
+
+    if (attribute==='birthday'){
+        value={birthday: new Date(value.birthday).toLocaleDateString()}
+    }
+
+    getUserById(user_id)
+        .then(user=>{
+            if (!user){
+                return res.handleMessage('User does not exist!')
+            }
+            updateByObjId(res, user._id, {$set: value}, 'Updated successfully!')
+            res.handleMessage('Updated successfully!', 0)
         })
         .catch(err => {
             throw Error(err)

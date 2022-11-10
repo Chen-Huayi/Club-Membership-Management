@@ -6,12 +6,16 @@ class UpdateStore{
         makeAutoObservable(this)
     }
 
+    updateSingleAttribute = async (values)=>{
+        return await http.post('/api/member/update-single-profile', values)
+    }
+
     updateUserInfo = async (values)=>{
-        return await http.post('/api/member/updateprofile', values)
+        return await http.post('/api/member/update-profile', values)
     }
 
     updatePassword = async (values)=>{
-        return await http.post('/api/member/updatepwd', values)
+        return await http.post('/api/member/update-pwd', values)
     }
 
 }

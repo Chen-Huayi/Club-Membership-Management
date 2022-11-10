@@ -4,7 +4,7 @@ import {token, user_id, firstname, lastname, user_role, membership_status,  http
 class LoginStore{
     token=token || ''
     user_id=user_id
-    user_name=firstname+' '+lastname
+    firstname=firstname
     user_role=user_role
     membership_status=membership_status
 
@@ -20,7 +20,7 @@ class LoginStore{
                 }else {
                     this.token=value.token
                     this.user_id=value.user_id
-                    this.user_name=value.firstname+' '+value.lastname
+                    this.firstname=value.firstname
                     this.user_role=value.user_role
                     this.membership_status=value.membership_status
                 }

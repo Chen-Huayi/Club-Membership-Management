@@ -5,8 +5,6 @@ import {useStore} from "../store";
 import {Link, useNavigate} from "react-router-dom";
 
 const { Option } = Select
-
-
 const formItemLayout = {
     labelCol: {
         sm: { span: 7 }
@@ -52,11 +50,13 @@ export default function UpdateProfile () {
         console.log('Failed:', err)
     }
 
+    // backfill the user information to the form
     useEffect(()=>{
         const loadDetail=async ()=>{
             await userStore.getUserInfo({user_id: loginStore.user_id})
                 .then(currProfile=>{
-                    form.setFieldsValue({...currProfile})
+                    const {birthday, ...userInfo}=currProfile
+                    form.setFieldsValue({...userInfo})
                 })
                 .catch(err=>{
                     throw Error(err)

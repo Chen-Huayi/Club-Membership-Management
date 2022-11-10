@@ -21,11 +21,10 @@ const tailFormItemLayout = {
 }
 
 
-function Signup() {
+export default function Signup() {
     const [form] = Form.useForm()
     const navigate=useNavigate()
     const {signupStore}=useStore()
-
 
     const onFinish = async (values) => {
         await signupStore.signup(values)
@@ -44,11 +43,9 @@ function Signup() {
             })
     }
 
-
     const onFinishFailed = (err) =>{
         console.log('Failed: ', err)
     }
-
 
     return (
         <div className="register">
@@ -145,11 +142,11 @@ function Signup() {
                         <Input />
                     </Form.Item>
 
-                    <Form.Item name="address_line2" label="Address line 2">
+                    <Form.Item name="address_line2" label="Address line 2" initialValue="">
                         <Input />
                     </Form.Item>
 
-                    <Form.Item name="address_line3" label="Address line 3">
+                    <Form.Item name="address_line3" label="Address line 3" initialValue="">
                         <Input />
                     </Form.Item>
 
@@ -244,5 +241,3 @@ function Signup() {
         </div>
     );
 }
-
-export default Signup

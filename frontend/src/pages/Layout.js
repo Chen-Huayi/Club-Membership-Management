@@ -2,7 +2,7 @@ import {LogoutOutlined, SettingOutlined, ShoppingOutlined, UserOutlined} from '@
 import {Layout, Menu, Popconfirm} from 'antd';
 import {observer} from 'mobx-react-lite'
 import './Layout.css'
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, Outlet, useLocation} from "react-router-dom";
 import {useStore} from "../store";
 
@@ -37,12 +37,27 @@ const siderMenus = [
 
 const MyLayout = () => {
     const {pathname}=useLocation()
-    const {loginStore}=useStore()
+    const {loginStore, userStore}=useStore()
+    const [userInfo, setUserInfo]=useState({
+        name: loginStore.firstname
+    })
 
     const onConfirm=()=>{
         loginStore.logOut()
         window.location.reload()
     }
+
+    useEffect(()=>{
+        const loadInfo = async () => {
+            await userStore.getUserInfo({user_id: loginStore.user_id})
+                .then(result=>{
+                    setUserInfo({
+                        name: result.firstname
+                    })
+                })
+        }
+        loadInfo()
+    }, [])
 
     return(
         <Layout style={{height:"100vh"}}>
@@ -62,7 +77,7 @@ const MyLayout = () => {
                         </a>
                     </span>
                     <span className="header-userinfo">
-                        Hi, {loginStore.user_name}
+                        Hi, {userInfo.name}
                     </span>
                 </div>
             </Header>

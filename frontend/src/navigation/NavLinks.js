@@ -15,7 +15,7 @@ const formItemLayout = {
     }
 }
 
-// Show update personal information dialog
+
 const UpdateInfo =  () => {
     const [form] = Form.useForm()
     const [open, setOpen] = useState(false)
