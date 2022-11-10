@@ -12,6 +12,7 @@ import UpdateProfile from "./pages/admin/UpdateProfile";
 import Settings from "./pages/member/Settings";
 import Membership from "./pages/member/Membership";
 import NotFound404 from "./pages/results/404";
+import Renewal from "./pages/member/Renewal";
 
 
 export default function App() {
@@ -27,6 +28,8 @@ export default function App() {
                     <Route path="profile" element={<Profile />} />
                     <Route path="settings" element={<Settings />}/>
                     <Route path="membership" element={<Membership />}></Route>
+                    <Route path="renewal" element={<Renewal />} />
+
                     <Route path="article" element={<Article />} />
                     <Route path="update-profile" element={<UpdateProfile />} />
                     <Route path="/*" element={<NotFound404/>}></Route>

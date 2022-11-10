@@ -40,7 +40,9 @@ export default function Membership () {
                 <h2>Effective date: </h2>{userInfo.effectiveDate}<br/><br/>
                 <h2>Expire date: </h2>{userInfo.expireDate}<br/><br/>
 
-                <Link to="">Membership Renewal</Link>
+                <div className="other-link" style={{fontWeight: "bold", marginBottom: 20}}>
+                    <Link to="/renewal">Renewal</Link>
+                </div>
 
             </Card>
         </div>
