@@ -64,7 +64,7 @@ const MyLayout = () => {
             <Header className="header" >
                 <div className="header-info">
                     <span className="header-left-conner">
-                        <a className="header-logo" href="/Code/react/Membership-Management/frontend/src/pages">GREEN SPACE</a>
+                        <a className="header-logo" href="/">GREEN SPACE</a>
                     </span>
                     <span className="header-left-conner">
                         <Menu theme="dark" mode="horizontal" items={navigationMenu} />
