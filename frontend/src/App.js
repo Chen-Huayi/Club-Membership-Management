@@ -1,17 +1,17 @@
 import React from "react"
 import {Route, Routes, unstable_HistoryRouter as HistoryRouter} from "react-router-dom"
-import Signup from "./pages/Signup"
-import Login from "./pages/Login"
-import Home from "./pages/Home"
+import Signup from "./pages/public/Signup"
+import Login from "./pages/public/Login"
+import Home from "./pages/member/Home"
 import {history} from "./utils/history"
-import Profile from "./pages/Profile";
-import MyLayout from "./pages/Layout";
+import Profile from "./pages/member/Profile";
+import MyLayout from "./pages/member/Layout";
 import {AuthComponent} from "./components/AuthComponent";
 import Article from "./pages/article";
-import UpdateProfile from "./pages/UpdateProfile";
-import Settings from "./pages/Settings";
-import Membership from "./pages/Membership";
-import NotFound404 from "./pages/404";
+import UpdateProfile from "./pages/admin/UpdateProfile";
+import Settings from "./pages/member/Settings";
+import Membership from "./pages/member/Membership";
+import NotFound404 from "./pages/results/404";
 
 
 export default function App() {

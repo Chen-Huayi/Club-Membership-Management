@@ -1,7 +1,7 @@
 import {Breadcrumb, Button, Card, DatePicker, Form, Input, message, Modal, Select} from 'antd';
 import React, {useEffect, useState} from 'react';
 import './Profile.css'
-import {useStore} from "../store";
+import {useStore} from "../../store";
 import {Link} from "react-router-dom";
 
 const { Option } = Select

@@ -10,7 +10,7 @@ import {Button, Checkbox, Col, Form, Input, message, Row, Space, Tabs} from 'ant
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import './Login.css'
-import {useStore} from '../store';
+import {useStore} from '../../store';
 
 const iconStyles = {
     marginInlineStart: '16px',
@@ -112,7 +112,7 @@ export default function Login() {
                         <Form.Item name="remember" valuePropName="checked" noStyle>
                             <Checkbox><b>Remember me</b></Checkbox>
                         </Form.Item>
-                        <a className="login-form-forgot" href="" style={{float: 'right'}}>
+                        <a className="login-form-forgot" href="frontend/src/pages/public/Login" style={{float: 'right'}}>
                             <b>Forgot password?</b>
                         </a>
                     </Form.Item>
@@ -148,7 +148,7 @@ export default function Login() {
                                 </Form.Item>
                             </Col>
                             <Col span={8}>
-                                <Button> <b><a href="#">Get your captcha</a></b></Button>
+                                <Button> <b><a href="frontend/src/pages/public/Login#">Get your captcha</a></b></Button>
                             </Col>
                         </Row>
                     </Form.Item>

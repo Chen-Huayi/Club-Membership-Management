@@ -1,7 +1,7 @@
 import {Breadcrumb, Button, Card, DatePicker, Form, Input, message, Select} from 'antd';
 import React, {useEffect} from 'react';
-import './Profile.css'
-import {useStore} from "../store";
+import '../member/Profile.css'
+import {useStore} from "../../store";
 import {Link, useNavigate} from "react-router-dom";
 
 const { Option } = Select
@@ -71,7 +71,7 @@ export default function UpdateProfile () {
                 title={
                     <Breadcrumb separator=">">
                         <Breadcrumb.Item>
-                            <Link to="/home">Home</Link>
+                            <Link to="/">Home</Link>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
                             <Link to="/profile">Profile</Link>

@@ -4,7 +4,7 @@ import {observer} from 'mobx-react-lite'
 import './Layout.css'
 import React, {useEffect, useState} from 'react';
 import {Link, Outlet, useLocation} from "react-router-dom";
-import {useStore} from "../store";
+import {useStore} from "../../store";
 
 
 const { Header, Sider } = Layout;
@@ -64,7 +64,7 @@ const MyLayout = () => {
             <Header className="header" >
                 <div className="header-info">
                     <span className="header-left-conner">
-                        <a className="header-logo" href="/">GREEN SPACE</a>
+                        <a className="header-logo" href="/Code/react/Membership-Management/frontend/src/pages">GREEN SPACE</a>
                     </span>
                     <span className="header-left-conner">
                         <Menu theme="dark" mode="horizontal" items={navigationMenu} />

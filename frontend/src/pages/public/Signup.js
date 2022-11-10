@@ -2,7 +2,7 @@ import {Button, Card, Checkbox, DatePicker, Form, Input, message, Select} from '
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import './Signup.css'
-import {useStore} from '../store';
+import {useStore} from '../../store';
 
 const { Option } = Select
 const formItemLayout = {
@@ -226,7 +226,7 @@ export default function Signup() {
                         {...tailFormItemLayout}
                     >
                         <Checkbox>
-                            I have read the <a href="#">agreement</a>
+                            I have read the <a href="frontend/src/pages/public/Signup#">agreement</a>
                         </Checkbox>
                     </Form.Item>
 

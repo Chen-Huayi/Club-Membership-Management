@@ -1,7 +1,7 @@
 import {Breadcrumb, Card, Form, Input, message, Modal} from "antd";
 import {Link} from "react-router-dom";
 import React, {useState} from "react";
-import {useStore} from "../store";
+import {useStore} from "../../store";
 
 
 const formItemLayout = {
