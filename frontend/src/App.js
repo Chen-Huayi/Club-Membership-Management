@@ -11,7 +11,7 @@ import Article from "./pages/admin/article";
 import UpdateProfile from "./pages/admin/UpdateProfile";
 import Settings from "./pages/member/Settings";
 import Membership from "./pages/member/Membership";
-import NotFound404 from "./pages/results/404";
+import NotFound404 from "./pages/shared/results/404";
 import Renewal from "./pages/member/Renewal";
 import {AdminAuth} from "./components/authorization/AdminAuth";
 import {MemberAuth} from "./components/authorization/MemberAuth";
