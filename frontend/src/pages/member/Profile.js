@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import './Profile.css'
 import {useStore} from "../../store";
 import {Link} from "react-router-dom";
+import {UserOutlined} from "@ant-design/icons";
 
 const { Option } = Select
 const formItemLayout = {
@@ -197,40 +198,41 @@ export default function Profile () {
                         <Breadcrumb.Item>Profile</Breadcrumb.Item>
                     </Breadcrumb>
                 }
+                bodyStyle={{width: '400px'}}
             >
-                <Card type="inner" title="USER ID">
+                <Card type="inner" title="USER ID" hoverable>
                     {profile.user_id}
                 </Card>
-                <Card type="inner" title="NAME" extra={<UpdateItem attribute={'name'}/>}>
+                <Card type="inner" title="NAME" extra={<UpdateItem attribute={'name'}/>} hoverable>
                     {profile.firstname} {profile.middle_name} {profile.lastname}
                 </Card>
-                <Card type="inner" title="GENDER" extra={<UpdateItem attribute={'gender'}/>}>
+                <Card type="inner" title="GENDER" extra={<UpdateItem attribute={'gender'}/>} hoverable>
                     {(profile.gender==='male') ? 'Male' : (profile.gender==='female') ? 'Female' : 'Other'}
                 </Card>
-                <Card type="inner" title="BIRTHDAY" extra={<UpdateItem attribute={'birthday'}/>}>
+                <Card type="inner" title="BIRTHDAY" extra={<UpdateItem attribute={'birthday'}/>} hoverable>
                     {profile.birthday}
                 </Card>
-                <Card type="inner" title="ADDRESS" extra={<UpdateItem attribute={'address'}/>}>
+                <Card type="inner" title="ADDRESS" extra={<UpdateItem attribute={'address'}/>} hoverable>
                     {profile.address_line1}{profile.address_line2?`, ${profile.address_line2}`:''}{profile.address_line3?`, ${profile.address_line3}`:''}<br/>
                     {profile.address_city}, {profile.address_country}<br/>
                     {profile.address_postalcode}
                 </Card>
-                <Card type="inner" title="EMAIL" extra={<UpdateItem attribute={'email'}/>}>
+                <Card type="inner" title="EMAIL" extra={<UpdateItem attribute={'email'}/>} hoverable>
                     {profile.email}
                 </Card>
-                <Card type="inner" title="PHONE NUMBER" extra={<UpdateItem attribute={'phone'}/>}>
+                <Card type="inner" title="PHONE NUMBER" extra={<UpdateItem attribute={'phone'}/>} hoverable>
                     {profile.phone}
                 </Card>
-                <Card type="inner" title="REGISTERED DATE">
+                <Card type="inner" title="REGISTERED DATE" hoverable>
                     {profile.registered_date}
                 </Card>
-                <Card type="inner" title="MEMBERSHIP EFFECTIVE DATE">
+                <Card type="inner" title="MEMBERSHIP EFFECTIVE DATE" hoverable>
                     {profile.effective_date}
                 </Card>
-                <Card type="inner" title="MEMBERSHIP EXPIRE DATE">
+                <Card type="inner" title="MEMBERSHIP EXPIRE DATE" hoverable>
                     {profile.expire_date}
                 </Card>
-                <Card type="inner" title="MEMBERSHIP STATUS">
+                <Card type="inner" title="MEMBERSHIP STATUS" hoverable>
                     {(profile.membership_status? 'Yes':'No')}
                 </Card>
 
