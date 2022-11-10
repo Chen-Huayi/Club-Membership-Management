@@ -10,10 +10,10 @@ import {useStore} from "../store";
 const { Header, Sider } = Layout;
 const navigationMenu = [
     {
-        label: <Link to={'/article'}>article</Link>,
+        label: <Link to={'/article'}>nav1</Link>,
     },
     {
-        label: <Link to={'/article'}>article</Link>,
+        label: <Link to={'/'}>nav2</Link>,
     }
 ]
 const siderMenus = [
@@ -25,12 +25,12 @@ const siderMenus = [
     {
         key: '/settings',
         icon: <SettingOutlined />,
-        label: 'Settings',
+        label: <Link to="/settings">Settings</Link>,
     },
     {
         key: '/membership',
         icon: <ShoppingOutlined />,
-        label: 'Membership',
+        label: <Link to="/membership">Settings</Link>,
     },
 ];
 

@@ -9,6 +9,8 @@ import MyLayout from "./pages/Layout";
 import {AuthComponent} from "./components/AuthComponent";
 import Article from "./pages/article";
 import UpdateProfile from "./pages/UpdateProfile";
+import Settings from "./pages/Settings";
+import ResetPassword from "./pages/ResetPassword";
 
 
 export default function App() {
@@ -20,9 +22,9 @@ export default function App() {
                     <Route path="profile" element={<Profile />} />
                     <Route path="update-profile" element={<UpdateProfile />} />
                     <Route path="article" element={<Article />} />
-                    {/*<Route path='profile' element={<Profile />}></Route>*/}
+                    <Route path="settings" element={<Settings />}/>
                     {/*<Route path='publish' element={<Publish />}></Route>*/}
-                    {/*<Route path='update-profile' element={<UpdateProfile />}></Route>*/}
+                    <Route path="reset-password" element={<ResetPassword />}></Route>
                     <Route path="/*" element={<Home />} />
                 </Route>
                 <Route path="/signup" element={<Signup />} />
