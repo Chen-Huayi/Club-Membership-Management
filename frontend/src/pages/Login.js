@@ -45,7 +45,7 @@ export default function Login() {
             const role=loginStore.user_role
 
             if (role==='Club Member'){
-                navigate('/home')
+                navigate('/')
             }else if (role==='Membership Admin'){
                 navigate('/')
             }else if (role==='System Admin'){

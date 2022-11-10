@@ -37,7 +37,7 @@ export default function Home() {
                 <div className="userinfo-title">
                     Welcome back, {userInfo.name}!
                     <br/>
-                    {userInfo.membership? '😍 You have' : '😢 You are not'} our membership
+                    {userInfo.membership? '😍 You are' : '😢 You are not'} our membership
                 </div>
                 <div className="home-page-image">
                     <img

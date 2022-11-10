@@ -10,22 +10,26 @@ import {AuthComponent} from "./components/AuthComponent";
 import Article from "./pages/article";
 import UpdateProfile from "./pages/UpdateProfile";
 import Settings from "./pages/Settings";
-import ResetPassword from "./pages/ResetPassword";
+import Membership from "./pages/Membership";
+import NotFound404 from "./pages/404";
 
 
 export default function App() {
     return (
         <HistoryRouter history={history}>
             <Routes>
-                <Route path="/" element={<AuthComponent><MyLayout /></AuthComponent>}>
-                    <Route index="home" element={<Home />} />
+                <Route path="/" element={
+                    <AuthComponent>
+                        <MyLayout />
+                    </AuthComponent>
+                }>
+                    <Route index element={<Home />} />
                     <Route path="profile" element={<Profile />} />
-                    <Route path="update-profile" element={<UpdateProfile />} />
-                    <Route path="article" element={<Article />} />
                     <Route path="settings" element={<Settings />}/>
-                    {/*<Route path='publish' element={<Publish />}></Route>*/}
-                    <Route path="reset-password" element={<ResetPassword />}></Route>
-                    <Route path="/*" element={<Home />} />
+                    <Route path="membership" element={<Membership />}></Route>
+                    <Route path="article" element={<Article />} />
+                    <Route path="update-profile" element={<UpdateProfile />} />
+                    <Route path="/*" element={<NotFound404/>}></Route>
                 </Route>
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />

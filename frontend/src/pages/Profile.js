@@ -192,7 +192,7 @@ export default function Profile () {
                 title={
                     <Breadcrumb separator=">">
                         <Breadcrumb.Item>
-                            <Link to="/home">Home</Link>
+                            <Link to="/">Home</Link>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>Profile</Breadcrumb.Item>
                     </Breadcrumb>

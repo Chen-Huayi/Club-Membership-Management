@@ -30,7 +30,7 @@ const siderMenus = [
     {
         key: '/membership',
         icon: <ShoppingOutlined />,
-        label: <Link to="/membership">Settings</Link>,
+        label: <Link to="/membership">Membership</Link>,
     },
 ];
 
@@ -64,7 +64,7 @@ const MyLayout = () => {
             <Header className="header" >
                 <div className="header-info">
                     <span className="header-left-conner">
-                        <a className="header-logo" href="/home">GREEN SPACE</a>
+                        <a className="header-logo" href="/">GREEN SPACE</a>
                     </span>
                     <span className="header-left-conner">
                         <Menu theme="dark" mode="horizontal" items={navigationMenu} />
