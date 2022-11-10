@@ -62,6 +62,7 @@ exports.login=(req, res)=>{
             if (!user)
                 return res.handleMessage('Wrong User ID!')
 
+            // TODO password 加密
             if (user.password!==password){
                 updateByObjId(res, user._id, {$inc: {fail_login_count: 1}}, `[${user_id}] Failure login count +1`)
                 return res.handleMessage('Wrong Password!')
@@ -71,6 +72,8 @@ exports.login=(req, res)=>{
             const userObj = {...user._doc, password:''}
             const {fail_login_count, __v, ...rest} = userObj
             const {firstname, lastname, user_role, membership_status}=rest
+
+            // TODO user_role加密
 
             const tokenStr=jwt.sign(
                 rest,

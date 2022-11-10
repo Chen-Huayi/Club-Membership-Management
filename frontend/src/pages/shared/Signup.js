@@ -226,7 +226,7 @@ export default function Signup() {
                         {...tailFormItemLayout}
                     >
                         <Checkbox>
-                            I have read the <a href="frontend/src/pages/public/Signup#">agreement</a>
+                            I have read the <a>agreement</a>
                         </Checkbox>
                     </Form.Item>
 

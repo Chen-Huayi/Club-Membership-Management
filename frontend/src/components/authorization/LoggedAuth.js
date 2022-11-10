@@ -1,11 +1,11 @@
-import {token} from '../utils';
+import {token} from '../../utils';
 import {Navigate} from 'react-router-dom'
 
 
-// <AuthComponent> <Layout/> </AuthComponent>
+// <LoggedAuth> <Layout/> </LoggedAuth>
 // Login：<><Layout/></>
 // Not login：<Navigate to="/login" replace />
-function AuthComponent({children}){
+function LoggedAuth({children}){
     if (token){
         return <>{children}</>
     }else {
@@ -13,4 +13,4 @@ function AuthComponent({children}){
     }
 }
 
-export {AuthComponent}
+export {LoggedAuth}

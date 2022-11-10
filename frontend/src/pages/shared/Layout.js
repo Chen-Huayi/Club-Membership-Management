@@ -1,4 +1,4 @@
-import {LogoutOutlined, SettingOutlined, ShoppingOutlined, UserOutlined} from '@ant-design/icons';
+import {HomeOutlined, LogoutOutlined, SettingOutlined, ShoppingOutlined, UserOutlined} from '@ant-design/icons';
 import {Layout, Menu, Popconfirm} from 'antd';
 import {observer} from 'mobx-react-lite'
 import './Layout.css'
@@ -10,13 +10,18 @@ import {useStore} from "../../store";
 const { Header, Sider } = Layout;
 const navigationMenu = [
     {
-        label: <Link to={'/article'}>nav1</Link>,
+        label: <Link to={'/'}>nav1</Link>,
     },
     {
         label: <Link to={'/'}>nav2</Link>,
     }
 ]
-const siderMenus = [
+const siderMemberMenus = [
+    {
+        key: '/',
+        icon: <HomeOutlined />,
+        label: <Link to="/">Home</Link>,
+    },
     {
         key: '/profile',
         icon: <UserOutlined />,
@@ -32,10 +37,23 @@ const siderMenus = [
         icon: <ShoppingOutlined />,
         label: <Link to="/membership">Membership</Link>,
     },
-];
+]
+const siderAdminMenus = [
+    {
+        key: '/',
+        icon: <HomeOutlined />,
+        label: <Link to="/">Home</Link>,
+    },
+    {
+        key: '/article',
+        icon: <UserOutlined />,
+        label: <Link to="/article">Member List</Link>,
+    },
+]
 
 
-const MyLayout = () => {
+
+const MainLayout = () => {
     const {pathname}=useLocation()
     const {loginStore, userStore}=useStore()
     const [userInfo, setUserInfo]=useState({
@@ -81,16 +99,33 @@ const MyLayout = () => {
                     </span>
                 </div>
             </Header>
+
             <Layout>
-                <Sider className="site-layout-background" width={170}>
-                    <Menu
-                        mode="inline"
-                        theme="light"
-                        defaultSelectedKeys={[pathname]}
-                        items={siderMenus}
-                        style={{ height: '100%', fontSize: 'large' }}
-                    />
-                </Sider>
+                {loginStore.user_role==='Club Member' && (
+                    <Sider className="site-layout-background" width={170}>
+                        <Menu
+                            mode="inline"
+                            theme="light"
+                            defaultSelectedKeys={[pathname]}
+                            items={siderMemberMenus}
+                            style={{ height: '100%', fontSize: 'large' }}
+                        />
+                    </Sider>
+                )}
+                {loginStore.user_role==='Membership Admin' && (
+                    <Sider className="site-layout-background" width={170}>
+                        <Menu
+                            mode="inline"
+                            theme="light"
+                            defaultSelectedKeys={[pathname]}
+                            items={siderAdminMenus}
+                            style={{ height: '100%', fontSize: 'large' }}
+                        />
+                    </Sider>
+                )}
+
+                {/*TODO*/}
+
                 <Layout className="layout-content" style={{ padding: 20 }}>
                     <Outlet />
                 </Layout>
@@ -98,4 +133,4 @@ const MyLayout = () => {
         </Layout>
     )
 }
-export default observer(MyLayout);
+export default observer(MainLayout);

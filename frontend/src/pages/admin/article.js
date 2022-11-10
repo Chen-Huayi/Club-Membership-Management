@@ -5,8 +5,8 @@ import {Breadcrumb, Button, Card, DatePicker, Form, Layout, Radio, Select, Space
 import locale from 'antd/es/date-picker/locale/en_US'
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons'
 // import img404 from 'assets/404.jpg'
-import {http} from "../utils";
-import {useStore} from "../store";
+import {http} from "../../utils";
+import {useStore} from "../../store";
 // import './article.scss'
 
 const { Option } = Select
