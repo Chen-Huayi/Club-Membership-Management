@@ -67,8 +67,7 @@ const MainLayout = () => {
 
     useEffect(()=>{
         const loadInfo = async () => {
-            // await userStore.getUserInfo({user_id: loginStore.user_id})
-            await userStore.getUserInfoBeta(loginStore.user_id)
+            await userStore.getUserInfo(loginStore.user_id)
                 .then(result=>{
                     setUserInfo({
                         name: result.firstname

@@ -7,16 +7,16 @@ class UpdateStore{
     }
 
     updateInfoByMember = async (values)=>{
-        return await http.post('/api/member/update-single-profile', values)
+        return await http.put('/api/member/update-info-by-member', values)
     }
 
     updatePassword = async (values)=>{
-        return await http.post('/api/member/update-pwd', values)
+        return await http.put('/api/member/update-pwd', values)
     }
 
-    // Admin
+    // Admin use
     updateInfoByAdmin = async (values)=>{
-        return await http.put('/api/member/update-profile', values)
+        return await http.put('/api/member/update-info-by-admin', values)
     }
 
 }

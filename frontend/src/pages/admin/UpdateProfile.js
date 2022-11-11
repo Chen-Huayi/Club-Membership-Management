@@ -1,6 +1,5 @@
 import {Breadcrumb, Button, Card, DatePicker, Form, Input, message, Select} from 'antd';
 import React, {useEffect} from 'react';
-import '../member/Profile.css'
 import {useStore} from "../../store";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
 
@@ -55,8 +54,7 @@ export default function UpdateProfile () {
     // backfill the user information to the form
     useEffect(()=>{
         const loadDetail=async ()=>{
-            // await userStore.getUserInfo({user_id})
-            await userStore.getUserInfoBeta(user_id)
+            await userStore.getUserInfo(user_id)
                 .then(currProfile=>{
                     const {birthday, ...userInfo}=currProfile
                     form.setFieldsValue({...userInfo})

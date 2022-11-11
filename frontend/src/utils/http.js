@@ -1,9 +1,10 @@
-import axios from 'axios'
-import {token} from "./token";
-import {history} from "./history";
+import axios from "axios"
+import {token} from "./token"
+import {history} from "./history"
+import {PORT} from "../config"
 
 const http = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: `http://localhost:${PORT}`,
     timeout: 3000
 })
 

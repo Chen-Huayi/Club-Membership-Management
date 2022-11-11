@@ -3,29 +3,15 @@ const app=express()
 const cors = require('cors')
 const joi = require('joi')
 const userRouter=require('./router/UserRouter')
-const bodyParser = require("body-parser");
-const PORT=8000
+const bodyParser = require("body-parser")
+const config=require('./config')
+
 
 // Cross-Origin Resource Sharing
 app.use(cors())
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "*");
-//     res.header(
-//         "Access-Control-Allow-Methods",
-//         "GET, POST, PATCH, DELETE, OPTIONS"
-//     )
-//     // handle preflight request
-//     if (req.method === "OPTIONS") {
-//         return res.status(200).send();
-//     }
-//     next()
-// })
 
 // content-type interceptor
-app.use(bodyParser.json())
-// app.use(express.urlencoded({ extended: false }))
-
+app.use(bodyParser.json())  // app.use(express.urlencoded({ extended: false }))
 
 // Handle message middlewares (include both success and failure event)
 app.use((req, res, next)=>{
@@ -52,7 +38,7 @@ app.use((err, req, res, next)=>{
 })
 
 // Listen at 8000 port
-app.listen(PORT, (err)=>{
+app.listen(config.PORT, (err)=>{
     if (err) console.log(err)
-    console.log(`Server is running at http://localhost:${PORT}`)
+    console.log(`Server is running at http://localhost:${config.PORT}`)
 })

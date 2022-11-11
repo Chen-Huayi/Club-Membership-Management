@@ -27,7 +27,22 @@ const updateByObjId = (res, id, update, msg) => {
     })
 }
 
+const updateInfo=(user_id, update, operation, res)=>{
+    getUserById(user_id)
+        .then(user=>{
+            if (!user){
+                return res.handleMessage('User does not exist!')
+            }
+            updateByObjId(res, user._id, {$set: update}, `${operation} successfully!`)
+            res.handleMessage(`${operation} successfully!`, 0)
+        })
+        .catch(err => {
+            throw Error(err)
+        })
+}
 
+
+/*---------------for public (user without login)-------------------*/
 exports.signup=(req, res)=>{
     const {agreement, ...rest} = req.body  // delete agreement
     const userInfo={...rest, birthday: new Date(req.body.birthday).toLocaleDateString()}  // format birthday date
@@ -97,6 +112,8 @@ exports.login=(req, res)=>{
 }
 
 
+
+/*------------ for only after user login into account------------*/
 exports.getMemberList = async (req, res)=>{
     const members = await userModel.find({
         user_role: 'Club Member',
@@ -109,13 +126,7 @@ exports.getMemberList = async (req, res)=>{
 }
 
 exports.getProfile= (req, res)=>{
-    let user_id
-
-    if (req.method==='POST'){
-        user_id=req.body.user_id
-    }else if (req.method==='GET'){
-        user_id=req.params.id
-    }
+    const user_id=req.params.id
 
     getUserById(user_id)
         .then(user=>{
@@ -142,38 +153,21 @@ exports.getProfile= (req, res)=>{
 exports.updateInfoByMember=(req, res)=>{
     let {user_id, attribute, value}=req.body
 
-    if (attribute==='birthday'){
-        value={birthday: new Date(value.birthday).toLocaleDateString()}
-    }
-
-    getUserById(user_id)
-        .then(user=>{
-            if (!user){
-                return res.handleMessage('User does not exist!')
-            }
-            updateByObjId(res, user._id, {$set: value}, 'Updated successfully!')
-            res.handleMessage('Updated successfully!', 0)
-        })
-        .catch(err => {
-            throw Error(err)
-        })
+    updateInfo(
+        user_id,
+        attribute==='birthday' ? {birthday: new Date(value.birthday).toLocaleDateString()} : value,
+        `Update ${attribute}`,
+        res
+    )
 }
 
 exports.updateInfoByAdmin = (req, res)=>{
-    const user_id=req.body.user_id
-    const userInfo={...req.body, birthday: new Date(req.body.birthday).toLocaleDateString()}
-
-    getUserById(user_id)
-        .then(user=>{
-            if (!user){
-                return res.handleMessage('User does not exist!')
-            }
-            updateByObjId(res, user._id, {$set: {...userInfo}}, 'Profile Updated!')
-            res.handleMessage('Profile Updated!', 0)
-        })
-        .catch(err => {
-            throw Error(err)
-        })
+    updateInfo(
+        req.body.user_id,
+        {...req.body, birthday: new Date(req.body.birthday).toLocaleDateString()},
+        'Update profile',
+        res
+    )
 }
 
 exports.updatePassword = (req, res)=>{
@@ -200,18 +194,13 @@ exports.updatePassword = (req, res)=>{
         })
 }
 
-exports.removeMember=async (req, res)=>{
-    await getUserById(req.params.id)
-        .then(user=>{
-            if (!user){
-                return res.handleMessage('User does not exist!')
-            }
-            updateByObjId(res, user._id, {$set: {is_available: false}}, 'Delete successfully!')
-            res.handleMessage('Delete successfully!', 0)
-        })
-        .catch(err => {
-            throw Error(err)
-        })
+exports.removeMember= (req, res)=>{
+    updateInfo(
+        req.params.id,
+        {is_available: false},
+        'Delete',
+        res
+    )
 }
 
 exports.sendGroupEmail=(req, res)=>{

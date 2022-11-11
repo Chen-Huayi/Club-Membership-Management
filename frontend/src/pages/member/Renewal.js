@@ -1,10 +1,8 @@
-import {Breadcrumb, Button, Card, Form, InputNumber, Select} from 'antd';
+import {Breadcrumb, Button, Card, Form, InputNumber} from 'antd';
 import React from 'react';
 import '../member/Profile.css'
-import {useStore} from "../../store";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 
-const { Option } = Select
 const formItemLayout = {
     // labelCol: {
     //     sm: { span: 10 }
@@ -23,8 +21,6 @@ const tailFormItemLayout = {
 
 export default function Renewal () {
     const [form] = Form.useForm()
-    const navigate=useNavigate()
-    const {updateStore, loginStore, userStore}=useStore()
 
     const onFinish = async (values) => {
         console.log(values)

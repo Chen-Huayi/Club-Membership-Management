@@ -1,9 +1,8 @@
-import {Breadcrumb, Button, Card, DatePicker, Form, Input, message, Modal, Select} from 'antd';
+import {Breadcrumb, Card, DatePicker, Form, Input, message, Modal, Select} from 'antd';
 import React, {useEffect, useState} from 'react';
 import './Profile.css'
 import {useStore} from "../../store";
 import {Link} from "react-router-dom";
-import {UserOutlined} from "@ant-design/icons";
 
 const { Option } = Select
 const formItemLayout = {
@@ -35,7 +34,9 @@ const UpdateItem = (props) => {
                     .then(result=>{
                         if (result.status===0){
                             message.success(result.message)
-                            window.location.reload()
+                            setTimeout(()=>{
+                                window.location.reload()
+                            }, 500)
                         } else{
                             message.error(result.message)
                         }
@@ -56,10 +57,8 @@ const UpdateItem = (props) => {
     // backfill the user information to the form
     useEffect(()=>{
         const loadInfo = async () => {
-            // const profileData= await userStore.getUserInfo({user_id: loginStore.user_id})
-            const profileData= await userStore.getUserInfoBeta(loginStore.user_id)
+            const profileData= await userStore.getUserInfo(loginStore.user_id)
             const {birthday, ...userInfo}=profileData
-            // console.log(profileData.birthday)
             form.setFieldsValue({...userInfo})
         }
         if (open){
@@ -183,7 +182,7 @@ export default function Profile () {
     useEffect(()=>{
         const loadInfo = async () => {
             // const profileData= await userStore.getUserInfo({user_id: loginStore.user_id})
-            const profileData= await userStore.getUserInfoBeta(loginStore.user_id)
+            const profileData= await userStore.getUserInfo(loginStore.user_id)
             setProfile({...profileData})
         }
         loadInfo()

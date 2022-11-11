@@ -44,6 +44,7 @@ export default function Login() {
         if (loginStore.token!==''){
             const role=loginStore.user_role
 
+            // TODO
             if (role==='Club Member'){
                 navigate('/')
             }else if (role==='Membership Admin'){
