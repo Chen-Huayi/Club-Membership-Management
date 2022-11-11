@@ -2,7 +2,7 @@ import {Breadcrumb, Button, Card, DatePicker, Form, Input, message, Select} from
 import React, {useEffect} from 'react';
 import '../member/Profile.css'
 import {useStore} from "../../store";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 
 const { Option } = Select
 const formItemLayout = {
@@ -24,17 +24,19 @@ const tailFormItemLayout = {
 export default function UpdateProfile () {
     const [form] = Form.useForm()
     const navigate=useNavigate()
-    const {updateStore, loginStore, userStore}=useStore()
+    const {updateStore, userStore}=useStore()
+    const [params]=useSearchParams()
+    const user_id =params.get('id')
 
     const onFinish = async () => {
         await form.validateFields()
             .then(value => {
-                const userInfo={...value, user_id: loginStore.user_id}
+                const userInfo={...value, user_id}
 
-                updateStore.updateUserInfo(userInfo)
+                updateStore.updateInfoByAdmin(userInfo)
                     .then(result=>{
                         if (result.status===0){
-                            navigate('/profile')
+                            navigate('/member-list')
                             message.success(result.message)
                         } else {
                             message.error(result.message)
@@ -53,7 +55,8 @@ export default function UpdateProfile () {
     // backfill the user information to the form
     useEffect(()=>{
         const loadDetail=async ()=>{
-            await userStore.getUserInfo({user_id: loginStore.user_id})
+            // await userStore.getUserInfo({user_id})
+            await userStore.getUserInfoBeta(user_id)
                 .then(currProfile=>{
                     const {birthday, ...userInfo}=currProfile
                     form.setFieldsValue({...userInfo})
@@ -74,7 +77,7 @@ export default function UpdateProfile () {
                             <Link to="/">Home</Link>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                            <Link to="/profile">Profile</Link>
+                            <Link to="/member-list">Member List</Link>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>Update</Breadcrumb.Item>
                     </Breadcrumb>

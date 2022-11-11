@@ -22,7 +22,8 @@ const userSchema = new Schema({
     registered_date: {type: String, default: new Date().toLocaleDateString(), required: true},  // The date the user is registered
     effective_date: {type: String, default: 'Never Effected', required: true},  // The membership becomes effective for the current or last period
     expire_date: {type: String, default: new Date().toLocaleDateString(), required: true},  // The membership expires after this date
-    membership_status: {type: Boolean, default: false}  // true for Active; false for Inactive
+    membership_status: {type: Boolean, default: false},  // true for Active; false for Inactive
+    is_available:{type: Boolean, default: true}
 })
 
 module.exports=userSchema

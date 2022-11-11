@@ -45,9 +45,9 @@ const siderAdminMenus = [
         label: <Link to="/">Home</Link>,
     },
     {
-        key: '/article',
+        key: '/member-list',
         icon: <UserOutlined />,
-        label: <Link to="/article">Member List</Link>,
+        label: <Link to="/member-list">Member List</Link>,
     },
 ]
 
@@ -67,7 +67,8 @@ const MainLayout = () => {
 
     useEffect(()=>{
         const loadInfo = async () => {
-            await userStore.getUserInfo({user_id: loginStore.user_id})
+            // await userStore.getUserInfo({user_id: loginStore.user_id})
+            await userStore.getUserInfoBeta(loginStore.user_id)
                 .then(result=>{
                     setUserInfo({
                         name: result.firstname

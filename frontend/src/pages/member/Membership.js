@@ -12,7 +12,8 @@ export default function Membership () {
 
     useEffect(()=>{
         const loadInfo = async () => {
-            await userStore.getUserInfo({user_id: loginStore.user_id})
+            // await userStore.getUserInfo({user_id: loginStore.user_id})
+            await userStore.getUserInfoBeta(loginStore.user_id)
                 .then(result=>{
                     setUserInfo({
                         membership: result.membership_status,

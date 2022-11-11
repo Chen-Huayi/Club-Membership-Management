@@ -7,7 +7,6 @@ import {history} from "./utils/history"
 import Profile from "./pages/member/Profile";
 import MainLayout from "./pages/shared/Layout";
 import {LoggedAuth} from "./components/authorization/LoggedAuth";
-import Article from "./pages/admin/article";
 import UpdateProfile from "./pages/admin/UpdateProfile";
 import Settings from "./pages/member/Settings";
 import Membership from "./pages/member/Membership";
@@ -15,6 +14,7 @@ import NotFound404 from "./pages/shared/results/404";
 import Renewal from "./pages/member/Renewal";
 import {AdminAuth} from "./components/authorization/AdminAuth";
 import {MemberAuth} from "./components/authorization/MemberAuth";
+import ShowMemberList from "./pages/admin/ShowMemberList";
 
 
 export default function App() {
@@ -28,7 +28,7 @@ export default function App() {
                     <Route path="membership" element={<MemberAuth><Membership /></MemberAuth>}/>
                     <Route path="renewal" element={<MemberAuth><Renewal /></MemberAuth>} />
 
-                    <Route path="article" element={<AdminAuth><Article /></AdminAuth>} />
+                    <Route path="member-list" element={<AdminAuth><ShowMemberList /></AdminAuth>} />
                     <Route path="update-profile" element={<AdminAuth><UpdateProfile /></AdminAuth>} />
                     <Route path="/*" element={<NotFound404/>}></Route>
                 </Route>

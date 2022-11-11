@@ -8,12 +8,22 @@ class UserStore {
         makeAutoObservable(this)
     }
 
-    getUserInfo = async(user_id) =>{
-        return this.userInfo=await http.post('/api/member/profile', user_id)
+    // getUserInfo = async(user_id) =>{
+    //     return this.userInfo=await http.post('/api/member/profile', user_id)
+    // }
+
+    // Admin
+    getMemberList = async ({params})=>{
+        return await http.get('/api/member/list', {params})
     }
 
-    clearUserInfo = async() =>{
-        this.userInfo = await http.put('/api/profile')
+    getUserInfoBeta = async(user_id) =>{
+        return await http.get(`/api/member/profile/${user_id}`)
+    }
+
+    // Admin
+    removeMember = async(user_id) =>{
+        return await http.get(`/api/member/delete/${user_id}`)
     }
 
 }

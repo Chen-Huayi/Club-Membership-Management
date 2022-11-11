@@ -97,8 +97,11 @@ exports.login=(req, res)=>{
 }
 
 
-exports.getMemberList = (req, res)=>{
-    const members =  userModel.find({user_role: 'Club Member'})
+exports.getMemberList = async (req, res)=>{
+    const members = await userModel.find({
+        user_role: 'Club Member',
+        is_available: true
+    })
 
     res.send({
         member_list: members
@@ -106,7 +109,13 @@ exports.getMemberList = (req, res)=>{
 }
 
 exports.getProfile= (req, res)=>{
-    const user_id=req.body.user_id
+    let user_id
+
+    if (req.method==='POST'){
+        user_id=req.body.user_id
+    }else if (req.method==='GET'){
+        user_id=req.params.id
+    }
 
     getUserById(user_id)
         .then(user=>{
@@ -130,9 +139,8 @@ exports.getProfile= (req, res)=>{
         })
 }
 
-exports.updateSingleAttribute=(req, res)=>{
+exports.updateInfoByMember=(req, res)=>{
     let {user_id, attribute, value}=req.body
-    console.log(user_id, attribute, value)
 
     if (attribute==='birthday'){
         value={birthday: new Date(value.birthday).toLocaleDateString()}
@@ -151,10 +159,9 @@ exports.updateSingleAttribute=(req, res)=>{
         })
 }
 
-exports.updateUserProfile = (req, res)=>{
+exports.updateInfoByAdmin = (req, res)=>{
     const user_id=req.body.user_id
-    const data=req.body
-    const userInfo={...data, birthday: new Date(req.body.birthday).toLocaleDateString()}
+    const userInfo={...req.body, birthday: new Date(req.body.birthday).toLocaleDateString()}
 
     getUserById(user_id)
         .then(user=>{
@@ -193,12 +200,18 @@ exports.updatePassword = (req, res)=>{
         })
 }
 
-exports.updateInfo=(req, res)=>{
-    res.send('ok')
-}
-
-exports.removeMember=(req, res)=>{
-    res.send('ok')
+exports.removeMember=async (req, res)=>{
+    await getUserById(req.params.id)
+        .then(user=>{
+            if (!user){
+                return res.handleMessage('User does not exist!')
+            }
+            updateByObjId(res, user._id, {$set: {is_available: false}}, 'Delete successfully!')
+            res.handleMessage('Delete successfully!', 0)
+        })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 exports.sendGroupEmail=(req, res)=>{

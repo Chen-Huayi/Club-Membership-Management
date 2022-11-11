@@ -31,7 +31,7 @@ const UpdateItem = (props) => {
             .then(value => {
                 const userInfo={user_id: loginStore.user_id, attribute: props.attribute, value}
 
-                updateStore.updateSingleAttribute(userInfo)
+                updateStore.updateInfoByMember(userInfo)
                     .then(result=>{
                         if (result.status===0){
                             message.success(result.message)
@@ -56,7 +56,8 @@ const UpdateItem = (props) => {
     // backfill the user information to the form
     useEffect(()=>{
         const loadInfo = async () => {
-            const profileData= await userStore.getUserInfo({user_id: loginStore.user_id})
+            // const profileData= await userStore.getUserInfo({user_id: loginStore.user_id})
+            const profileData= await userStore.getUserInfoBeta(loginStore.user_id)
             const {birthday, ...userInfo}=profileData
             // console.log(profileData.birthday)
             form.setFieldsValue({...userInfo})
@@ -181,7 +182,8 @@ export default function Profile () {
 
     useEffect(()=>{
         const loadInfo = async () => {
-            const profileData= await userStore.getUserInfo({user_id: loginStore.user_id})
+            // const profileData= await userStore.getUserInfo({user_id: loginStore.user_id})
+            const profileData= await userStore.getUserInfoBeta(loginStore.user_id)
             setProfile({...profileData})
         }
         loadInfo()
@@ -236,9 +238,6 @@ export default function Profile () {
                     {(profile.membership_status? 'Yes':'No')}
                 </Card>
 
-                {/*<Button style={{marginTop: 10}} type="primary" htmlType="submit" size="large" shape="round">*/}
-                {/*    <Link to="/update-profile">Update My Profile</Link>*/}
-                {/*</Button>*/}
             </Card>
         </div>
     )
