@@ -1,4 +1,4 @@
-import {Breadcrumb, Button, Card, DatePicker, Form, Input, message, Select} from 'antd';
+import {Breadcrumb, Button, Card, Form, Input, message, Select} from 'antd';
 import React, {useEffect} from 'react';
 import {useStore} from "../../store";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
@@ -23,16 +23,16 @@ const tailFormItemLayout = {
 export default function UpdateProfile () {
     const [form] = Form.useForm()
     const navigate=useNavigate()
-    const {updateStore, userStore}=useStore()
+    const {updateStore, memberStore}=useStore()
     const [params]=useSearchParams()
-    const user_id =params.get('id')
+    const member_id =params.get('id')
 
     const onFinish = async () => {
         await form.validateFields()
             .then(value => {
-                const userInfo={...value, user_id}
+                const userInfo={member_id, ...value}
 
-                updateStore.updateInfoByAdmin(userInfo)
+                updateStore.updateMemberInfo(userInfo)
                     .then(result=>{
                         if (result.status===0){
                             navigate('/member-list')
@@ -54,7 +54,7 @@ export default function UpdateProfile () {
     // backfill the user information to the form
     useEffect(()=>{
         const loadDetail=async ()=>{
-            await userStore.getUserInfo(user_id)
+            await memberStore.getMemberInfo(member_id)
                 .then(currProfile=>{
                     const {birthday, ...userInfo}=currProfile
                     form.setFieldsValue({...userInfo})
@@ -165,11 +165,43 @@ export default function UpdateProfile () {
                     </Form.Item>
 
                     <Form.Item
-                        name="birthday"
                         label="Birthday"
-                        rules={[{required: true, message: 'Please select your birthday!'}]}
+                        style={{marginBottom: 0}}
                     >
-                        <DatePicker />
+                        <Form.Item
+                            name="birthday_year"
+                            style={{display: 'inline-block', marginRight: 10}}
+                            rules={[{required: true, message: 'Enter year!'}]}
+                        >
+                            <Input placeholder="YYYY" style={{width: '80px'}}/>
+                        </Form.Item>
+                        <Form.Item
+                            name="birthday_month"
+                            style={{display: 'inline-block', marginRight: 10}}
+                            rules={[{required: true, message: 'Select month!'}]}
+                        >
+                            <Select placeholder="MM" style={{width: '80px'}}>
+                                <Option value="1">Jan</Option>
+                                <Option value="2">Feb</Option>
+                                <Option value="3">Mar</Option>
+                                <Option value="4">Apr</Option>
+                                <Option value="5">May</Option>
+                                <Option value="6">Jun</Option>
+                                <Option value="7">Jul</Option>
+                                <Option value="8">Aug</Option>
+                                <Option value="9">Sept</Option>
+                                <Option value="10">Oct</Option>
+                                <Option value="11">Nov</Option>
+                                <Option value="12">Dec</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            name="birthday_date"
+                            style={{display: 'inline-block', marginRight: 10}}
+                            rules={[{required: true, message: 'Enter date!'}]}
+                        >
+                            <Input placeholder="DD" style={{width: '80px'}}/>
+                        </Form.Item>
                     </Form.Item>
 
                     <Form.Item

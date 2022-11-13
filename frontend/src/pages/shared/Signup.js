@@ -10,7 +10,7 @@ const formItemLayout = {
         span: 9
     },
     wrapperCol: {
-        span: 6
+        span: 7
     },
 }
 const tailFormItemLayout = {
@@ -18,6 +18,21 @@ const tailFormItemLayout = {
         span: 16,
         offset: 9
     }
+}
+
+const ItemLayout = {
+    labelCol: {
+        span: 4,
+    },
+    wrapperCol: {
+        span: 14,
+    },
+}
+const buttonItemLayout = {
+    wrapperCol: {
+        span: 14,
+        offset: 4,
+    },
 }
 
 
@@ -34,7 +49,7 @@ export default function Signup() {
                     navigate('/')
                     message.success(value.message)
                 } else {
-                    form.setFieldsValue({user_id: ''})
+                    form.setFieldsValue({member_id: ''})
                     message.error(value.message)
                 }
             })
@@ -94,10 +109,10 @@ export default function Signup() {
                     </Form.Item>
 
                     <Form.Item
-                        name="user_id"
-                        label="User ID"
+                        name="member_id"
+                        label="Member ID"
                         tooltip="Create your custom member ID"
-                        rules={[{required: true, message: 'Please enter your User ID!'}]}
+                        rules={[{required: true, message: 'Please enter your Member ID!'}]}
                     >
                         <Input />
                     </Form.Item>
@@ -183,11 +198,43 @@ export default function Signup() {
                     </Form.Item>
 
                     <Form.Item
-                        name="birthday"
                         label="Birthday"
-                        rules={[{required: true, message: 'Please select your birthday!'}]}
+                        style={{marginBottom: 0}}
                     >
-                        <DatePicker />
+                        <Form.Item
+                            name="birthday_year"
+                            style={{display: 'inline-block', marginRight: 10}}
+                            rules={[{required: true, message: 'Enter year!'}]}
+                        >
+                            <Input placeholder="YYYY" style={{width: '80px'}}/>
+                        </Form.Item>
+                        <Form.Item
+                            name="birthday_month"
+                            style={{display: 'inline-block', marginRight: 10}}
+                            rules={[{required: true, message: 'Select month!'}]}
+                        >
+                            <Select placeholder="MM" style={{width: '80px'}}>
+                                <Option value="1">Jan</Option>
+                                <Option value="2">Feb</Option>
+                                <Option value="3">Mar</Option>
+                                <Option value="4">Apr</Option>
+                                <Option value="5">May</Option>
+                                <Option value="6">Jun</Option>
+                                <Option value="7">Jul</Option>
+                                <Option value="8">Aug</Option>
+                                <Option value="9">Sept</Option>
+                                <Option value="10">Oct</Option>
+                                <Option value="11">Nov</Option>
+                                <Option value="12">Dec</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            name="birthday_date"
+                            style={{display: 'inline-block', marginRight: 10}}
+                            rules={[{required: true, message: 'Enter date!'}]}
+                        >
+                            <Input placeholder="DD" style={{width: '80px'}}/>
+                        </Form.Item>
                     </Form.Item>
 
                     <Form.Item

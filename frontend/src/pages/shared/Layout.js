@@ -55,7 +55,7 @@ const siderAdminMenus = [
 
 const MainLayout = () => {
     const {pathname}=useLocation()
-    const {loginStore, userStore}=useStore()
+    const {loginStore, memberStore}=useStore()
     const [userInfo, setUserInfo]=useState({
         name: loginStore.firstname
     })
@@ -67,7 +67,7 @@ const MainLayout = () => {
 
     useEffect(()=>{
         const loadInfo = async () => {
-            await userStore.getUserInfo(loginStore.user_id)
+            await memberStore.getMemberInfo(loginStore.member_id)
                 .then(result=>{
                     setUserInfo({
                         name: result.firstname

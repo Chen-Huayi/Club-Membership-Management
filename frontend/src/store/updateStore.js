@@ -6,17 +6,12 @@ class UpdateStore{
         makeAutoObservable(this)
     }
 
-    updateInfoByMember = async (values)=>{
-        return await http.put('/api/member/update-info-by-member', values)
+    updateMemberInfo = async (values)=>{
+        return await http.put('/api/member/update-info', values)
     }
 
     updatePassword = async (values)=>{
         return await http.put('/api/member/update-pwd', values)
-    }
-
-    // Admin use
-    updateInfoByAdmin = async (values)=>{
-        return await http.put('/api/member/update-info-by-admin', values)
     }
 
 }

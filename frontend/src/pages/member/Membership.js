@@ -5,14 +5,14 @@ import {useStore} from "../../store";
 
 
 export default function Membership () {
-    const {loginStore, userStore}=useStore()
+    const {loginStore, memberStore}=useStore()
     const [userInfo, setUserInfo]=useState({
         membership: loginStore.membership_status,
     })
 
     useEffect(()=>{
         const loadInfo = async () => {
-            await userStore.getUserInfo(loginStore.user_id)
+            await memberStore.getMemberInfo(loginStore.member_id)
                 .then(result=>{
                     setUserInfo({
                         membership: result.membership_status,

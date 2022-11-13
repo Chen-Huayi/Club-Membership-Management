@@ -1,4 +1,4 @@
-import {DeleteOutlined, EditOutlined, SearchOutlined} from '@ant-design/icons'
+import {EditOutlined, SearchOutlined, UserAddOutlined, UserDeleteOutlined} from '@ant-design/icons'
 import {Breadcrumb, Button, Card, Input, Layout, message, Space, Table} from 'antd'
 import React, {useEffect, useRef, useState} from 'react'
 import {Link, useNavigate} from "react-router-dom";
@@ -6,14 +6,18 @@ import {useStore} from "../../store";
 
 
 export default function ShowMemberList () {
-    const {userStore}=useStore()
+    const {memberStore}=useStore()
     const navigate=useNavigate()
     const searchInput = useRef(null)
     const [params, setParams] = useState({
         page: 1,
         per_page: 3
     })
-    const [memberList, setMemberList]=useState({
+    const [activeMember, setActiveMember]=useState({
+        list: [],
+        count: 0
+    })
+    const [InactiveMember, setInactiveMember]=useState({
         list: [],
         count: 0
     })
@@ -25,11 +29,17 @@ export default function ShowMemberList () {
     }
 
     const editMemberInfo=(data)=>{
-        navigate(`/update-profile?id=${data.user_id}`)
+        navigate(`/update-profile?id=${data.member_id}`)
     }
 
-    const deleteMember=async (data)=>{
-        const res=await userStore.removeMember(data.user_id)
+    const switchMemberStatus=async (data)=>{
+        let res
+
+        if (data.membership_status){
+            res=await memberStore.deactivateMember(data.member_id)
+        }else {
+            res=await memberStore.activateMember(data.member_id)
+        }
 
         if (res.status===0){
             message.success(res.message)
@@ -112,11 +122,11 @@ export default function ShowMemberList () {
 
     const columns = [
         {
-            title: 'User ID',
-            dataIndex: 'user_id',
-            key: 'user_id',
-            ...getColumnSearchProps('user_id'),
-            sorter: (a, b) => a.user_id.localeCompare(b.user_id),
+            title: 'Member ID',
+            dataIndex: 'member_id',
+            key: 'member_id',
+            ...getColumnSearchProps('member_id'),
+            sorter: (a, b) => a.member_id.localeCompare(b.member_id),
         },
         {
             title: 'First Name',
@@ -154,12 +164,6 @@ export default function ShowMemberList () {
             sorter: (a, b) => a.expire_date.localeCompare(b.expire_date),
         },
         {
-            title: 'Membership',
-            dataIndex: 'membership_status',
-            key: 'membership_status',
-            sorter: (a, b) => a.membership_status.localeCompare(b.membership_status),
-        },
-        {
             title: 'Operation',
             render: data => {
                 return (
@@ -170,13 +174,23 @@ export default function ShowMemberList () {
                             icon={<EditOutlined />}
                             onClick={()=>editMemberInfo(data)}
                         />
-                        <Button
-                            type="primary"
-                            danger
-                            shape="circle"
-                            icon={<DeleteOutlined />}
-                            onClick={()=>deleteMember(data)}
-                        />
+                        {data.membership_status && (
+                            <Button
+                                type="primary"
+                                danger
+                                shape="circle"
+                                icon={<UserDeleteOutlined />}
+                                onClick={()=>switchMemberStatus(data)}
+                            />
+                        )}
+                        {!data.membership_status && (
+                            <Button
+                                type="primary"
+                                shape="circle"
+                                icon={<UserAddOutlined />}
+                                onClick={()=>switchMemberStatus(data)}
+                            />
+                        )}
                     </Space>
                 )
             }
@@ -186,23 +200,37 @@ export default function ShowMemberList () {
     // load member list
     useEffect(() => {
         const loadList=async ()=>{
-            const res = await userStore.getMemberList({params})
-            const memberList=res.member_list
-            const size=memberList.length
-            let members=[]
+            const active = await memberStore.getActiveList({params})
+            const inactive = await memberStore.getInactiveList({params})
+            const activeList = active.member_list
+            const inactiveList = inactive.member_list
+            const activeSize = activeList.length
+            const inactiveSize = inactiveList.length
+            let activeMembers=[], inactiveMembers=[]
 
-            for (let i = 0; i < size; i++) {
-                let temp
-                if (memberList[i].membership_status===true){
-                    temp={...memberList[i], membership_status: 'Yes', key: `${i}`}
-                }else {
-                    temp={...memberList[i], membership_status: 'No', key: `${i}`}
+            for (let i = 0; i < activeSize; i++) {
+                let formatData={
+                    ...activeList[i],
+                    birthday: activeList[i].birthday_year+'/'+activeList[i].birthday_month+'/'+activeList[i].birthday_date,
+                    key: `${i}`
                 }
-                members.push(temp)
+                activeMembers.push(formatData)
             }
-            setMemberList({
-                list: members,
-                count: size,
+            for (let i = 0; i < inactiveSize; i++) {
+                let formatData={
+                    ...inactiveList[i],
+                    birthday: inactiveList[i].birthday_year+'/'+inactiveList[i].birthday_month+'/'+inactiveList[i].birthday_date,
+                    key: `${i}`
+                }
+                inactiveMembers.push(formatData)
+            }
+            setActiveMember({
+                list: activeMembers,
+                count: activeSize,
+            })
+            setInactiveMember({
+                list: inactiveMembers,
+                count: inactiveSize,
             })
         }
         loadList()
@@ -221,15 +249,24 @@ export default function ShowMemberList () {
                 }
                 style={{ marginBottom: 20 }}
             >
-                <h2>{memberList.count} registered members in total</h2>
-
+                <h2>{activeMember.count} active members in total</h2>
                 <Table
                     // rowKey="id"
                     columns={columns}
-                    dataSource={memberList.list}
+                    dataSource={activeMember.list}
                     pagination={{
                         pageSize: params.per_page,
-                        total: memberList.count,
+                        total: activeMember.count,
+                        onChange: pageChange
+                    }}
+                />
+                <h2>{InactiveMember.count} inactive members in total</h2>
+                <Table
+                    columns={columns}
+                    dataSource={InactiveMember.list}
+                    pagination={{
+                        pageSize: params.per_page,
+                        total: InactiveMember.count,
                         onChange: pageChange
                     }}
                 />

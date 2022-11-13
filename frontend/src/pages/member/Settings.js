@@ -25,7 +25,7 @@ const ResetPwd = () => {
     const handleOk = async () => {
         await form.validateFields()
             .then(value => {
-                const userInfo={...value, user_id: loginStore.user_id}
+                const userInfo={...value, member_id: loginStore.member_id}
 
                 updateStore.updatePassword(userInfo)
                     .then(result=>{

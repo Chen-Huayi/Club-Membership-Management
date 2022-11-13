@@ -32,28 +32,16 @@ const types = [
 
 
 export default function Login() {
-    const [loginType, setLoginType] = useState('account');
+    const [loginType, setLoginType] = useState('account')
     const navigate=useNavigate()
     const {loginStore}=useStore()
-    const [form] = Form.useForm();
-
+    const [form] = Form.useForm()
 
     const onFinish = async (values) => {
         await loginStore.login(values)
 
         if (loginStore.token!==''){
-            const role=loginStore.user_role
-
-            // TODO
-            if (role==='Club Member'){
-                navigate('/')
-            }else if (role==='Membership Admin'){
-                navigate('/')
-            }else if (role==='System Admin'){
-                navigate('/')
-            }else if (role==='Management User'){
-                navigate('/')
-            }
+            navigate('/')
             message.success('Successfully login!')
             window.location.reload()
         }else {
@@ -86,7 +74,7 @@ export default function Login() {
                 {loginType === 'account' && (<>
                     <Form.Item
                         className="input-form"
-                        name="user_id"
+                        name="member_id"
                         rules={[{
                             required: true,
                             message: 'Please enter your id!'

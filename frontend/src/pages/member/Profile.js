@@ -1,4 +1,4 @@
-import {Breadcrumb, Card, DatePicker, Form, Input, message, Modal, Select} from 'antd';
+import {Breadcrumb, Card, Form, Input, message, Modal, Select} from 'antd';
 import React, {useEffect, useState} from 'react';
 import './Profile.css'
 import {useStore} from "../../store";
@@ -19,7 +19,7 @@ const formItemLayout = {
 const UpdateItem = (props) => {
     const [form] = Form.useForm()
     const [open, setOpen] = useState(false)
-    const {updateStore, loginStore, userStore}=useStore()
+    const {updateStore, loginStore, memberStore}=useStore()
 
     const showDialog = () => {
         setOpen(true)
@@ -28,9 +28,9 @@ const UpdateItem = (props) => {
     const handleOk = async () => {
         await form.validateFields()
             .then(value => {
-                const userInfo={user_id: loginStore.user_id, attribute: props.attribute, value}
+                const userInfo={member_id: loginStore.member_id, ...value}
 
-                updateStore.updateInfoByMember(userInfo)
+                updateStore.updateMemberInfo(userInfo)
                     .then(result=>{
                         if (result.status===0){
                             message.success(result.message)
@@ -57,7 +57,7 @@ const UpdateItem = (props) => {
     // backfill the user information to the form
     useEffect(()=>{
         const loadInfo = async () => {
-            const profileData= await userStore.getUserInfo(loginStore.user_id)
+            const profileData= await memberStore.getMemberInfo(loginStore.member_id)
             const {birthday, ...userInfo}=profileData
             form.setFieldsValue({...userInfo})
         }
@@ -103,12 +103,48 @@ const UpdateItem = (props) => {
                         </Form.Item>
                     )}
                     {props.attribute==='birthday' && (
-                        <Form.Item
-                            name="birthday"
-                            label="Birthday"
-                            rules={[{required: true, message: 'Please select your birthday!'}]}
-                        >
-                            <DatePicker />
+                        // <Form.Item
+                        //     name="birthday"
+                        //     label="Birthday"
+                        //     rules={[{required: true, message: 'Please select your birthday!'}]}
+                        // >
+                        //     <DatePicker />
+                        // </Form.Item>
+                        <Form.Item label="Birthday">
+                            <Form.Item
+                                name="birthday_year"
+                                style={{display: 'inline-block', marginRight: 10}}
+                                rules={[{required: true, message: 'Enter year!'}]}
+                            >
+                                <Input placeholder="YYYY" style={{width: '70px'}}/>
+                            </Form.Item>
+                            <Form.Item
+                                name="birthday_month"
+                                style={{display: 'inline-block', marginRight: 10}}
+                                rules={[{required: true, message: 'Select month!'}]}
+                            >
+                                <Select placeholder="MM" style={{width: '70px'}}>
+                                    <Option value="1">Jan</Option>
+                                    <Option value="2">Feb</Option>
+                                    <Option value="3">Mar</Option>
+                                    <Option value="4">Apr</Option>
+                                    <Option value="5">May</Option>
+                                    <Option value="6">Jun</Option>
+                                    <Option value="7">Jul</Option>
+                                    <Option value="8">Aug</Option>
+                                    <Option value="9">Sept</Option>
+                                    <Option value="10">Oct</Option>
+                                    <Option value="11">Nov</Option>
+                                    <Option value="12">Dec</Option>
+                                </Select>
+                            </Form.Item>
+                            <Form.Item
+                                name="birthday_date"
+                                style={{display: 'inline-block', marginRight: 10}}
+                                rules={[{required: true, message: 'Enter date!'}]}
+                            >
+                                <Input placeholder="DD" style={{width: '60px'}}/>
+                            </Form.Item>
                         </Form.Item>
                     )}
                     {props.attribute==='address' && (<>
@@ -177,12 +213,11 @@ const UpdateItem = (props) => {
 
 export default function Profile () {
     const [profile, setProfile] = useState({})
-    const {loginStore, userStore}=useStore()
+    const {loginStore, memberStore}=useStore()
 
     useEffect(()=>{
         const loadInfo = async () => {
-            // const profileData= await userStore.getUserInfo({user_id: loginStore.user_id})
-            const profileData= await userStore.getUserInfo(loginStore.user_id)
+            const profileData= await memberStore.getMemberInfo(loginStore.member_id)
             setProfile({...profileData})
         }
         loadInfo()
@@ -201,8 +236,8 @@ export default function Profile () {
                 }
                 bodyStyle={{width: '400px'}}
             >
-                <Card type="inner" title="USER ID" hoverable>
-                    {profile.user_id}
+                <Card type="inner" title="MEMBER ID" hoverable>
+                    {profile.member_id}
                 </Card>
                 <Card type="inner" title="NAME" extra={<UpdateItem attribute={'name'}/>} hoverable>
                     {profile.firstname} {profile.middle_name} {profile.lastname}
@@ -211,7 +246,7 @@ export default function Profile () {
                     {(profile.gender==='male') ? 'Male' : (profile.gender==='female') ? 'Female' : 'Other'}
                 </Card>
                 <Card type="inner" title="BIRTHDAY" extra={<UpdateItem attribute={'birthday'}/>} hoverable>
-                    {profile.birthday}
+                    {profile.birthday_year}/{profile.birthday_month}/{profile.birthday_date}
                 </Card>
                 <Card type="inner" title="ADDRESS" extra={<UpdateItem attribute={'address'}/>} hoverable>
                     {profile.address_line1}{profile.address_line2?`, ${profile.address_line2}`:''}{profile.address_line3?`, ${profile.address_line3}`:''}<br/>

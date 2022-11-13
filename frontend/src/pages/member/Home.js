@@ -12,7 +12,7 @@ import {useStore} from "../../store";
 
 
 export default function Home() {
-    const {loginStore, userStore}=useStore()
+    const {loginStore, memberStore}=useStore()
     const [userInfo, setUserInfo]=useState({
         name: loginStore.firstname,
         membership: loginStore.membership_status
@@ -20,7 +20,7 @@ export default function Home() {
 
     useEffect(()=>{
         const loadInfo = async () => {
-            await userStore.getUserInfo(loginStore.user_id)
+            await memberStore.getMemberInfo(loginStore.member_id)
                 .then(result=>{
                     setUserInfo({
                         name: result.firstname,

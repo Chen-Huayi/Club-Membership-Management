@@ -2,10 +2,9 @@ const express=require('express')
 const app=express()
 const cors = require('cors')
 const joi = require('joi')
-const userRouter=require('./router/UserRouter')
 const bodyParser = require("body-parser")
 const config=require('./config')
-
+const memberRouter=require('./router/MemberRouter')
 
 // Cross-Origin Resource Sharing
 app.use(cors())
@@ -25,7 +24,7 @@ app.use((req, res, next)=>{
 })
 
 // Main router (Start here)
-app.use('/api', userRouter);
+app.use('/api', memberRouter);
 
 // Errors middlewares
 app.use((err, req, res, next)=>{
