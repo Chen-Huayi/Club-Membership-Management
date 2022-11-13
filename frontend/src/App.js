@@ -7,14 +7,14 @@ import {history} from "./utils/history"
 import Profile from "./pages/member/Profile";
 import MainLayout from "./pages/shared/Layout";
 import {LoggedAuth} from "./components/authorization/LoggedAuth";
-import UpdateProfile from "./pages/admin/UpdateProfile";
+import UpdateProfile from "./pages/staff/UpdateProfile";
 import Settings from "./pages/member/Settings";
 import Membership from "./pages/member/Membership";
 import NotFound404 from "./pages/shared/results/404";
 import Renewal from "./pages/member/Renewal";
 import {AdminAuth} from "./components/authorization/AdminAuth";
 import {MemberAuth} from "./components/authorization/MemberAuth";
-import ShowMemberList from "./pages/admin/ShowMemberList";
+import ShowMemberList from "./pages/staff/ShowMemberList";
 import SuccessPaid from "./pages/shared/results/SuccessPaid";
 import Payment from "./pages/shared/Payment";
 

@@ -80,7 +80,7 @@ export default function Login() {
                             message: 'Please enter your id!'
                         }]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="admin or user id" />
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="member staff or id" />
                     </Form.Item>
 
                     <Form.Item
