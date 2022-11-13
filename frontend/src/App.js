@@ -2,7 +2,7 @@ import React from "react"
 import {Route, Routes, unstable_HistoryRouter as HistoryRouter} from "react-router-dom"
 import Signup from "./pages/shared/Signup"
 import Login from "./pages/shared/Login"
-import Home from "./pages/member/Home"
+import Home from "./pages/shared/Home"
 import {history} from "./utils/history"
 import Profile from "./pages/member/Profile";
 import MainLayout from "./pages/shared/Layout";
