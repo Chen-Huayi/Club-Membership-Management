@@ -54,24 +54,33 @@ const getMemberList=async (membershipStatus, res)=>{
 
 /*---------------for public (member without login)-------------------*/
 exports.signup=(req, res)=>{
-    const {agreement, ...userInfo} = req.body  // delete agreement
+    const {pay_now, amount, agreement, ...userInfo} = req.body  // delete agreement, and get payment condition
+    const member_id=userInfo.member_id
 
-    memberModel.count({member_id: userInfo.member_id}, (err, result)=>{
+    memberModel.count({member_id}, (err, result)=>{
         if (err){
             return res.handleMessage(err)
         }
         if (result>0){  // Already exist this member id
-            return res.handleMessage('User ID is occupied!')
+            return res.handleMessage('Member ID is occupied!')
         } else {
-            memberModel.create({...userInfo}, (err)=>{
+            memberModel.create(userInfo, (err)=>{
                 if (err){
                     return res.handleMessage(err)
                 }
                 // insert to the database successfully
-                console.log(`Insert [${userInfo.user_role}: ${userInfo.member_id}] successfully!`)
-                res.handleMessage('Register successfully!', 0)
+                console.log(`Insert [${userInfo.user_role}: ${member_id}] successfully!`)
+
+                res.send({
+                    status: 0,
+                    message: 'Register successfully!',
+                    member_id,
+                    pay_now,
+                    amount
+                })
             })
         }
+
     })
 }
 

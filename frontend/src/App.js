@@ -15,6 +15,8 @@ import Renewal from "./pages/member/Renewal";
 import {AdminAuth} from "./components/authorization/AdminAuth";
 import {MemberAuth} from "./components/authorization/MemberAuth";
 import ShowMemberList from "./pages/admin/ShowMemberList";
+import SuccessPaid from "./pages/shared/results/SuccessPaid";
+import Payment from "./pages/shared/Payment";
 
 
 export default function App() {
@@ -34,6 +36,8 @@ export default function App() {
                 </Route>
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/payment-confirmed" element={<SuccessPaid />} />
+                <Route path="/payment" element={<Payment />} />
             </Routes>
         </HistoryRouter>
     )

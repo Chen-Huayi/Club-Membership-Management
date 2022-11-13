@@ -1,5 +1,5 @@
-import {Button, Card, Checkbox, Form, Input, message, Select} from 'antd'
-import React from 'react'
+import {Button, Card, Checkbox, Form, Input, InputNumber, message, Select, Switch} from 'antd'
+import React, {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import './Signup.css'
 import {useStore} from '../../store';
@@ -25,17 +25,22 @@ export default function Signup() {
     const [form] = Form.useForm()
     const navigate=useNavigate()
     const {signupStore}=useStore()
+    const [payment, setPayment]=useState(true)
 
     const onFinish = async (values) => {
         await signupStore.signup(values)
-            .then(value=>{
+            .then(result=>{
 
-                if (value.status===0){
-                    navigate('/')
-                    message.success(value.message)
+                if (result.status===0){
+                    if (result.pay_now){
+                        navigate(`/payment?id=${result.member_id}&&amount=${result.amount}`)
+                    }else {
+                        navigate('/')
+                    }
+                    message.success(result.message)
                 } else {
                     form.setFieldsValue({member_id: ''})
-                    message.error(value.message)
+                    message.error(result.message)
                 }
             })
             .catch(err => {
@@ -47,6 +52,10 @@ export default function Signup() {
         console.log('Failed: ', err)
     }
 
+    const switchDisplay = (value) => {
+        setPayment(!value)
+    }
+
     return (
         <div className="register">
             <Card className="register-container">
@@ -56,7 +65,7 @@ export default function Signup() {
                     name="register"
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
-                    initialValues={{}}
+                    initialValues={{middle_name: '', amount: 648}}
                     scrollToFirstError
                 >
                     <div className="register-heading">Register an Account</div>
@@ -131,7 +140,7 @@ export default function Signup() {
                             })
                         ]}
                     >
-                        <Input.Password type="password" placeholder="Retype your new password" maxLength={ 20 }/>
+                        <Input.Password type="password" maxLength={ 20 }/>
                     </Form.Item>
 
                     <Form.Item
@@ -234,17 +243,21 @@ export default function Signup() {
                         </Select>
                     </Form.Item>
 
+                    <Form.Item name="pay_now" label="Pay now" valuePropName="checked">
+                        <Switch onChange={switchDisplay}/>
+                    </Form.Item>
                     <Form.Item
-                        name="user_role"
-                        label="Your Role"
-                        rules={[{required: true, message: 'Please select role!'}]}
+                        label="Amount"
+                        name="amount"
+                        hidden={payment}
+                        rules={[{required: true, message: 'Please enter a number'}]}
                     >
-                        <Select placeholder="select role" style={{width: '150px'}}>
-                            <Option value="Membership Admin">Membership Admin</Option>
-                            <Option value="Club Member">Club Member</Option>
-                            <Option value="System Admin">System Admin</Option>
-                            <Option value="Management User">Management User</Option>
-                        </Select>
+                        <InputNumber
+                            min={648}
+                            max={648}
+                            formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            style={{width: '120px'}}
+                        />
                     </Form.Item>
 
                     <Form.Item
