@@ -1,4 +1,4 @@
-import {Button, Card, Checkbox, DatePicker, Form, Input, message, Select} from 'antd'
+import {Button, Card, Checkbox, Form, Input, message, Select} from 'antd'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import './Signup.css'
@@ -18,21 +18,6 @@ const tailFormItemLayout = {
         span: 16,
         offset: 9
     }
-}
-
-const ItemLayout = {
-    labelCol: {
-        span: 4,
-    },
-    wrapperCol: {
-        span: 14,
-    },
-}
-const buttonItemLayout = {
-    wrapperCol: {
-        span: 14,
-        offset: 4,
-    },
 }
 
 

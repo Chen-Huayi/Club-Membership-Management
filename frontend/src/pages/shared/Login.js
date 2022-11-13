@@ -46,7 +46,7 @@ export default function Login() {
             window.location.reload()
         }else {
             form.setFieldsValue({password: ''})
-            message.error('Invalid User ID or Password!')
+            message.error('Invalid Member ID or Password!')
         }
     }
 

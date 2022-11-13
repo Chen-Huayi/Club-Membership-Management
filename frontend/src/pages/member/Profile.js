@@ -103,13 +103,6 @@ const UpdateItem = (props) => {
                         </Form.Item>
                     )}
                     {props.attribute==='birthday' && (
-                        // <Form.Item
-                        //     name="birthday"
-                        //     label="Birthday"
-                        //     rules={[{required: true, message: 'Please select your birthday!'}]}
-                        // >
-                        //     <DatePicker />
-                        // </Form.Item>
                         <Form.Item label="Birthday">
                             <Form.Item
                                 name="birthday_year"
