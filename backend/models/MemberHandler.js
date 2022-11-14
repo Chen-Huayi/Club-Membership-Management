@@ -199,7 +199,7 @@ exports.updatePassword = (req, res)=>{
 exports.deactivateMember= (req, res)=>{
     updateInfo(
         req.params.id,
-        {membership_status: false},
+        {membership_status: false, expire_date: new Date().toLocaleDateString()},
         'Deactivate member',
         res
     )
