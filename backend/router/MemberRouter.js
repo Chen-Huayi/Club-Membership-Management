@@ -11,14 +11,14 @@ router.post('/member/login', memberHandler.login)
 
 router.get('/member/active-list', memberHandler.getActiveMemberList)
 router.get('/member/inactive-list', memberHandler.getInactiveMemberList)
-
 router.get('/member/profile/:id', memberHandler.getMemberProfile)
+
 router.put('/member/update-info', memberHandler.updateMemberInfo)
 router.put('/member/update-pwd', memberHandler.updatePassword)
 router.put('/member/reset-pwd', memberHandler.resetPassword)  // for user forgot password or their accounts are locked by system
 
-router.get('/member/deactivate/:id', memberHandler.deactivateMember)
-router.get('/member/activate/:id', memberHandler.activateMember)
+router.put('/member/deactivate', memberHandler.deactivateMember)
+router.put('/member/activate', memberHandler.activateMember)
 
 
 

@@ -184,6 +184,8 @@ exports.getMemberProfile = (req, res)=>{
         })
 }
 
+
+
 exports.updateMemberInfo = (req, res)=>{
     updateInfo(
         req.body.member_id,
@@ -226,9 +228,11 @@ exports.resetPassword = (req, res)=>{
     )
 }
 
+
+
 exports.deactivateMember = (req, res)=>{
     updateInfo(
-        req.params.id,
+        req.body.member_id,
         {membership_status: false, expire_date: new Date().toLocaleDateString()},
         'Deactivate member',
         res
@@ -236,8 +240,11 @@ exports.deactivateMember = (req, res)=>{
 }
 
 exports.activateMember = async (req, res)=>{
-    const result=await memberModel.find({member_id: req.params.id})
-    const member=result[0]
+    const member=await getUserById(req.body.member_id)
+
+    if (!member){
+        return res.handleMessage('Wrong Member ID!')
+    }
 
     let newExpireDate
     let effectiveDate
@@ -263,7 +270,7 @@ exports.activateMember = async (req, res)=>{
     const recent_renewal_date = recentRenewalDate.toLocaleDateString()
 
     updateInfo(
-        req.params.id,
+        req.body.member_id,
         {
             membership_status: true,
             expire_date,

@@ -17,7 +17,7 @@ export default function ShowMemberList () {
         list: [],
         count: 0
     })
-    const [InactiveMember, setInactiveMember]=useState({
+    const [inactiveMember, setInactiveMember]=useState({
         list: [],
         count: 0
     })
@@ -36,11 +36,10 @@ export default function ShowMemberList () {
         let res
 
         if (data.membership_status){
-            res=await userStore.deactivateMember(data.member_id)
+            res = await userStore.deactivateMember({member_id: data.member_id})
         }else {
-            res=await userStore.activateMember(data.member_id)
+            res = await userStore.activateMember({member_id: data.member_id})
         }
-
         if (res.status===0){
             message.success(res.message)
         }else {
@@ -260,13 +259,13 @@ export default function ShowMemberList () {
                         onChange: pageChange
                     }}
                 />
-                <h2>{InactiveMember.count} inactive members in total</h2>
+                <h2>{inactiveMember.count} inactive members in total</h2>
                 <Table
                     columns={columns}
-                    dataSource={InactiveMember.list}
+                    dataSource={inactiveMember.list}
                     pagination={{
                         pageSize: params.per_page,
-                        total: InactiveMember.count,
+                        total: inactiveMember.count,
                         onChange: pageChange
                     }}
                 />
