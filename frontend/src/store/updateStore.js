@@ -14,6 +14,10 @@ class UpdateStore{
         return await http.put('/api/member/update-pwd', values)
     }
 
+    resetPassword = async (values)=>{
+        return await http.put('/api/member/reset-pwd', values)
+    }
+
 }
 
 export default UpdateStore

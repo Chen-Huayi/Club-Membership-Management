@@ -27,14 +27,14 @@ const updateByObjId = (id, update, msg, res) => {
     })
 }
 
-const updateInfo=(member_id, update, operation, res)=>{
+const updateInfo=(member_id, update, operationMsg, res)=>{
     getUserById(member_id)
         .then(member=>{
             if (!member){
                 return res.handleMessage('User does not exist!')
             }
-            updateByObjId(member._id, {$set: update}, `${operation} successfully!`, res)
-            res.handleMessage(`${operation} successfully!`, 0)
+            updateByObjId(member._id, {$set: update}, `${operationMsg} successfully!`, res)
+            res.handleMessage(`${operationMsg} successfully!`, 0)
         })
         .catch(err => {
             throw Error(err)
@@ -212,6 +212,15 @@ exports.updatePassword = (req, res)=>{
         .catch(err => {
             throw Error(err)
         })
+}
+
+exports.resetPassword = (req, res)=>{
+    updateInfo(
+        req.body.member_id,
+        {password: req.body.password, account_locked: false, fail_login_count: 0},
+        'Password reset',
+        res
+    )
 }
 
 exports.deactivateMember= (req, res)=>{

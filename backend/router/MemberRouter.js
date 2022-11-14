@@ -14,6 +14,7 @@ router.get('/member/inactive-list', MemberHandler.getInActiveMemberList)
 router.get('/member/profile/:id', MemberHandler.getProfile)
 router.put('/member/update-info', MemberHandler.updateMemberInfo)
 router.put('/member/update-pwd', MemberHandler.updatePassword)
+router.put('/member/reset-pwd', MemberHandler.resetPassword)  // for user forgot password or their accounts are locked by system
 
 router.get('/member/deactivate/:id', MemberHandler.deactivateMember)
 router.get('/member/activate/:id', MemberHandler.activateMember)

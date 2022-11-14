@@ -67,6 +67,10 @@ export default function Login() {
         navigate('/signup')
     }
 
+   const redirectToReset=()=>{
+        navigate('/unlock-account')
+    }
+
     return (
         <div className="login-page" style={{ backgroundColor: 'white'}}>
             <div className="login-heading">LOGIN TO ACCOUNT</div>
@@ -110,7 +114,7 @@ export default function Login() {
                         <Form.Item name="remember" valuePropName="checked" noStyle>
                             <Checkbox><b>Remember me</b></Checkbox>
                         </Form.Item>
-                        <a className="login-form-forgot" style={{float: 'right'}}>
+                        <a className="login-form-forgot" style={{float: 'right'}} onClick={redirectToReset}>
                             <b>Forgot password?</b>
                         </a>
                     </Form.Item>

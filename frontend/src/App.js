@@ -17,6 +17,7 @@ import {MemberAuth} from "./components/authorization/MemberAuth";
 import ShowMemberList from "./pages/staff/ShowMemberList";
 import SuccessPaid from "./pages/shared/results/SuccessPaid";
 import Payment from "./pages/shared/Payment";
+import UnlockAccount from "./pages/shared/UnlockAccount";
 
 
 export default function App() {
@@ -38,6 +39,7 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/payment-confirmed" element={<SuccessPaid />} />
                 <Route path="/payment" element={<Payment />} />
+                <Route path="/unlock-account" element={<UnlockAccount />} />
             </Routes>
         </HistoryRouter>
     )
