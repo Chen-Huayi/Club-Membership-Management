@@ -5,7 +5,7 @@ const memberHandler=require('../models/MemberHandler')
 
 // Previous router:
 // http://localhost:8000/api
-router.post('/signup', memberHandler.signup)
+router.post('/member/signup', memberHandler.signup)
 router.post('/login-checked', memberHandler.checkLocked)
 router.post('/member/login', memberHandler.login)
 

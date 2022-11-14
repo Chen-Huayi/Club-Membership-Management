@@ -7,7 +7,7 @@ class SignupStore {
     }
 
     signup = async (values)=>{
-        return await http.post('/api/signup', values)
+        return await http.post('/api/member/signup', values)
     }
 }
 

@@ -200,8 +200,8 @@ export default function ShowMemberList () {
     // load member list
     useEffect(() => {
         const loadList=async ()=>{
-            const active = await userStore.getActiveList({params})
-            const inactive = await userStore.getInactiveList({params})
+            const active = await userStore.getActiveMemberList({params})
+            const inactive = await userStore.getInactiveMemberList({params})
             const activeList = active.member_list
             const inactiveList = inactive.member_list
             const activeSize = activeList.length
