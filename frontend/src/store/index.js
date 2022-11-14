@@ -2,14 +2,14 @@ import React from "react"
 import SignupStore from './signupStore';
 import LoginStore from './loginStore'
 import UpdateStore from './updateStore'
-import MemberStore from './memberStore'
+import UserStore from './userStore'
 
 class RootStore {
     constructor() {
         this.signupStore = new SignupStore()
         this.loginStore = new LoginStore()
         this.updateStore = new UpdateStore()
-        this.memberStore = new MemberStore()
+        this.userStore = new UserStore()
     }
 }
 

@@ -7,7 +7,7 @@ import {useStore} from "../../store";
 
 export default function Renewal () {
     const navigate=useNavigate()
-    const {loginStore, memberStore}=useStore()
+    const {loginStore, userStore}=useStore()
     const [userInfo, setUserInfo]=useState({
         membership: loginStore.membership_status
     })
@@ -22,7 +22,7 @@ export default function Renewal () {
 
     useEffect(()=>{
         const loadInfo = async () => {
-            await memberStore.getMemberInfo(loginStore.member_id)
+            await userStore.getMemberInfo(loginStore.member_id)
                 .then(result=>{
                     setUserInfo({
                         membership: result.membership_status

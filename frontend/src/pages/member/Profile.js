@@ -19,7 +19,7 @@ const formItemLayout = {
 const UpdateItem = (props) => {
     const [form] = Form.useForm()
     const [open, setOpen] = useState(false)
-    const {updateStore, loginStore, memberStore}=useStore()
+    const {updateStore, loginStore, userStore}=useStore()
 
     const showDialog = () => {
         setOpen(true)
@@ -57,7 +57,7 @@ const UpdateItem = (props) => {
     // backfill the user information to the form
     useEffect(()=>{
         const loadInfo = async () => {
-            const profileData= await memberStore.getMemberInfo(loginStore.member_id)
+            const profileData= await userStore.getMemberInfo(loginStore.member_id)
             const {birthday, ...userInfo}=profileData
             form.setFieldsValue({...userInfo})
         }
@@ -206,11 +206,11 @@ const UpdateItem = (props) => {
 
 export default function Profile () {
     const [profile, setProfile] = useState({})
-    const {loginStore, memberStore}=useStore()
+    const {loginStore, userStore}=useStore()
 
     useEffect(()=>{
         const loadInfo = async () => {
-            const profileData= await memberStore.getMemberInfo(loginStore.member_id)
+            const profileData= await userStore.getMemberInfo(loginStore.member_id)
             setProfile({...profileData})
         }
         loadInfo()

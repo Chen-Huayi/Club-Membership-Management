@@ -52,27 +52,31 @@ const siderAdminMenus = [
 ]
 
 
-
 const MainLayout = () => {
     const {pathname}=useLocation()
-    const {loginStore, memberStore}=useStore()
+    const {loginStore, userStore}=useStore()
     const [userInfo, setUserInfo]=useState({
-        name: loginStore.firstname
+        name: loginStore.firstname+' '+loginStore.lastname
     })
 
     const onConfirm=()=>{
-        loginStore.logOut()
+        loginStore.logout()
         window.location.reload()
     }
 
     useEffect(()=>{
         const loadInfo = async () => {
-            await memberStore.getMemberInfo(loginStore.member_id)
-                .then(result=>{
-                    setUserInfo({
-                        name: result.firstname
-                    })
-                })
+            let userInfo
+
+            if (loginStore.user_role==='Club Member'){
+                userInfo=await userStore.getMemberInfo(loginStore.member_id)
+            }else if (loginStore.user_role==='Membership Admin'){
+                userInfo=await userStore.getStaffInfo(loginStore.staff_id)
+            }
+
+            setUserInfo({
+                name: userInfo.firstname+' '+userInfo.lastname
+            })
         }
         loadInfo()
     }, [])

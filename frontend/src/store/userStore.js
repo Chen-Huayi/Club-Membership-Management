@@ -1,13 +1,16 @@
 import {makeAutoObservable} from "mobx";
 import {http} from "../utils";
 
-class MemberStore {
+class UserStore {
     constructor() {
         makeAutoObservable(this)
     }
 
     getMemberInfo = async(member_id) =>{
         return await http.get(`/api/member/profile/${member_id}`)
+    }
+    getStaffInfo = async(staff_id) =>{
+        return await http.get(`/api/staff/profile/${staff_id}`)
     }
     // Admin use
     getActiveList = async ({params})=>{
@@ -27,4 +30,4 @@ class MemberStore {
     }
 
 }
-export default MemberStore
+export default UserStore

@@ -21,28 +21,46 @@ const iconStyles = {
 }
 const types = [
     {
-        key: 'account',
-        label: 'Account/Password ',
+        key: 'member',
+        label: 'Member',
     },
     {
-        key: 'phone',
-        label: 'Phone',
+        key: 'staff',
+        label: 'Staff',
     }
 ]
 
 
 export default function Login() {
-    const [loginType, setLoginType] = useState('account')
+    const [loginType, setLoginType] = useState('member')
     const navigate=useNavigate()
     const {loginStore}=useStore()
     const [form] = Form.useForm()
 
     const onFinish = async (values) => {
-        const {member_id}=values
-        const result=await loginStore.checkLocked({member_id})
+        const {member_id, staff_id}=values
 
-        if (!result.account_locked){
-            await loginStore.login(values)
+        if (member_id){
+            const result=await loginStore.checkAccountLocked({member_id})
+
+            if (!result.account_locked){
+                await loginStore.memberLogin(values)
+
+                if (loginStore.token!==''){
+                    navigate('/')
+                    message.success('Successfully login!')
+                    window.location.reload()
+                }else {
+                    form.setFieldsValue({password: ''})
+                    message.error('Invalid Member ID or Password!')
+                }
+            }else {
+                form.setFieldsValue({member_id: '', password: ''})
+                message.error('Your account is locked, please contact us to unlock!')
+            }
+
+        }else if (staff_id){
+            await loginStore.staffLogin(values)
 
             if (loginStore.token!==''){
                 navigate('/')
@@ -50,11 +68,8 @@ export default function Login() {
                 window.location.reload()
             }else {
                 form.setFieldsValue({password: ''})
-                message.error('Invalid Member ID or Password!')
+                message.error('Invalid Staff ID or Password!')
             }
-        }else {
-            form.setFieldsValue({member_id: '', password: ''})
-            message.error('Your account is locked, please contact us to unlock!')
         }
 
     }
@@ -84,7 +99,7 @@ export default function Login() {
             >
                 <Tabs centered activeKey={loginType} onChange={(activeKey) => setLoginType(activeKey)} items={types} />
 
-                {loginType === 'account' && (<>
+                {loginType === 'member' && (<>
                     <Form.Item
                         className="input-form"
                         name="member_id"
@@ -93,7 +108,7 @@ export default function Login() {
                             message: 'Please enter your id!'
                         }]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="member staff or id" />
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="member id" />
                     </Form.Item>
 
                     <Form.Item
@@ -121,38 +136,29 @@ export default function Login() {
 
                 </>)}
 
-                {loginType === 'phone' && (<>
+                {loginType === 'staff' && (<>
                     <Form.Item
-                        name="phone"
+                        className="input-form"
+                        name="staff_id"
                         rules={[{
                             required: true,
-                            message: 'Please enter your phone number',
-                        }, {
-                            min: 10,
-                            message: 'Phone number is invalid!',
+                            message: 'Please enter your id!'
                         }]}
                     >
-                        <Input prefix={<MobileOutlined className="prefixIcon"/>} placeholder="phone number" />
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="staff id" />
                     </Form.Item>
-
-                    <Form.Item>
-                        <Row gutter={8}>
-                            <Col span={15}>
-                                <Form.Item
-                                    name="captcha"
-                                    noStyle
-                                    rules={[{
-                                            required: true,
-                                            message: 'Please input the captcha you got!',
-                                    }]}
-                                >
-                                    <Input prefix={<LockOutlined className="prefixIcon"/>} placeholder="Enter captcha" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Button> <b><a>Get your captcha</a></b></Button>
-                            </Col>
-                        </Row>
+                    <Form.Item
+                        className="input-form"
+                        name="password"
+                        rules={[{
+                            required: true,
+                            message: 'Please enter your Password!'
+                        }, {
+                            min: 6,
+                            message: 'Please enter valid Password!'
+                        }]}
+                    >
+                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="password"/>
                     </Form.Item>
                 </>)}
 

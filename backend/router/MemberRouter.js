@@ -1,27 +1,28 @@
 const express = require('express')
 const router = express.Router()
 
-const MemberHandler=require('../models/MemberHandler')
+const memberHandler=require('../models/MemberHandler')
 
-// Previous router: http://localhost:8000/api
-router.post('/signup', MemberHandler.signup)
-router.post('/login-checked', MemberHandler.checkLocked)
-router.post('/login', MemberHandler.login)
+// Previous router:
+// http://localhost:8000/api
+router.post('/signup', memberHandler.signup)
+router.post('/login-checked', memberHandler.checkLocked)
+router.post('/member/login', memberHandler.login)
 
-router.get('/member/active-list', MemberHandler.getActiveMemberList)
-router.get('/member/inactive-list', MemberHandler.getInActiveMemberList)
+router.get('/member/active-list', memberHandler.getActiveMemberList)
+router.get('/member/inactive-list', memberHandler.getInactiveMemberList)
 
-router.get('/member/profile/:id', MemberHandler.getProfile)
-router.put('/member/update-info', MemberHandler.updateMemberInfo)
-router.put('/member/update-pwd', MemberHandler.updatePassword)
-router.put('/member/reset-pwd', MemberHandler.resetPassword)  // for user forgot password or their accounts are locked by system
+router.get('/member/profile/:id', memberHandler.getMemberProfile)
+router.put('/member/update-info', memberHandler.updateMemberInfo)
+router.put('/member/update-pwd', memberHandler.updatePassword)
+router.put('/member/reset-pwd', memberHandler.resetPassword)  // for user forgot password or their accounts are locked by system
 
-router.get('/member/deactivate/:id', MemberHandler.deactivateMember)
-router.get('/member/activate/:id', MemberHandler.activateMember)
+router.get('/member/deactivate/:id', memberHandler.deactivateMember)
+router.get('/member/activate/:id', memberHandler.activateMember)
 
 
 
 //TODO
-router.get('/member/send-email', MemberHandler.sendGroupEmail)
+router.get('/member/send-email', memberHandler.sendGroupEmail)
 
 module.exports=router

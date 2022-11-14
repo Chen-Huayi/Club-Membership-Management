@@ -12,7 +12,7 @@ import Settings from "./pages/member/Settings";
 import Membership from "./pages/member/Membership";
 import NotFound404 from "./pages/shared/results/404";
 import Renewal from "./pages/member/Renewal";
-import {AdminAuth} from "./components/authorization/AdminAuth";
+import {MembershipAdminAuth} from "./components/authorization/MembershipAdminAuth";
 import {MemberAuth} from "./components/authorization/MemberAuth";
 import ShowMemberList from "./pages/staff/ShowMemberList";
 import SuccessPaid from "./pages/shared/results/SuccessPaid";
@@ -31,8 +31,8 @@ export default function App() {
                     <Route path="membership" element={<MemberAuth><Membership /></MemberAuth>}/>
                     <Route path="renewal" element={<MemberAuth><Renewal /></MemberAuth>} />
 
-                    <Route path="member-list" element={<AdminAuth><ShowMemberList /></AdminAuth>} />
-                    <Route path="update-profile" element={<AdminAuth><UpdateProfile /></AdminAuth>} />
+                    <Route path="member-list" element={<MembershipAdminAuth><ShowMemberList /></MembershipAdminAuth>} />
+                    <Route path="update-profile" element={<MembershipAdminAuth><UpdateProfile /></MembershipAdminAuth>} />
                     <Route path="/*" element={<NotFound404/>}></Route>
                 </Route>
                 <Route path="/signup" element={<Signup />} />

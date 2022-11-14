@@ -1,5 +1,5 @@
 require('../db/mongo_server')
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const bcrypt=require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('../config')
@@ -7,7 +7,7 @@ const memberSchema = require('../schema/member')
 const memberModel = mongoose.model('members', memberSchema)
 
 
-const getUserById=async (member_id)=>{
+const getUserById =async (member_id)=>{
     let member=null
     try {
         member=await memberModel.findOne({member_id})
@@ -27,7 +27,7 @@ const updateByObjId = (id, update, msg, res) => {
     })
 }
 
-const updateInfo=(member_id, update, operationMsg, res)=>{
+const updateInfo = (member_id, update, operationMsg, res)=>{
     getUserById(member_id)
         .then(member=>{
             if (!member){
@@ -41,7 +41,7 @@ const updateInfo=(member_id, update, operationMsg, res)=>{
         })
 }
 
-const getMemberList=async (membershipStatus, res)=>{
+const getMemberList = async (membershipStatus, res)=>{
     const members = await memberModel.find({
         membership_status: membershipStatus
     })
@@ -53,7 +53,7 @@ const getMemberList=async (membershipStatus, res)=>{
 
 
 /*---------------for public (member without login)-------------------*/
-exports.signup=(req, res)=>{
+exports.signup = (req, res)=>{
     const {pay_now, amount, agreement, ...userInfo} = req.body  // delete agreement, and get payment condition
     const member_id=userInfo.member_id
 
@@ -84,12 +84,15 @@ exports.signup=(req, res)=>{
     })
 }
 
-exports.checkLocked= (req, res)=>{
+exports.checkLocked = (req, res)=>{
     getUserById(req.body.member_id)
-        .then(result => {
+        .then(member => {
+            if (!member){
+                return res.handleMessage('Wrong Member ID!')
+            }
             res.send({
                 status: 0,
-                account_locked: result.account_locked
+                account_locked: member.account_locked
             })
         })
         .catch(err=>{
@@ -97,7 +100,7 @@ exports.checkLocked= (req, res)=>{
         })
 }
 
-exports.login=(req, res)=>{
+exports.login = (req, res)=>{
     const userInfo=req.body
     const member_id=userInfo.member_id
     const password=userInfo.password
@@ -118,7 +121,7 @@ exports.login=(req, res)=>{
                 return res.handleMessage('Wrong Password!')
             }
 
-            updateByObjId(member._id, {fail_login_count: 0}, `[${member_id}] login successfully!`, res)
+            updateByObjId(member._id, {fail_login_count: 0}, `Club member [${member_id}] login successfully!`, res)
             const userObj = {...member._doc, password:''}
             const {fail_login_count, __v, ...rest} = userObj
             const {firstname, lastname, user_role, membership_status}=rest
@@ -152,11 +155,11 @@ exports.getActiveMemberList = (req, res)=>{
     getMemberList(true, res)
 }
 
-exports.getInActiveMemberList = (req, res)=>{
+exports.getInactiveMemberList = (req, res)=>{
     getMemberList(false, res)
 }
 
-exports.getProfile= (req, res)=>{
+exports.getMemberProfile = (req, res)=>{
     const member_id=req.params.id
 
     getUserById(member_id)
@@ -181,7 +184,7 @@ exports.getProfile= (req, res)=>{
         })
 }
 
-exports.updateMemberInfo=(req, res)=>{
+exports.updateMemberInfo = (req, res)=>{
     updateInfo(
         req.body.member_id,
         req.body,
@@ -223,7 +226,7 @@ exports.resetPassword = (req, res)=>{
     )
 }
 
-exports.deactivateMember= (req, res)=>{
+exports.deactivateMember = (req, res)=>{
     updateInfo(
         req.params.id,
         {membership_status: false, expire_date: new Date().toLocaleDateString()},
@@ -232,7 +235,7 @@ exports.deactivateMember= (req, res)=>{
     )
 }
 
-exports.activateMember= async (req, res)=>{
+exports.activateMember = async (req, res)=>{
     const result=await memberModel.find({member_id: req.params.id})
     const member=result[0]
 
@@ -275,8 +278,8 @@ exports.activateMember= async (req, res)=>{
 
 
 
-
-exports.sendGroupEmail=(req, res)=>{
+// TODO
+exports.sendGroupEmail = (req, res)=>{
     res.send('ok')
 }
 

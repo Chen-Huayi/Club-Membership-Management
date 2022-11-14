@@ -6,7 +6,7 @@ import {useStore} from "../../store";
 
 
 export default function ShowMemberList () {
-    const {memberStore}=useStore()
+    const {userStore}=useStore()
     const navigate=useNavigate()
     const searchInput = useRef(null)
     const [params, setParams] = useState({
@@ -36,9 +36,9 @@ export default function ShowMemberList () {
         let res
 
         if (data.membership_status){
-            res=await memberStore.deactivateMember(data.member_id)
+            res=await userStore.deactivateMember(data.member_id)
         }else {
-            res=await memberStore.activateMember(data.member_id)
+            res=await userStore.activateMember(data.member_id)
         }
 
         if (res.status===0){
@@ -200,8 +200,8 @@ export default function ShowMemberList () {
     // load member list
     useEffect(() => {
         const loadList=async ()=>{
-            const active = await memberStore.getActiveList({params})
-            const inactive = await memberStore.getInactiveList({params})
+            const active = await userStore.getActiveList({params})
+            const inactive = await userStore.getInactiveList({params})
             const activeList = active.member_list
             const inactiveList = inactive.member_list
             const activeSize = activeList.length

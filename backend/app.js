@@ -5,12 +5,14 @@ const joi = require('joi')
 const bodyParser = require("body-parser")
 const config=require('./config')
 const memberRouter=require('./router/MemberRouter')
+const staffRouter=require('./router/StaffRouter')
 
 // Cross-Origin Resource Sharing
 app.use(cors())
 
 // content-type interceptor
-app.use(bodyParser.json())  // app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+// app.use(express.urlencoded({ extended: false }))
 
 // Handle message middlewares (include both success and failure event)
 app.use((req, res, next)=>{
@@ -24,7 +26,9 @@ app.use((req, res, next)=>{
 })
 
 // Main router (Start here)
-app.use('/api', memberRouter);
+app.use('/api', memberRouter)
+app.use('/api', staffRouter)
+
 
 // Errors middlewares
 app.use((err, req, res, next)=>{

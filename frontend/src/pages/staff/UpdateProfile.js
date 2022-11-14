@@ -23,7 +23,7 @@ const tailFormItemLayout = {
 export default function UpdateProfile () {
     const [form] = Form.useForm()
     const navigate=useNavigate()
-    const {updateStore, memberStore}=useStore()
+    const {updateStore, userStore}=useStore()
     const [params]=useSearchParams()
     const member_id =params.get('id')
 
@@ -54,7 +54,7 @@ export default function UpdateProfile () {
     // backfill the user information to the form
     useEffect(()=>{
         const loadDetail=async ()=>{
-            await memberStore.getMemberInfo(member_id)
+            await userStore.getMemberInfo(member_id)
                 .then(currProfile=>{
                     const {birthday, ...userInfo}=currProfile
                     form.setFieldsValue({...userInfo})

@@ -12,21 +12,25 @@ import {useStore} from "../../store";
 
 
 export default function Home() {
-    const {loginStore, memberStore}=useStore()
+    const {loginStore, userStore}=useStore()
     const [userInfo, setUserInfo]=useState({
-        name: loginStore.firstname,
+        name: loginStore.firstname+' '+loginStore.lastname,
         membership: loginStore.membership_status
     })
 
     useEffect(()=>{
         const loadInfo = async () => {
-            await memberStore.getMemberInfo(loginStore.member_id)
-                .then(result=>{
-                    setUserInfo({
-                        name: result.firstname,
-                        membership: result.membership_status
-                    })
-                })
+            let userInfo
+
+            if (loginStore.user_role==='Club Member'){
+                userInfo=await userStore.getMemberInfo(loginStore.member_id)
+            }else if (loginStore.user_role==='Membership Admin'){
+                userInfo=await userStore.getStaffInfo(loginStore.staff_id)
+            }
+            setUserInfo({
+                name: userInfo.firstname+' '+userInfo.lastname,
+                membership: userInfo.membership_status
+            })
         }
         loadInfo()
     }, [])
@@ -49,4 +53,3 @@ export default function Home() {
         </div>
     )
 }
-

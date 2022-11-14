@@ -1,7 +1,7 @@
 import {user_role} from '../../utils';
 import {Navigate} from 'react-router-dom'
 
-function AdminAuth({children}){
+function MembershipAdminAuth({children}){
     if (user_role==='Membership Admin'){
         return <>{children}</>
     }else {
@@ -9,4 +9,4 @@ function AdminAuth({children}){
     }
 }
 
-export {AdminAuth}
+export {MembershipAdminAuth}
