@@ -208,48 +208,44 @@ exports.deactivateMember= (req, res)=>{
 exports.activateMember= async (req, res)=>{
     const result=await memberModel.find({member_id: req.params.id})
     const member=result[0]
-    console.log(member.expire_date)
-    let date=new Date(member.expire_date)
-    date.setFullYear(date.getFullYear()+1)
-    date.setDate(date.getDate()-1)
-    console.log(date.toLocaleDateString())//******************************
-    // date=date.getTime()+86400000*365
-    // console.log(new Date(date))
 
+    let newExpireDate
+    let effectiveDate
+    let recentRenewalDate=new Date()  // To be today
+    const prevExpireDate=new Date(member.expire_date)
 
-    //TODO
-    if (new Date(member.expire_date)>new Date()){  // member.expire_date在今天之后(失效日期还没到)
-        // expire_date=年份直接 +1年
-        // effectIve_date不变
-        // recent_renewal_date=new Date()变今天
-    }else {  // membership已失效了 [新人在这一个分支]
-        // expire_date=new Date() +1年
-        // effectIve_date=new Date()变今天
-        // recent_renewal_date =new Date() {但是新人('Never renew')不传recent renewal date}
+    if (prevExpireDate>new Date()){  // member.expire_date is not expire today(失效日期还没到)
+        // expire_date: previous expire date +1 year
+        newExpireDate = prevExpireDate
+        newExpireDate.setFullYear(newExpireDate.getFullYear()+1)
+        // effectIve_date no change
+        effectiveDate=new Date(member.effective_date)
+    }else {  // membership is expire
+        // expire_date: today + 1 year
+        newExpireDate = new Date()
+        newExpireDate.setFullYear(newExpireDate.getFullYear()+1)
+        // effectIve_date: today
+        effectiveDate=new Date()
     }
 
-    // 86400000 one day
-    // let expire_date   +60*60*24*20
-    // let recent_renewal_date=new Date().toLocaleDateString()
-    // let effective_date=recent_renewal_date
-    // if (member.recent_renewal_date==='Never renew'){
-    //     // 新人不传recent renewal date
-    //
-    // }else {
-    //     // existing member
-    //
-    // }
-    // console.log('recent_renewal_date: ', recent_renewal_date)
-    // console.log('effective_date: ', effective_date)
-    // console.log('expire_date: ', expire_date)
-    res.send('ok')
-    // updateInfo(
-    //     req.params.id,
-    //     {membership_status: true},
-    //     'Activate member',
-    //     res
-    // )
+    const expire_date = newExpireDate.toLocaleDateString()
+    const effective_date = effectiveDate.toLocaleDateString()
+    const recent_renewal_date = recentRenewalDate.toLocaleDateString()
+
+    updateInfo(
+        req.params.id,
+        {
+            membership_status: true,
+            expire_date,
+            effective_date,
+            recent_renewal_date,
+        },
+        (member.recent_renewal_date==='Never renew') ?
+            'Activate membership' : 'Renew membership',  // Activate for new member, Renew for existing member
+        res
+    )
 }
+
 
 
 

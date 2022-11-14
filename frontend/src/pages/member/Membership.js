@@ -41,9 +41,13 @@ export default function Membership () {
                 <h2>Expire date: </h2>{userInfo.expireDate}<br/><br/>
 
                 <div className="other-link" style={{fontWeight: "bold", marginBottom: 20}}>
-                    <Link to="/renewal">Renewal</Link>
+                    {userInfo.membership && (
+                        <Link to="/renewal">Renewal</Link>
+                    )}
+                    {!userInfo.membership && (
+                        <Link to="/renewal">Active</Link>
+                    )}
                 </div>
-
             </Card>
         </div>
     )

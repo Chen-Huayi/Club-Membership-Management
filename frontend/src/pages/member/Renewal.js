@@ -1,5 +1,5 @@
 import {Breadcrumb, Button, Card, Form, InputNumber, message} from 'antd';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import '../member/Profile.css'
 import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
@@ -7,7 +7,10 @@ import {useStore} from "../../store";
 
 export default function Renewal () {
     const navigate=useNavigate()
-    const {loginStore}=useStore()
+    const {loginStore, memberStore}=useStore()
+    const [userInfo, setUserInfo]=useState({
+        membership: loginStore.membership_status
+    })
 
     const onFinish = async (values) => {
         navigate(`/payment?id=${loginStore.member_id}&&amount=${values.amount}`)
@@ -16,6 +19,18 @@ export default function Renewal () {
     const onFinishFailed =async(err) => {
         console.log('Failed:', err)
     }
+
+    useEffect(()=>{
+        const loadInfo = async () => {
+            await memberStore.getMemberInfo(loginStore.member_id)
+                .then(result=>{
+                    setUserInfo({
+                        membership: result.membership_status
+                    })
+                })
+        }
+        loadInfo()
+    }, [])
 
     return (
         <div className="renewal-content">
@@ -28,7 +43,12 @@ export default function Renewal () {
                         <Breadcrumb.Item>
                             <Link to="/membership">Membership</Link>
                         </Breadcrumb.Item>
-                        <Breadcrumb.Item>Renewal</Breadcrumb.Item>
+                        {userInfo.membership && (
+                            <Breadcrumb.Item>Renewal</Breadcrumb.Item>
+                        )}
+                        {!userInfo.membership && (
+                            <Breadcrumb.Item>Active</Breadcrumb.Item>
+                        )}
                     </Breadcrumb>
                 }
             >
