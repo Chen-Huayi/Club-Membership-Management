@@ -38,16 +38,25 @@ export default function Login() {
     const [form] = Form.useForm()
 
     const onFinish = async (values) => {
-        await loginStore.login(values)
+        const {member_id}=values
+        const result=await loginStore.checkLocked({member_id})
 
-        if (loginStore.token!==''){
-            navigate('/')
-            message.success('Successfully login!')
-            window.location.reload()
+        if (!result.account_locked){
+            await loginStore.login(values)
+
+            if (loginStore.token!==''){
+                navigate('/')
+                message.success('Successfully login!')
+                window.location.reload()
+            }else {
+                form.setFieldsValue({password: ''})
+                message.error('Invalid Member ID or Password!')
+            }
         }else {
-            form.setFieldsValue({password: ''})
-            message.error('Invalid Member ID or Password!')
+            form.setFieldsValue({member_id: '', password: ''})
+            message.error('Your account is locked, please contact us to unlock!')
         }
+
     }
 
     const onFinishFailed = (err) =>{

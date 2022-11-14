@@ -84,6 +84,19 @@ exports.signup=(req, res)=>{
     })
 }
 
+exports.checkLocked= (req, res)=>{
+    getUserById(req.body.member_id)
+        .then(result => {
+            res.send({
+                status: 0,
+                account_locked: result.account_locked
+            })
+        })
+        .catch(err=>{
+            throw Error(err)
+        })
+}
+
 exports.login=(req, res)=>{
     const userInfo=req.body
     const member_id=userInfo.member_id
@@ -91,12 +104,17 @@ exports.login=(req, res)=>{
 
     getUserById(member_id)
         .then(member => {
-            if (!member)
+            if (!member){
                 return res.handleMessage('Wrong Member ID!')
+            }
 
-            // TODO password 加密
-            if (member.password!==password){
-                updateByObjId(member._id, {$inc: {fail_login_count: 1}}, `[${member_id}] Failure login count +1`, res)
+            if (member.fail_login_count>=4){
+                updateByObjId(member._id, {$set: {account_locked: true}}, `Your account [${member_id}] is locked`, res)
+                // return res.handleMessage(`Your account [${member_id}] is locked!`)
+            }
+
+            if (member.password!==password){  // TODO password 加密
+                updateByObjId(member._id, {$inc: {fail_login_count: 1}}, `[${member_id}] failure login count +1`, res)
                 return res.handleMessage('Wrong Password!')
             }
 

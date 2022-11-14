@@ -12,6 +12,10 @@ class LoginStore{
         makeAutoObservable(this)
     }
 
+    checkLocked= async (values)=>{
+        return await http.post('/api/login-checked', values)
+    }
+
     login = async (values)=>{
         await http.post('/api/login', values)
             .then(value=>{
