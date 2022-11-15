@@ -16,9 +16,10 @@ Continually updated...✅
 
 ## How to Run ▶
 **Clone**
-```shell
-git clone https://github.com/Chen-Huayi/Membership-Management.git
-```
++ git command
+    ```shell
+    git clone https://github.com/Chen-Huayi/Membership-Management.git
+    ```
 **Run**
 1. Make sure the variable `PORT` will be the same (default: `8000`) in both `/backend/config.js` and `/frontend/config.js`
 2. In `/Membership-Management/backend` directory:
