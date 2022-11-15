@@ -1,7 +1,7 @@
 import {Button, Card, Checkbox, Form, Input, InputNumber, message, Select, Switch} from 'antd'
 import React, {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import './Signup.css'
+import './MemberSignup.css'
 import {useStore} from '../../store';
 
 const { Option } = Select
@@ -21,14 +21,14 @@ const tailFormItemLayout = {
 }
 
 
-export default function Signup() {
+export default function MemberSignup() {
     const [form] = Form.useForm()
     const navigate=useNavigate()
     const {signupStore}=useStore()
     const [payment, setPayment]=useState(true)
 
     const onFinish = async (values) => {
-        await signupStore.signup(values)
+        await signupStore.memberSignup(values)
             .then(result=>{
 
                 if (result.status===0){

@@ -4,7 +4,7 @@ import {
     LogoutOutlined,
     SendOutlined,
     SettingOutlined,
-    ShoppingOutlined,
+    ShoppingOutlined, TeamOutlined, UserAddOutlined, UsergroupAddOutlined,
     UserOutlined
 } from '@ant-design/icons';
 import {Layout, Menu, Popconfirm} from 'antd';
@@ -59,7 +59,7 @@ const siderMembershipAdminMenus = [
     },
     {
         key: '/member-list',
-        icon: <UserOutlined />,
+        icon: <TeamOutlined />,
         label: <Link to="/member-list">Member List</Link>,
     },
     {
@@ -68,11 +68,51 @@ const siderMembershipAdminMenus = [
         label: <Link to="/send-email">Send Email</Link>
     }
 ]
+const siderSystemAdminMenus = [
+    {
+        key: '/',
+        icon: <HomeOutlined />,
+        label: <Link to="/">Home</Link>,
+    },
+    {
+        key: '/register-staff',
+        icon: <UserAddOutlined />,
+        label: <Link to="/register-staff">Register Staff</Link>,
+    },
+    {
+        key: '/staff-list',
+        icon: <TeamOutlined />,
+        label: <Link to="/staff-list">Staff List</Link>,
+    },
+    {
+        key: '/system-settings',
+        icon: <SettingOutlined />,
+        label: <Link to="/system-settings">System Settings</Link>
+    }
+]
+const siderManagementUserMenus = [
+    {
+        key: '/',
+        icon: <HomeOutlined />,
+        label: <Link to="/">Home</Link>,
+    },
+    {
+        key: '/',
+        icon: <UserOutlined />,
+        label: <Link to="/">2222</Link>,
+    },
+    {
+        key: '/',
+        icon: <UserOutlined />,
+        label: <Link to="/">3333</Link>,
+    },
+]
 
 
 const MainLayout = () => {
     const {pathname}=useLocation()
     const {loginStore, userStore}=useStore()
+    const role=loginStore.user_role
     const [userInfo, setUserInfo]=useState({
         name: loginStore.firstname+' '+loginStore.lastname
     })
@@ -84,16 +124,15 @@ const MainLayout = () => {
 
     useEffect(()=>{
         const loadInfo = async () => {
-            let userInfo
+            let userData
 
-            if (loginStore.user_role==='Club Member'){
-                userInfo=await userStore.getMemberInfo(loginStore.member_id)
-            }else if (loginStore.user_role==='Membership Admin'){
-                userInfo=await userStore.getStaffInfo(loginStore.staff_id)
+            if (role==='Club Member'){
+                userData=await userStore.getMemberInfo(loginStore.member_id)
+            }else if (role==='Membership Admin' || role==='System Admin' || role==='Club Management User'){
+                userData=await userStore.getStaffInfo(loginStore.staff_id)
             }
-
             setUserInfo({
-                name: userInfo.firstname+' '+userInfo.lastname
+                name: userData.firstname+' '+userData.lastname
             })
         }
         loadInfo()
@@ -123,7 +162,7 @@ const MainLayout = () => {
             </Header>
 
             <Layout>
-                {loginStore.user_role==='Club Member' && (
+                {role==='Club Member' && (
                     <Sider className="site-layout-background" width={170}>
                         <Menu
                             mode="inline"
@@ -134,7 +173,7 @@ const MainLayout = () => {
                         />
                     </Sider>
                 )}
-                {loginStore.user_role==='Membership Admin' && (
+                {role==='Membership Admin' && (
                     <Sider className="site-layout-background" width={170}>
                         <Menu
                             mode="inline"
@@ -145,9 +184,28 @@ const MainLayout = () => {
                         />
                     </Sider>
                 )}
-
-                {/*TODO*/}
-
+                {role==='System Admin' && (
+                    <Sider className="site-layout-background" width={190}>
+                        <Menu
+                            mode="inline"
+                            theme="light"
+                            defaultSelectedKeys={[pathname]}
+                            items={siderSystemAdminMenus}
+                            style={{ height: '100%', fontSize: 'large' }}
+                        />
+                    </Sider>
+                )}
+                {role==='Club Management User' && (
+                    <Sider className="site-layout-background" width={190}>
+                        <Menu
+                            mode="inline"
+                            theme="light"
+                            defaultSelectedKeys={[pathname]}
+                            items={siderManagementUserMenus}
+                            style={{ height: '100%', fontSize: 'large' }}
+                        />
+                    </Sider>
+                )}
                 <Layout className="layout-content" style={{ padding: 20 }}>
                     <Outlet />
                 </Layout>
@@ -155,4 +213,4 @@ const MainLayout = () => {
         </Layout>
     )
 }
-export default observer(MainLayout);
+export default observer(MainLayout)

@@ -20,7 +20,7 @@ const tailFormItemLayout = {
 }
 
 
-export default function UpdateProfile () {
+export default function UpdateMemberProfile () {
     const [form] = Form.useForm()
     const navigate=useNavigate()
     const {updateStore, userStore}=useStore()

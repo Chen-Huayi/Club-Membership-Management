@@ -22,11 +22,12 @@ export default function Home() {
 
     useEffect(()=>{
         const loadInfo = async () => {
+            const role=loginStore.user_role
             let userData
 
-            if (loginStore.user_role==='Club Member'){
+            if (role==='Club Member'){
                 userData=await userStore.getMemberInfo(loginStore.member_id)
-            }else if (loginStore.user_role==='Membership Admin'){
+            }else if (role==='Membership Admin' || role==='System Admin' || role==='Club Management User'){
                 userData=await userStore.getStaffInfo(loginStore.staff_id)
             }
             setUserInfo({

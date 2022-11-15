@@ -1,6 +1,6 @@
 require('../db/mongo_server')
 const mongoose = require('mongoose')
-const bcrypt=require('bcryptjs')
+// const bcrypt=require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('../config')
 const staffSchema = require('../schema/staff')
@@ -17,8 +17,7 @@ const getUserById = async (staff_id)=>{
     return staff
 }
 
-// System Admin
-// Club Management User
+
 exports.signup = (req, res)=>{
     const userInfo=req.body
     const staff_id=userInfo.staff_id
@@ -89,6 +88,24 @@ exports.login = (req, res)=>{
 
 }
 
+exports.getActiveStaffList = async (req, res)=> {
+    const staffs = await staffModel.find({
+        membership_status: true
+    })
+    res.send({
+        staff_list: staffs
+    })
+}
+
+exports.getInactiveStaffList = async (req, res)=> {
+    const staffs = await staffModel.find({
+        membership_status: false
+    })
+    res.send({
+        staff_list: staffs
+    })
+}
+
 exports.getStaffProfile = (req, res)=>{
     const staff_id=req.params.id
 
@@ -97,7 +114,7 @@ exports.getStaffProfile = (req, res)=>{
             if (!staff){
                 return res.handleMessage('User does not exist!')
             }
-            const {staff_id, firstname, middle_name, lastname, email, phone, membership_status} = staff
+            const {staff_id, firstname, middle_name, lastname, email, phone, membership_status, user_role} = staff
 
             res.send({
                 staff_id,
@@ -106,12 +123,45 @@ exports.getStaffProfile = (req, res)=>{
                 lastname,
                 email,
                 phone,
-                membership_status
+                membership_status,
+                user_role
             })
         })
         .catch(err => {
             throw Error(err)
         })
 }
+
+
+
+exports.updateStaffInfo = (req, res)=> {
+    staffModel.findOneAndUpdate({staff_id: req.body.staff_id}, {...req.body}, (err)=>{
+        if (err){
+            res.handleMessage(err)
+        }
+        res.handleMessage('Deactivate staff successfully!', 0)
+    })
+}
+
+
+exports.deactivateStaff = (req, res)=> {
+    staffModel.findOneAndUpdate({staff_id: req.body.staff_id}, {membership_status: false}, (err)=>{
+        if (err){
+            res.handleMessage(err)
+        }
+        res.handleMessage('Deactivate staff successfully!', 0)
+    })
+}
+
+exports.activateStaff = (req, res)=> {
+    staffModel.findOneAndUpdate({staff_id: req.body.staff_id}, {membership_status: true}, (err)=>{
+        if (err){
+            res.handleMessage(err)
+        }
+        res.handleMessage('Activate staff successfully!', 0)
+    })
+}
+
+
 
 

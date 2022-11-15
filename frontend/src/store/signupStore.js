@@ -6,8 +6,12 @@ class SignupStore {
         makeAutoObservable(this)
     }
 
-    signup = async (values)=>{
+    memberSignup = async (values)=>{
         return await http.post('/api/member/signup', values)
+    }
+
+    staffSignup = async (values)=>{
+        return await http.post('/api/staff/signup', values)
     }
 }
 

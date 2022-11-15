@@ -5,7 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
 
 
-export default function ShowMemberList () {
+export default function ShowStaffList () {
     const {userStore, updateStore}=useStore()
     const navigate=useNavigate()
     const searchInput = useRef(null)
@@ -13,11 +13,11 @@ export default function ShowMemberList () {
         page: 1,
         per_page: 3
     })
-    const [activeMember, setActiveMember]=useState({
+    const [activeStaff, setActiveStaff]=useState({
         list: [],
         count: 0
     })
-    const [inactiveMember, setInactiveMember]=useState({
+    const [inactiveStaff, setInactiveStaff]=useState({
         list: [],
         count: 0
     })
@@ -28,17 +28,17 @@ export default function ShowMemberList () {
         })
     }
 
-    const editMemberInfo=(data)=>{
-        navigate(`/update-member-profile?id=${data.member_id}`)
+    const editStaffInfo=(data)=>{
+        navigate(`/update-staff-profile?id=${data.staff_id}`)
     }
 
-    const switchMemberStatus=async (data)=>{
+    const switchStaffStatus=async (data)=>{
         let res
 
         if (data.membership_status){
-            res = await updateStore.deactivateMember({member_id: data.member_id})
+            res = await updateStore.deactivateStaff({staff_id: data.staff_id})
         }else {
-            res = await updateStore.activateMember({member_id: data.member_id})
+            res = await updateStore.activateStaff({staff_id: data.staff_id})
         }
         if (res.status===0){
             message.success(res.message)
@@ -121,11 +121,11 @@ export default function ShowMemberList () {
 
     const columns = [
         {
-            title: 'Member ID',
-            dataIndex: 'member_id',
-            key: 'member_id',
-            ...getColumnSearchProps('member_id'),
-            sorter: (a, b) => a.member_id.localeCompare(b.member_id),
+            title: 'Staff ID',
+            dataIndex: 'staff_id',
+            key: 'staff_id',
+            ...getColumnSearchProps('staff_id'),
+            sorter: (a, b) => a.staff_id.localeCompare(b.staff_id),
         },
         {
             title: 'Name',
@@ -135,13 +135,6 @@ export default function ShowMemberList () {
             sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
-            title: 'Birthday',
-            dataIndex: 'birthday',
-            key: 'birthday',
-            ...getColumnSearchProps('birthday'),
-            sorter: (a, b) => a.birthday.localeCompare(b.birthday),
-        },
-        {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
@@ -149,18 +142,17 @@ export default function ShowMemberList () {
             sorter: (a, b) => a.email.localeCompare(b.email),
         },
         {
-            title: 'Address',
-            dataIndex: 'address_line1',
-            key: 'address_line1',
-            ...getColumnSearchProps('address_line1'),
-            sorter: (a, b) => a.address_line1.localeCompare(b.address_line1),
+            title: 'Phone',
+            dataIndex: 'phone',
+            key: 'phone',
+            ...getColumnSearchProps('phone'),
+            sorter: (a, b) => a.phone.localeCompare(b.phone),
         },
         {
-            title: 'Expire Date',
-            dataIndex: 'expire_date',
-            key: 'expire_date',
-            ...getColumnSearchProps('expire_date'),
-            sorter: (a, b) => a.expire_date.localeCompare(b.expire_date),
+            title: 'User role',
+            dataIndex: 'user_role',
+            key: 'user_role',
+            sorter: (a, b) => a.user_role.localeCompare(b.user_role),
         },
         {
             title: 'Operation',
@@ -171,7 +163,7 @@ export default function ShowMemberList () {
                             type="primary"
                             shape="circle"
                             icon={<EditOutlined />}
-                            onClick={()=>editMemberInfo(data)}
+                            onClick={()=>editStaffInfo(data)}
                         />
                         {data.membership_status && (
                             <Button
@@ -179,7 +171,7 @@ export default function ShowMemberList () {
                                 danger
                                 shape="circle"
                                 icon={<UserDeleteOutlined />}
-                                onClick={()=>switchMemberStatus(data)}
+                                onClick={()=>switchStaffStatus(data)}
                             />
                         )}
                         {!data.membership_status && (
@@ -187,7 +179,7 @@ export default function ShowMemberList () {
                                 type="primary"
                                 shape="circle"
                                 icon={<UserAddOutlined />}
-                                onClick={()=>switchMemberStatus(data)}
+                                onClick={()=>switchStaffStatus(data)}
                             />
                         )}
                     </Space>
@@ -196,41 +188,39 @@ export default function ShowMemberList () {
         }
     ]
 
-    // load member list
+    // load staff list
     useEffect(() => {
         const loadList=async ()=>{
-            const active = await userStore.getActiveMemberList({params})
-            const inactive = await userStore.getInactiveMemberList({params})
-            const activeList = active.member_list
-            const inactiveList = inactive.member_list
+            const active = await userStore.getActiveStaffList({params})
+            const inactive = await userStore.getInactiveStaffList({params})
+            const activeList = active.staff_list
+            const inactiveList = inactive.staff_list
             const activeSize = activeList.length
             const inactiveSize = inactiveList.length
-            let activeMembers=[], inactiveMembers=[]
+            let activeStaffs=[], inactiveStaffs=[]
 
             for (let i = 0; i < activeSize; i++) {
                 let formatData={
                     ...activeList[i],
                     name: activeList[i].firstname+' '+activeList[i].middle_name+' '+activeList[i].lastname,
-                    birthday: activeList[i].birthday_year+'/'+activeList[i].birthday_month+'/'+activeList[i].birthday_date,
                     key: `${i}`
                 }
-                activeMembers.push(formatData)
+                activeStaffs.push(formatData)
             }
             for (let i = 0; i < inactiveSize; i++) {
                 let formatData={
                     ...inactiveList[i],
                     name: inactiveList[i].firstname+' '+inactiveList[i].middle_name+' '+inactiveList[i].lastname,
-                    birthday: inactiveList[i].birthday_year+'/'+inactiveList[i].birthday_month+'/'+inactiveList[i].birthday_date,
                     key: `${i}`
                 }
-                inactiveMembers.push(formatData)
+                inactiveStaffs.push(formatData)
             }
-            setActiveMember({
-                list: activeMembers,
+            setActiveStaff({
+                list: activeStaffs,
                 count: activeSize,
             })
-            setInactiveMember({
-                list: inactiveMembers,
+            setInactiveStaff({
+                list: inactiveStaffs,
                 count: inactiveSize,
             })
         }
@@ -244,33 +234,31 @@ export default function ShowMemberList () {
                     <Breadcrumb.Item>
                         <Link to="/">Home</Link>
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item>Member List</Breadcrumb.Item>
+                    <Breadcrumb.Item>Staff List</Breadcrumb.Item>
                 </Breadcrumb>
             }
             style={{ marginBottom: 20 }}
         >
-            <h2>{activeMember.count} active members in total</h2>
+            <h2>{activeStaff.count} active staffs in total</h2>
             <Table
-                // rowKey="id"
                 columns={columns}
-                dataSource={activeMember.list}
+                dataSource={activeStaff.list}
                 pagination={{
                     pageSize: params.per_page,
-                    total: activeMember.count,
+                    total: activeStaff.count,
                     onChange: pageChange
                 }}
             />
-            <h2>{inactiveMember.count} inactive members in total</h2>
+            <h2>{inactiveStaff.count} inactive staffs in total</h2>
             <Table
                 columns={columns}
-                dataSource={inactiveMember.list}
+                dataSource={inactiveStaff.list}
                 pagination={{
                     pageSize: params.per_page,
-                    total: inactiveMember.count,
+                    total: inactiveStaff.count,
                     onChange: pageChange
                 }}
             />
         </Card>
     )
 }
-

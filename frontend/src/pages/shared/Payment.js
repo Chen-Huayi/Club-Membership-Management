@@ -8,14 +8,14 @@ import {useStore} from "../../store";
 export default function Payment () {
     const [form] = Form.useForm()
     const [params]=useSearchParams()
-    const {userStore}=useStore()
+    const {updateStore}=useStore()
     const navigate=useNavigate()
     const member_id =params.get('id')
     const payAmount =params.get('amount')
 
     const onFinish = async (values) => {
         console.log('Pay amount: '+ values.amount)
-        await userStore.activateMember(member_id)
+        await updateStore.activateMember(member_id)
         navigate('/payment-confirmed')
         message.success('Your payment is confirmed!')
     }
