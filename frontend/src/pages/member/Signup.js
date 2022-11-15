@@ -1,7 +1,7 @@
 import {Button, Card, Checkbox, Form, Input, InputNumber, message, Select, Switch} from 'antd'
 import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import './MemberSignup.css'
+import './Signup.css'
 import {useStore} from '../../store';
 
 const { Option } = Select
@@ -21,7 +21,7 @@ const tailFormItemLayout = {
 }
 
 
-export default function MemberSignup() {
+export default function Signup() {
     const [form] = Form.useForm()
     const navigate=useNavigate()
     const {signupStore, settingStore}=useStore()
@@ -62,6 +62,7 @@ export default function MemberSignup() {
             settingStore.getMembershipFee()
                 .then(value => {
                     setFee(value.membership_fee)
+                    form.setFieldsValue({amount: value.membership_fee})
                 })
                 .catch(err=>{
                     throw Error(err)

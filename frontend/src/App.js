@@ -1,6 +1,6 @@
 import React from "react"
 import {Route, Routes, unstable_HistoryRouter as HistoryRouter} from "react-router-dom"
-import MemberSignup from "./pages/shared/MemberSignup"
+import MemberSignup from "./pages/member/Signup"
 import Login from "./pages/shared/Login"
 import Home from "./pages/shared/Home"
 import {history} from "./utils/history"
@@ -20,7 +20,7 @@ import Payment from "./pages/shared/Payment";
 import UnlockAccount from "./pages/shared/UnlockAccount";
 import SendEmail from "./pages/staff/SendEmail";
 import Notification from "./pages/member/Notification";
-import StaffSignup from "./pages/staff/StaffSignup";
+import StaffSignup from "./pages/staff/Signup";
 import {SystemAdminAuth} from "./components/authorization/SystemAdminAuth";
 import ShowStaffList from "./pages/staff/ShowStaffList";
 import UpdateStaffProfile from "./pages/staff/UpdateStaffProfile";

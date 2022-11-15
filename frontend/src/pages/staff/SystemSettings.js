@@ -2,7 +2,6 @@ import {Breadcrumb, Card, Form, InputNumber, message, Modal} from "antd";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {useStore} from "../../store";
-import {http} from "../../utils";
 
 const formItemLayout = {
     labelCol: {
@@ -12,7 +11,6 @@ const formItemLayout = {
         sm: { span: 12 }
     }
 }
-
 
 
 const SetMembershipFee = () => {
@@ -101,6 +99,7 @@ const SetMembershipFee = () => {
         </>
     )
 }
+
 
 export default function SystemSettings () {
     return(

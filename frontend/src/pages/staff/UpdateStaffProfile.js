@@ -37,6 +37,9 @@ export default function UpdateStaffProfile () {
                         if (result.status===0){
                             navigate('/staff-list')
                             message.success(result.message)
+                            setTimeout(()=>{
+                                window.location.reload()
+                            }, 300)
                         } else {
                             message.error(result.message)
                         }
@@ -53,11 +56,9 @@ export default function UpdateStaffProfile () {
 
     // backfill the user information to the form
     useEffect(()=>{
-        const loadDetail=async ()=>{
-            await userStore.getStaffInfo(staff_id)
+        const loadDetail= ()=>{
+            userStore.getStaffInfo(staff_id)
                 .then(currProfile=>{
-                    // const {...userInfo}=currProfile
-                    // form.setFieldsValue({...userInfo})
                     form.setFieldsValue(currProfile)
                 })
                 .catch(err=>{
@@ -132,7 +133,7 @@ export default function UpdateStaffProfile () {
                         label="Role"
                         rules={[{required: true, message: 'Please select role!'}]}
                     >
-                        <Select placeholder="select gender" style={{width: '180px'}}>
+                        <Select placeholder="select gender" style={{width: '200px'}}>
                             <Option value="Membership Admin">Membership Admin</Option>
                             <Option value="Club Management User">Club Management User</Option>
                             <Option value="System Admin">System Admin</Option>

@@ -20,7 +20,7 @@ const tailFormItemLayout = {
 }
 
 
-export default function StaffSignup() {
+export default function Signup() {
     const [form] = Form.useForm()
     const navigate=useNavigate()
     const {signupStore}=useStore()
