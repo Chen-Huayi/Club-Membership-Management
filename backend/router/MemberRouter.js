@@ -22,6 +22,7 @@ router.put('/member/activate', memberHandler.activateMember)
 
 router.post('/member/send-email', memberHandler.sendGroupEmail)
 router.get('/member/receive-email/:id', memberHandler.getNotification)
+router.put('/member/delete-email', memberHandler.deleteNotification)
 
 
 module.exports=router

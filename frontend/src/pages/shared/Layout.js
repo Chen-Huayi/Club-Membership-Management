@@ -1,4 +1,5 @@
 import {
+    BellOutlined,
     HomeOutlined,
     LogoutOutlined,
     SendOutlined,
@@ -43,6 +44,11 @@ const siderMemberMenus = [
         key: '/membership',
         icon: <ShoppingOutlined />,
         label: <Link to="/membership">Membership</Link>,
+    },
+    {
+        key: '/notification',
+        icon: <BellOutlined />,
+        label: <Link to="/notification">Notification</Link>,
     },
 ]
 const siderMembershipAdminMenus = [

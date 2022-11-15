@@ -19,6 +19,7 @@ import SuccessPaid from "./pages/shared/results/SuccessPaid";
 import Payment from "./pages/shared/Payment";
 import UnlockAccount from "./pages/shared/UnlockAccount";
 import SendEmail from "./pages/staff/SendEmail";
+import Notification from "./pages/member/Notification";
 
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
                     <Route path="settings" element={<MemberAuth><Settings /></MemberAuth>}/>
                     <Route path="membership" element={<MemberAuth><Membership /></MemberAuth>}/>
                     <Route path="renewal" element={<MemberAuth><Renewal /></MemberAuth>} />
+                    <Route path="notification" element={<MemberAuth><Notification /></MemberAuth>} />
 
                     <Route path="member-list" element={<MembershipAdminAuth><ShowMemberList /></MembershipAdminAuth>} />
                     <Route path="send-email" element={<MembershipAdminAuth><SendEmail /></MembershipAdminAuth>} />

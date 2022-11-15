@@ -285,11 +285,11 @@ exports.activateMember = async (req, res)=>{
 }
 
 
-
+// Emails/Notifications send, receive, and delete operations
 exports.sendGroupEmail = (req, res)=>{
     memberModel.updateMany(
         {membership_status: true},
-        {$push: {"notifications": {"content": req.body.content}}},
+        {$push: {"notifications": {"title": req.body.title, "content": req.body.content}}},
         (err)=>{
             if (err) console.log(err)
             res.handleMessage('Email already sent', 0)
@@ -297,9 +297,29 @@ exports.sendGroupEmail = (req, res)=>{
 }
 
 exports.getNotification = (req, res)=>{
-    console.log(req.params.id)
-
-    res.send('ok')
+    getUserById(req.params.id)
+        .then(member => {
+            if (!member){
+                return res.handleMessage('Wrong Member ID!')
+            }
+            res.send({
+                notifications: member.notifications
+            })
+        })
+        .catch(err=>{
+            throw Error(err)
+        })
 }
 
+exports.deleteNotification = (req, res)=>{
+    memberModel.updateOne(
+        {member_id: req.body.member_id},
+        {$pull: {"notifications": {"content": req.body.notificationContent}}},
+        (err)=>{
+            if (err) {
+                console.log(err)
+            }
+            res.handleMessage('This notification delete', 0)
+        })
+}
 

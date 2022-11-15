@@ -43,9 +43,16 @@ export default function SendEmail () {
                 onFinishFailed={onFinishFailed}
             >
                 <Form.Item
+                    label="Title"
+                    name="title"
+                    rules={[{required: true, message: 'Please enter title'}]}
+                >
+                    <Input placeholder="Enter your title"/>
+                </Form.Item>
+                <Form.Item
                     label="Content"
                     name="content"
-                    rules={[{ required: true, message: 'Please enter content' }]}
+                    rules={[{required: true, message: 'Please enter content'}]}
                 >
                     <TextArea
                         rows={8}

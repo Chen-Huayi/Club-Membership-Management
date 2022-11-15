@@ -16,7 +16,7 @@ class UserStore {
 
     sendGroupEmail = async (values) => await http.post('/api/member/send-email', values)
     getNotificationEmail = async (member_id) => await http.get(`/api/member/receive-email/${member_id}`)
-
+    deleteNotification = async (values) => await http.put('/api/member/delete-email', values)
 
     // For club staffs
     getStaffInfo = async (staff_id) => await http.get(`/api/staff/profile/${staff_id}`)
