@@ -1,13 +1,14 @@
-import {Breadcrumb, Button, Card, Form, InputNumber, message} from 'antd';
+import {Breadcrumb, Button, Card, Form, Input, InputNumber, message} from 'antd';
 import React, {useEffect, useState} from 'react';
-import '../member/Profile.css'
 import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
 
 
 export default function Renewal () {
+    const [form]=Form.useForm()
     const navigate=useNavigate()
-    const {loginStore, userStore}=useStore()
+    const {loginStore, userStore, settingStore}=useStore()
+    const [fee, setFee] = useState(1)
     const [userInfo, setUserInfo]=useState({
         membership: loginStore.membership_status
     })
@@ -21,15 +22,32 @@ export default function Renewal () {
     }
 
     useEffect(()=>{
-        const loadInfo = async () => {
-            await userStore.getMemberInfo(loginStore.member_id)
+        const loadInfo = () => {
+            userStore.getMemberInfo(loginStore.member_id)
                 .then(result=>{
                     setUserInfo({
                         membership: result.membership_status
                     })
                 })
+                .catch(err=>{
+                    throw Error(err)
+                })
         }
         loadInfo()
+    }, [])
+
+    useEffect( ()=>{
+        const loadFee= ()=>{
+            settingStore.getMembershipFee()
+                .then(result => {
+                    setFee(result.membership_fee)
+                    form.setFieldsValue({amount: result.membership_fee})
+                })
+                .catch(err=>{
+                    throw Error(err)
+                })
+        }
+        loadFee()
     }, [])
 
     return (
@@ -53,10 +71,11 @@ export default function Renewal () {
                 }
             >
                 <Form
+                    form={form}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     name="renewal-form"
-                    initialValues={{amount: 648}}
+                    initialValues={{amount: fee}}
                 >
                     <Form.Item
                         label="Amount"
@@ -64,8 +83,8 @@ export default function Renewal () {
                         rules={[{required: true, message: 'Please enter a number'}]}
                     >
                         <InputNumber
-                            min={648}
-                            max={648}
+                            min={fee}
+                            max={fee}
                             formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             style={{width: '120px'}}
                         />
@@ -75,6 +94,7 @@ export default function Renewal () {
                         <Button type="primary" htmlType="submit" size="large" shape="round">
                             Go to Payment Page
                         </Button>
+
                     </Form.Item>
                 </Form>
             </Card>

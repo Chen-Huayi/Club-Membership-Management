@@ -3,6 +3,7 @@ import SignupStore from './signupStore';
 import LoginStore from './loginStore'
 import UpdateStore from './updateStore'
 import UserStore from './userStore'
+import SettingStore from "./settingStore";
 
 class RootStore {
     constructor() {
@@ -10,6 +11,7 @@ class RootStore {
         this.loginStore = new LoginStore()
         this.updateStore = new UpdateStore()
         this.userStore = new UserStore()
+        this.settingStore = new SettingStore()
     }
 }
 

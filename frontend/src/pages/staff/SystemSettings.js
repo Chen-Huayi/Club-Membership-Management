@@ -15,11 +15,9 @@ const formItemLayout = {
 
 
 
-
-
-
 const SetMembershipFee = () => {
     const [form] = Form.useForm()
+    const {settingStore}=useStore()
     const [open, setOpen] = useState(false)
     const [fee, setFee] = useState(1)
 
@@ -30,7 +28,7 @@ const SetMembershipFee = () => {
     const handleOk = async () => {
         await form.validateFields()
             .then(value => {
-                http.put('/api/annual-fee', value)
+                settingStore.updateMembershipFee(value)
                     .then(result=>{
                         if (result.status===0){
                             message.success(result.message)
@@ -38,12 +36,12 @@ const SetMembershipFee = () => {
                         } else{
                             message.error(result.message)
                         }
+                        form.resetFields()
+                        setOpen(false)
                     })
                     .catch(err=>{
                         throw Error(err)
                     })
-                form.resetFields()
-                setOpen(false)
             })
             .catch(reason => {
                 console.log('Validate Failed:', reason)
@@ -56,8 +54,8 @@ const SetMembershipFee = () => {
     }
 
     useEffect( ()=>{
-        const loadFee=async()=>{
-            await http.get('/api/annual-fee')
+        const loadFee=()=>{
+            settingStore.getMembershipFee()
                 .then(value => {
                     setFee(value.membership_fee)
                 })

@@ -15,7 +15,7 @@ export default function Payment () {
 
     const onFinish = async (values) => {
         console.log('Pay amount: '+ values.amount)
-        await updateStore.activateMember(member_id)
+        await updateStore.activateMember({member_id})
         navigate('/payment-confirmed')
         message.success('Your payment is confirmed!')
     }

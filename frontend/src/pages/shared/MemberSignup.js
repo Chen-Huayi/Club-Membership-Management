@@ -1,5 +1,5 @@
 import {Button, Card, Checkbox, Form, Input, InputNumber, message, Select, Switch} from 'antd'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import './MemberSignup.css'
 import {useStore} from '../../store';
@@ -24,7 +24,8 @@ const tailFormItemLayout = {
 export default function MemberSignup() {
     const [form] = Form.useForm()
     const navigate=useNavigate()
-    const {signupStore}=useStore()
+    const {signupStore, settingStore}=useStore()
+    const [fee, setFee] = useState(1)
     const [payment, setPayment]=useState(true)
 
     const onFinish = async (values) => {
@@ -56,6 +57,19 @@ export default function MemberSignup() {
         setPayment(!value)
     }
 
+    useEffect( ()=>{
+        const loadFee=()=>{
+            settingStore.getMembershipFee()
+                .then(value => {
+                    setFee(value.membership_fee)
+                })
+                .catch(err=>{
+                    throw Error(err)
+                })
+        }
+        loadFee()
+    }, [])
+
     return (
         <div className="register">
             <Card className="register-container">
@@ -65,7 +79,7 @@ export default function MemberSignup() {
                     name="register"
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
-                    initialValues={{middle_name: '', amount: 648}}
+                    initialValues={{middle_name: '', amount: fee}}
                     scrollToFirstError
                 >
                     <div className="register-heading">Register an Account</div>
@@ -253,8 +267,8 @@ export default function MemberSignup() {
                         rules={[{required: true, message: 'Please enter a number'}]}
                     >
                         <InputNumber
-                            min={648}
-                            max={648}
+                            min={fee}
+                            max={fee}
                             formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             style={{width: '120px'}}
                         />
