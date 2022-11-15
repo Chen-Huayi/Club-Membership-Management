@@ -7,8 +7,8 @@
  ******************************************************************************************/
 import React, {useEffect, useState} from "react";
 import "./Home.css";
-import home_img from '../../assets/home.png'
-import {useStore} from "../../store";
+import home_img from '../assets/home.png'
+import {useStore} from "../store";
 
 
 export default function Home() {

@@ -2,7 +2,7 @@ import {Button, Form, InputNumber, message} from 'antd';
 import React from 'react';
 import './Payment.css'
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
-import {useStore} from "../../store";
+import {useStore} from "../store";
 
 
 export default function Payment () {

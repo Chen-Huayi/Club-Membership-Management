@@ -3,7 +3,7 @@
 import {Button, Col, Form, Input, message, Row} from 'antd'
 import React from 'react';
 import {LockOutlined} from "@ant-design/icons"
-import {useStore} from "../../store";
+import {useStore} from "../store";
 import {useNavigate} from "react-router-dom";
 
 

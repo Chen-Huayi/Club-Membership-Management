@@ -4,7 +4,9 @@ import {
     LogoutOutlined,
     SendOutlined,
     SettingOutlined,
-    ShoppingOutlined, TeamOutlined, UserAddOutlined, UsergroupAddOutlined,
+    ShoppingOutlined,
+    TeamOutlined,
+    UserAddOutlined,
     UserOutlined
 } from '@ant-design/icons';
 import {Layout, Menu, Popconfirm} from 'antd';
@@ -12,7 +14,7 @@ import {observer} from 'mobx-react-lite'
 import './Layout.css'
 import React, {useEffect, useState} from 'react';
 import {Link, Outlet, useLocation} from "react-router-dom";
-import {useStore} from "../../store";
+import {useStore} from "../store";
 
 
 const { Header, Sider } = Layout;

@@ -1,16 +1,9 @@
-import {
-    FacebookOutlined,
-    GoogleOutlined,
-    LockOutlined,
-    MobileOutlined,
-    TwitterOutlined,
-    UserOutlined
-} from '@ant-design/icons';
-import {Button, Checkbox, Col, Form, Input, message, Row, Space, Tabs} from 'antd';
+import {FacebookOutlined, GoogleOutlined, LockOutlined, TwitterOutlined, UserOutlined} from '@ant-design/icons';
+import {Button, Checkbox, Form, Input, message, Space, Tabs} from 'antd';
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import './Login.css'
-import {useStore} from '../../store';
+import {useStore} from '../store';
 
 const iconStyles = {
     marginInlineStart: '16px',

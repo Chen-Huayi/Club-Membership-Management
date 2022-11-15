@@ -1,29 +1,31 @@
 import React from "react"
 import {Route, Routes, unstable_HistoryRouter as HistoryRouter} from "react-router-dom"
-import MemberSignup from "./pages/member/Signup"
-import Login from "./pages/shared/Login"
-import Home from "./pages/shared/Home"
 import {history} from "./utils/history"
-import Profile from "./pages/member/Profile";
-import MainLayout from "./pages/shared/Layout";
 import {LoggedAuth} from "./components/authorization/LoggedAuth";
-import UpdateMemberProfile from "./pages/staff/UpdateMemberProfile";
-import Settings from "./pages/member/Settings";
-import Membership from "./pages/member/Membership";
-import NotFound404 from "./pages/shared/results/404";
-import Renewal from "./pages/member/Renewal";
 import {MembershipAdminAuth} from "./components/authorization/MembershipAdminAuth";
 import {MemberAuth} from "./components/authorization/MemberAuth";
-import ShowMemberList from "./pages/staff/ShowMemberList";
-import SuccessPaid from "./pages/shared/results/SuccessPaid";
-import Payment from "./pages/shared/Payment";
-import UnlockAccount from "./pages/shared/UnlockAccount";
-import SendEmail from "./pages/staff/SendEmail";
-import Notification from "./pages/member/Notification";
-import StaffSignup from "./pages/staff/Signup";
 import {SystemAdminAuth} from "./components/authorization/SystemAdminAuth";
+import NotFound404 from "./pages/404";
+import SuccessPaid from "./pages/SuccessPaid";
+import Payment from "./pages/Payment";
+import UnlockAccount from "./pages/UnlockAccount";
+import Login from "./pages/Login"
+import MainLayout from "./pages/Layout";
+import Home from "./pages/Home"
+// Members
+import MemberSignup from "./pages/member/Signup"
+import Profile from "./pages/member/Profile";
+import Settings from "./pages/member/Settings";
+import Membership from "./pages/member/Membership";
+import Renewal from "./pages/member/Renewal";
+import Notification from "./pages/member/Notification";
+// Staffs
+import StaffSignup from "./pages/staff/Signup";
+import ShowMemberList from "./pages/staff/ShowMemberList";
 import ShowStaffList from "./pages/staff/ShowStaffList";
+import UpdateMemberProfile from "./pages/staff/UpdateMemberProfile";
 import UpdateStaffProfile from "./pages/staff/UpdateStaffProfile";
+import SendEmail from "./pages/staff/SendEmail";
 import SystemSettings from "./pages/staff/SystemSettings";
 
 
