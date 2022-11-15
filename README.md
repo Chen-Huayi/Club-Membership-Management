@@ -20,17 +20,19 @@ Continually updated...✅
 git clone https://github.com/Chen-Huayi/Membership-Management.git
 ```
 **Run**
-+ In `/Membership-Management/backend` directory:
-```shell
-npm install
-npm run server
-```
-+ In `/Membership-Management/frontend` directory:
-```shell
-npm install
-npm run start
-```
-
+1. Make sure the variable `PORT`(default: `8000`) will be the same in both 
+   + `/backend/config.js` 
+   + `/frontend/config.js`
+2. In `/Membership-Management/backend` directory:
+    ```shell
+    npm install
+    npm run server
+    ```
+3. In `/Membership-Management/frontend` directory:
+    ```shell
+    npm install
+    npm run start
+    ```
 ## Preview Images
 ![](/img/)
 ![](/img/)
