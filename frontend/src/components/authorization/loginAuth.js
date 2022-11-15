@@ -2,10 +2,10 @@ import {token} from '../../utils';
 import {Navigate} from 'react-router-dom'
 
 
-// <LoggedAuth> <Layout/> </LoggedAuth>
+// <LoginAuth> <Layout/> </LoginAuth>
 // Login：<><Layout/></>
 // Not login：<Navigate to="/login" replace />
-function LoggedAuth({children}){
+function LoginAuth({children}){
     if (token){
         return <>{children}</>
     }else {
@@ -13,4 +13,4 @@ function LoggedAuth({children}){
     }
 }
 
-export {LoggedAuth}
+export {LoginAuth}

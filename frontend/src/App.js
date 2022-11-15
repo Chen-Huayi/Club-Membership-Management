@@ -1,10 +1,10 @@
 import React from "react"
 import {Route, Routes, unstable_HistoryRouter as HistoryRouter} from "react-router-dom"
 import {history} from "./utils/history"
-import {LoggedAuth} from "./components/authorization/LoggedAuth";
-import {MembershipAdminAuth} from "./components/authorization/MembershipAdminAuth";
-import {MemberAuth} from "./components/authorization/MemberAuth";
-import {SystemAdminAuth} from "./components/authorization/SystemAdminAuth";
+import {LoginAuth} from "./components/authorization/loginAuth";
+import {MembershipAdminAuth} from "./components/authorization/membershipAdminAuth";
+import {MemberAuth} from "./components/authorization/memberAuth";
+import {SystemAdminAuth} from "./components/authorization/systemAdminAuth";
 import NotFound404 from "./pages/404";
 import SuccessPaid from "./pages/SuccessPaid";
 import Payment from "./pages/Payment";
@@ -33,7 +33,7 @@ export default function App() {
     return (
         <HistoryRouter history={history}>
             <Routes>
-                <Route path="/" element={<LoggedAuth><MainLayout /></LoggedAuth>}>
+                <Route path="/" element={<LoginAuth><MainLayout /></LoginAuth>}>
                     <Route index element={<Home />} />
                     <Route path="profile" element={<MemberAuth><Profile /></MemberAuth>} />
                     <Route path="settings" element={<MemberAuth><Settings /></MemberAuth>}/>
