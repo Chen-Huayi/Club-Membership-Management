@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {token, member_id, staff_id, firstname, lastname, user_role, membership_status, http, setValue, removeToken} from '../utils';
+import {token, member_id, staff_id, firstname, lastname, user_role, membership_status, expire_date, http, setValue, removeToken} from '../utils';
 
 class LoginStore{
     token=token || ''
@@ -8,6 +8,7 @@ class LoginStore{
     lastname=lastname
     user_role=user_role
     membership_status=membership_status
+    expire_date=expire_date
 
     staff_id=staff_id
 
@@ -31,6 +32,7 @@ class LoginStore{
                     this.lastname=result.lastname
                     this.user_role=result.user_role
                     this.membership_status=result.membership_status
+                    this.expire_date=result.expire_date
                 }
                 setValue(result)
             })

@@ -124,7 +124,7 @@ exports.login = (req, res)=>{
             updateByObjId(member._id, {fail_login_count: 0}, `Club member [${member_id}] login successfully!`, res)
             const userObj = {...member._doc, password:''}
             const {fail_login_count, __v, ...rest} = userObj
-            const {firstname, lastname, user_role, membership_status}=rest
+            const {firstname, lastname, user_role, membership_status, expire_date}=rest
 
             // TODO user_role加密
 
@@ -141,7 +141,8 @@ exports.login = (req, res)=>{
                 firstname,
                 lastname,
                 user_role,
-                membership_status
+                membership_status,
+                expire_date
             })
         })
         .catch(err => {

@@ -12,36 +12,49 @@ import {useStore} from "../../store";
 
 
 export default function Home() {
+    const millisecondsADay=1000*60*60*24
     const {loginStore, userStore}=useStore()
     const [userInfo, setUserInfo]=useState({
         name: loginStore.firstname+' '+loginStore.lastname,
-        membership: loginStore.membership_status
+        membership: loginStore.membership_status,
+        expireDate: loginStore.expire_date
     })
 
     useEffect(()=>{
         const loadInfo = async () => {
-            let userInfo
+            let userData
 
             if (loginStore.user_role==='Club Member'){
-                userInfo=await userStore.getMemberInfo(loginStore.member_id)
+                userData=await userStore.getMemberInfo(loginStore.member_id)
             }else if (loginStore.user_role==='Membership Admin'){
-                userInfo=await userStore.getStaffInfo(loginStore.staff_id)
+                userData=await userStore.getStaffInfo(loginStore.staff_id)
             }
             setUserInfo({
-                name: userInfo.firstname+' '+userInfo.lastname,
-                membership: userInfo.membership_status
+                name: userData.firstname+' '+userData.lastname,
+                membership: userData.membership_status,
+                expireDate: userData.expire_date
             })
         }
         loadInfo()
     }, [])
 
+    const isExpireInOneMonth = (expireDate) => {
+        return new Date(expireDate).getTime() < new Date().getTime()+millisecondsADay*30
+    }
+    
+    const calculateRemainDays = (expireDate) => {
+        return Math.ceil((new Date(expireDate).getTime()-new Date().getTime())/millisecondsADay)
+    }
+    
     return (
         <div className="home-page">
             <div className="home-page-content">
                 <div className="userinfo-title">
                     Welcome back, {userInfo.name}!
                     <br/>
-                    {userInfo.membership? '😍 You are' : '😢 You are not'} our membership
+                    {userInfo.membership ? '😍 You are' : '😢 You are not'} our membership
+                    <br/>
+                    {userInfo.membership ? `${isExpireInOneMonth(userInfo.expireDate) ? `Your membership is expire in ${calculateRemainDays(userInfo.expireDate)} day(s)` : ''}` : ''}
                 </div>
                 <div className="home-page-image">
                     <img

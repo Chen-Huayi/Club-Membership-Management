@@ -12,9 +12,9 @@ const removeToken=()=>{
     return window.localStorage.removeItem(secretKey)
 }
 
-const {token, member_id, staff_id, firstname, lastname, user_role, membership_status} = getValue() ? JSON.parse(getValue()) : ''
+const {token, member_id, staff_id, firstname, lastname, user_role, membership_status, expire_date} = getValue() ? JSON.parse(getValue()) : ''
 
 export {
-    token, member_id, staff_id, firstname, lastname, user_role, membership_status,
+    token, member_id, staff_id, firstname, lastname, user_role, membership_status, expire_date,
     setValue, removeToken
 }
