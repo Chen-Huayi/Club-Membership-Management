@@ -1,6 +1,6 @@
 require('../db/mongo_server')
 const mongoose = require('mongoose')
-const bcrypt=require('bcryptjs')
+// const bcrypt=require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('../config')
 const memberSchema = require('../schema/member')
@@ -151,6 +151,7 @@ exports.login = (req, res)=>{
 
 
 /*------------ for only after member login into account------------*/
+// Get user information
 exports.getActiveMemberList = (req, res)=>{
     getMemberList(true, res)
 }
@@ -185,7 +186,7 @@ exports.getMemberProfile = (req, res)=>{
 }
 
 
-
+// Update attributes
 exports.updateMemberInfo = (req, res)=>{
     updateInfo(
         req.body.member_id,
@@ -229,7 +230,7 @@ exports.resetPassword = (req, res)=>{
 }
 
 
-
+// Switch membership status of members
 exports.deactivateMember = (req, res)=>{
     updateInfo(
         req.body.member_id,
@@ -285,8 +286,19 @@ exports.activateMember = async (req, res)=>{
 
 
 
-// TODO
 exports.sendGroupEmail = (req, res)=>{
+    memberModel.updateMany(
+        {membership_status: true},
+        {$push: {"notifications": {"content": req.body.content}}},
+        (err)=>{
+            if (err) console.log(err)
+            res.handleMessage('Email already sent', 0)
+        })
+}
+
+exports.getNotification = (req, res)=>{
+    console.log(req.params.id)
+
     res.send('ok')
 }
 

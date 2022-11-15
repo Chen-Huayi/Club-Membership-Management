@@ -27,7 +27,7 @@ const memberSchema = new Schema({
     membership_status: {type: Boolean, default: false, required: true},  // true for Active; false for Inactive
     recent_renewal_date: {type: String, default: 'Never renew', required: true},
     account_locked: {type: Boolean, default: false, required: true},
-    notification: {type: String, default: ''}
+    notifications: [],
 })
 
 module.exports=memberSchema

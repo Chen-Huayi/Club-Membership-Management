@@ -1,4 +1,11 @@
-import {HomeOutlined, LogoutOutlined, SettingOutlined, ShoppingOutlined, UserOutlined} from '@ant-design/icons';
+import {
+    HomeOutlined,
+    LogoutOutlined,
+    SendOutlined,
+    SettingOutlined,
+    ShoppingOutlined,
+    UserOutlined
+} from '@ant-design/icons';
 import {Layout, Menu, Popconfirm} from 'antd';
 import {observer} from 'mobx-react-lite'
 import './Layout.css'
@@ -38,7 +45,7 @@ const siderMemberMenus = [
         label: <Link to="/membership">Membership</Link>,
     },
 ]
-const siderAdminMenus = [
+const siderMembershipAdminMenus = [
     {
         key: '/',
         icon: <HomeOutlined />,
@@ -49,6 +56,11 @@ const siderAdminMenus = [
         icon: <UserOutlined />,
         label: <Link to="/member-list">Member List</Link>,
     },
+    {
+        key: '/send-email',
+        icon: <SendOutlined />,
+        label: <Link to="/send-email">Send Email</Link>
+    }
 ]
 
 
@@ -122,7 +134,7 @@ const MainLayout = () => {
                             mode="inline"
                             theme="light"
                             defaultSelectedKeys={[pathname]}
-                            items={siderAdminMenus}
+                            items={siderMembershipAdminMenus}
                             style={{ height: '100%', fontSize: 'large' }}
                         />
                     </Sider>

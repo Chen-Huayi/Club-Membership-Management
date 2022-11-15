@@ -1,5 +1,5 @@
 import {EditOutlined, SearchOutlined, UserAddOutlined, UserDeleteOutlined} from '@ant-design/icons'
-import {Breadcrumb, Button, Card, Input, Layout, message, Space, Table} from 'antd'
+import {Breadcrumb, Button, Card, Input, message, Space, Table} from 'antd'
 import React, {useEffect, useRef, useState} from 'react'
 import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
@@ -128,11 +128,11 @@ export default function ShowMemberList () {
             sorter: (a, b) => a.member_id.localeCompare(b.member_id),
         },
         {
-            title: 'First Name',
-            dataIndex: 'firstname',
-            key: 'firstname',
-            ...getColumnSearchProps('firstname'),
-            sorter: (a, b) => a.firstname.localeCompare(b.firstname),
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+            ...getColumnSearchProps('name'),
+            sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
             title: 'Birthday',
@@ -210,6 +210,7 @@ export default function ShowMemberList () {
             for (let i = 0; i < activeSize; i++) {
                 let formatData={
                     ...activeList[i],
+                    name: activeList[i].firstname+' '+activeList[i].middle_name+' '+activeList[i].lastname,
                     birthday: activeList[i].birthday_year+'/'+activeList[i].birthday_month+'/'+activeList[i].birthday_date,
                     key: `${i}`
                 }
@@ -218,6 +219,7 @@ export default function ShowMemberList () {
             for (let i = 0; i < inactiveSize; i++) {
                 let formatData={
                     ...inactiveList[i],
+                    name: inactiveList[i].firstname+' '+inactiveList[i].middle_name+' '+inactiveList[i].lastname,
                     birthday: inactiveList[i].birthday_year+'/'+inactiveList[i].birthday_month+'/'+inactiveList[i].birthday_date,
                     key: `${i}`
                 }
@@ -236,41 +238,39 @@ export default function ShowMemberList () {
     }, [params])
 
     return (
-        <Layout style={{height: '100vh'}}>
-            <Card
-                title={
-                    <Breadcrumb separator=">">
-                        <Breadcrumb.Item>
-                            <Link to="/">Home</Link>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>Member List</Breadcrumb.Item>
-                    </Breadcrumb>
-                }
-                style={{ marginBottom: 20 }}
-            >
-                <h2>{activeMember.count} active members in total</h2>
-                <Table
-                    // rowKey="id"
-                    columns={columns}
-                    dataSource={activeMember.list}
-                    pagination={{
-                        pageSize: params.per_page,
-                        total: activeMember.count,
-                        onChange: pageChange
-                    }}
-                />
-                <h2>{inactiveMember.count} inactive members in total</h2>
-                <Table
-                    columns={columns}
-                    dataSource={inactiveMember.list}
-                    pagination={{
-                        pageSize: params.per_page,
-                        total: inactiveMember.count,
-                        onChange: pageChange
-                    }}
-                />
-            </Card>
-        </Layout>
+        <Card
+            title={
+                <Breadcrumb separator=">">
+                    <Breadcrumb.Item>
+                        <Link to="/">Home</Link>
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item>Member List</Breadcrumb.Item>
+                </Breadcrumb>
+            }
+            style={{ marginBottom: 20 }}
+        >
+            <h2>{activeMember.count} active members in total</h2>
+            <Table
+                // rowKey="id"
+                columns={columns}
+                dataSource={activeMember.list}
+                pagination={{
+                    pageSize: params.per_page,
+                    total: activeMember.count,
+                    onChange: pageChange
+                }}
+            />
+            <h2>{inactiveMember.count} inactive members in total</h2>
+            <Table
+                columns={columns}
+                dataSource={inactiveMember.list}
+                pagination={{
+                    pageSize: params.per_page,
+                    total: inactiveMember.count,
+                    onChange: pageChange
+                }}
+            />
+        </Card>
     )
 }
 

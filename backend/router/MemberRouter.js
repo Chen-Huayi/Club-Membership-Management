@@ -20,9 +20,8 @@ router.put('/member/reset-pwd', memberHandler.resetPassword)  // for user forgot
 router.put('/member/deactivate', memberHandler.deactivateMember)
 router.put('/member/activate', memberHandler.activateMember)
 
+router.post('/member/send-email', memberHandler.sendGroupEmail)
+router.get('/member/receive-email/:id', memberHandler.getNotification)
 
-
-//TODO
-router.get('/member/send-email', memberHandler.sendGroupEmail)
 
 module.exports=router
