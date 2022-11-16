@@ -18,7 +18,8 @@ npm run server
 In `config.js` file:
 + jwtSecretKey *( JSON web token secret key )*
 + expiresIn *( token expire time duration )*
-+ dbServer *( the url to connect to mongodb database )*
 + PORT *( must be the same with frontend PORT, default 8000 )*
++ dbServer *( the url to connect to mongodb database )*
++ sysAdmin *( default system admin staff )*
 + company *( company name )*
 + membership_fee *( default annual fee )*
