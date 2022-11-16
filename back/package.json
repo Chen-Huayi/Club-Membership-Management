@@ -1,5 +1,5 @@
 {
-    "name": "backend",
+    "name": "membership-server",
     "version": "1.0.0",
     "main": "app.js",
     "scripts": {

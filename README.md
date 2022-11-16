@@ -22,14 +22,14 @@ Continually updated...✅
     ```
 **Run**
 1. Make sure the variable `PORT` must be the same (default: `8000`) in both
-   + `/backend/config.js`
-   + `/frontend/config.js`
-2. In `/Membership-Management/backend` directory:
+   + `/back/config.js`
+   + `/front/config.js`
+2. In `/back` directory:
     ```shell
     npm install
     npm run server
     ```
-3. In `/Membership-Management/frontend` directory:
+3. In `/front` directory:
     ```shell
     npm install
     npm run start
