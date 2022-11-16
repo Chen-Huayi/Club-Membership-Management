@@ -23,7 +23,7 @@ Continually updated...✅
 **Run**
 1. Make sure the variable `PORT` must be the same (default: `8000`) in both
    + `/back/config.js`
-   + `/front/config.js`
+   + `/front/src/config.js`
 2. In `/back` directory:
     ```shell
     npm install
