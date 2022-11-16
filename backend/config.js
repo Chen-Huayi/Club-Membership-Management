@@ -1,4 +1,4 @@
-const db_url='ef297b1b-0ee0-4-231-b9ee:v5RzRacZA9w7VBAIlOaTkgZQkdabLiLy3iAWX1RMr5jq1WEp8N6JROR35MSKmyXddVmfyD3cqTkWTasChDdVYw%3D%3D@ef297b1b-0ee0-4-231-b9ee.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@ef297b1b-0ee0-4-231-b9ee@'
+const db_url='mongodb://azurecosmos-chuaii12138:cyJyCwfbIfxK1JDLIcfaNn9AUoTIuf75Gd28qh5Ul4wpUMOd3MucY5z55pugfnnC52bv2xwKDsa3ACDbXBWw4Q==@azurecosmos-chuaii12138.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@azurecosmos-chuaii12138@'
 const sysAdmin= {
     staff_id: 'sys-admin',
     user_role: 'System Admin',
@@ -14,7 +14,7 @@ module.exports = {
     jwtSecretKey: 'sa_nv_nei_78',
     expiresIn: '1h',
     // dbServer: 'mongodb://localhost:27017/club_member',
-    dbServer: `mongodb://${db_url}`,
+    dbServer: db_url,
     PORT: 8000,
     sysAdmin,
     company: 'green_space_club',

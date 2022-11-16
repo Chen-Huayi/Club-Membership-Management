@@ -19,5 +19,5 @@ npm run start
 ```
 ### Configuration
 In `config.js` file:
-+ secretKey
-+ PORT
++ secretKey *( secret key for local storage )*
++ PORT *( must be the same with backend PORT, default 8000 )*

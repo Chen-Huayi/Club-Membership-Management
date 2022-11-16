@@ -8,11 +8,11 @@ Continually updated...✅
 [//]: # (+ [x] User login)
 [//]: # (+ [x] Update user profile)
 
-## Languages and Tools
+## Frameworks and Tools
 + **Frontend**: React
 + **Backend**: Node.js (Express)
-+ **Database**: MongoDB
-+ **Tools**: WebStorm, Postman, Navicat
++ **Database**: MongoDB *by Azure Cosmos DB API*
++ **Tools**: WebStorm, Postman, React DevTools, Navicat
 
 ## How to Run ▶
 **Clone**
