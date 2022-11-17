@@ -5,8 +5,8 @@ const cors = require('cors')
 const joi = require('joi')
 const bodyParser = require("body-parser")
 const config=require('./config')
-const memberRouter=require('./router/MemberRouter')
-const staffRouter=require('./router/StaffRouter')
+const memberRouter=require('./router/memberRouter')
+const staffRouter=require('./router/staffRouter')
 
 // Cross-Origin Resource Sharing
 app.use(cors())

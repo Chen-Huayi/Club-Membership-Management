@@ -24,8 +24,13 @@ class UserStore {
     getReplaceCardList = async ({params}) => await http.get('/api/member/replace-card-list', {params})
     sendToEligibleMember = (values) => http.put('/api/member/deliver-card', values)
 
-    // membership record
+    // Membership record
     getMembershipRecord=({params})=>http.get('/api/membership/record', {params})
+
+    // Time range filter
+    getNewRegisteredList = async ({params}, range) => await http.get(`/api/member/registered/${range}`, {params})
+    getExpiredList = async ({params}, range) => await http.get(`/api/member/expired/${range}`, {params})
+    getRenewedList = async ({params}, range) => await http.get(`/api/member/renewed/${range}`, {params})
 
 }
 export default UserStore

@@ -1,5 +1,5 @@
-import {EditOutlined, SearchOutlined, UserAddOutlined, UserDeleteOutlined} from '@ant-design/icons'
-import {Breadcrumb, Button, Card, Input, message, Space, Table, DatePicker, Form} from 'antd'
+import {SearchOutlined} from '@ant-design/icons'
+import {Breadcrumb, Button, Card, DatePicker, Form, Input, Space, Table} from 'antd'
 import React, {useEffect, useRef, useState} from 'react'
 import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
@@ -9,21 +9,26 @@ const { RangePicker } = DatePicker;
 
 export default function ViewFilterResult () {
     const [form]=Form.useForm()
-    const {userStore, updateStore}=useStore()
+    const {userStore}=useStore()
     const navigate=useNavigate()
     const searchInput = useRef(null)
     const [params, setParams] = useState({
         page: 1,
         per_page: 3
     })
-    const [activeMember, setActiveMember]=useState({
+    const [registeredMember, setRegisteredMember]=useState({
         list: [],
         count: 0
     })
-    const [inactiveMember, setInactiveMember]=useState({
+    const [expiredMember, setExpiredMember]=useState({
         list: [],
         count: 0
     })
+    const [renewedMember, setRenewedMember]=useState({
+        list: [],
+        count: 0
+    })
+    const [timeRange, setTimeRange]=useState('1970-01-02 2099-12-30')
 
     const pageChange = (page)=>{
         setParams({
@@ -154,7 +159,7 @@ export default function ViewFilterResult () {
                         <Button
                             type="primary"
                             shape="circle"
-                            icon={<EditOutlined />}
+                            icon={<SearchOutlined />}
                             onClick={()=>viewMemberInfo(data)}
                         />
                     </Space>
@@ -164,7 +169,7 @@ export default function ViewFilterResult () {
     ]
 
     const buildMemberList=(members)=>{
-        const memberList = members.member_list
+        const memberList = members.record_list
         const size = memberList.length
         let list=[]
 
@@ -173,7 +178,6 @@ export default function ViewFilterResult () {
             let formatData={
                 ...user,
                 name: user.firstname+' '+user.middle_name+' '+user.lastname,
-                birthday: user.birthday_year+'/'+user.birthday_month+'/'+user.birthday_date,
                 key: `${i}`
             }
             list.push(formatData)
@@ -181,16 +185,15 @@ export default function ViewFilterResult () {
         return list
     }
 
+    const formatDateString = (date)=>{
+        return date.getFullYear() +'-'+ (date.getMonth()+1).toString().padStart(2, '0')+'-'+ (date.getDate()).toString().padStart(2, '0')
+    }
+
     const onFinish = (values) => {
-        console.log(values)
-
-        // userStore.getMembershipRecord()
-        //     .then(result => {
-        //         if (result.status===0){
-        //
-        //         }
-        //     })
-
+        const start=formatDateString(new Date(values.time_range[0]._d))
+        const end=formatDateString(new Date(values.time_range[1]._d))
+        const range=start+' '+end
+        setTimeRange(range)
     }
 
     const onFinishFailed = (err) => {
@@ -199,29 +202,37 @@ export default function ViewFilterResult () {
 
     const resetForm = () => {
         form.resetFields()
+        setTimeRange('1970-01-02 2099-12-30')
     }
 
     // load member list
     useEffect(() => {
         const loadList=async ()=>{
-            const active = await userStore.getActiveMemberList({params})
-            const inactive = await userStore.getInactiveMemberList({params})
+            const registered = await userStore.getNewRegisteredList({params}, timeRange)
+            const expired = await userStore.getExpiredList({params}, timeRange)
+            const renewed = await userStore.getRenewedList({params}, timeRange)
             let memberList
 
-            memberList=buildMemberList(active)
-            setActiveMember({
+            memberList=buildMemberList(registered)
+            setRegisteredMember({
                 list: memberList,
                 count: memberList.length,
             })
 
-            memberList=buildMemberList(inactive)
-            setInactiveMember({
+            memberList=buildMemberList(expired)
+            setExpiredMember({
+                list: memberList,
+                count: memberList.length,
+            })
+
+            memberList=buildMemberList(renewed)
+            setRenewedMember({
                 list: memberList,
                 count: memberList.length,
             })
         }
         loadList()
-    }, [params])
+    }, [params, timeRange])
 
     return (
         <Card
@@ -230,13 +241,11 @@ export default function ViewFilterResult () {
                     <Breadcrumb.Item>
                         <Link to="/">Home</Link>
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item>Member List</Breadcrumb.Item>
+                    <Breadcrumb.Item>Member Account Status List</Breadcrumb.Item>
                 </Breadcrumb>
             }
             style={{ marginBottom: 20 }}
         >
-            <h2>{activeMember.count} active members in total</h2>
-
             <Form
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
@@ -256,12 +265,33 @@ export default function ViewFilterResult () {
                 </Form.Item>
             </Form>
 
+            <h2>{registeredMember.count} new registered members in total</h2>
             <Table
                 columns={columns}
-                dataSource={activeMember.list}
+                dataSource={registeredMember.list}
                 pagination={{
                     pageSize: params.per_page,
-                    total: activeMember.count,
+                    total: registeredMember.count,
+                    onChange: pageChange
+                }}
+            />
+            <h2>{expiredMember.count} expired members in total</h2>
+            <Table
+                columns={columns}
+                dataSource={expiredMember.list}
+                pagination={{
+                    pageSize: params.per_page,
+                    total: expiredMember.count,
+                    onChange: pageChange
+                }}
+            />
+            <h2>{renewedMember.count} renewed members in total</h2>
+            <Table
+                columns={columns}
+                dataSource={renewedMember.list}
+                pagination={{
+                    pageSize: params.per_page,
+                    total: renewedMember.count,
                     onChange: pageChange
                 }}
             />

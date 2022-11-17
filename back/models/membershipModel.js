@@ -11,9 +11,8 @@ const getUserById =async (member_id)=>{
 }
 
 const formatDateString = (date)=>{
-    return date.getFullYear() +'/'+ (date.getMonth()+1).toString().padStart(2, '0')+'/'+ date.getDate().toString().padStart(2, '0')
+    return date.getFullYear() +'/'+ (date.getMonth()+1).toString().padStart(2, '0')+'/'+ (date.getDate()+1).toString().padStart(2, '0')
 }
-
 
 
 exports.membershipActivateRecord= async (req, res)=>{
@@ -95,13 +94,48 @@ exports.getMembershipAudit=async (req, res)=>{
     })
 }
 
-exports.getMembershipAuditByRange=async (req, res)=>{
-    const records=await membershipModel.find({
 
+exports.getNewRegisteredList= async (req, res)=> {
+    const range=req.params.range
+    const start=formatDateString(new Date(range.split(' ')[0]))
+    const end=formatDateString(new Date(range.split(' ')[1]))
+
+    const records=await memberModel.find({
+        registered_date: {$gte: start, $lte: end}
     })
     res.send({
         status: 0,
         record_list: records
     })
 }
+
+exports.getExpiredList=async (req, res)=> {
+    const range=req.params.range
+    const start=formatDateString(new Date(range.split(' ')[0]))
+    const end=formatDateString(new Date(range.split(' ')[1]))
+
+    const records=await memberModel.find({
+        expire_date: {$gte: start, $lte: end}
+    })
+    res.send({
+        status: 0,
+        record_list: records
+    })
+}
+
+exports.getRenewedList=async (req, res)=> {
+    const range=req.params.range
+    const start=formatDateString(new Date(range.split(' ')[0]))
+    const end=formatDateString(new Date(range.split(' ')[1]))
+
+    const records=await memberModel.find({
+        recent_renewal_date: {$gte: start, $lte: end}
+    })
+    res.send({
+        status: 0,
+        record_list: records
+    })
+}
+
+
 
