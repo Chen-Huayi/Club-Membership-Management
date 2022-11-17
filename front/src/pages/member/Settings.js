@@ -109,8 +109,28 @@ const ResetPwd = () => {
 }
 
 
-
 export default function Settings () {
+    const {updateStore, loginStore}=useStore()
+    let previous = 0
+
+    const requestNewCard = () => {
+        let now = Date.now()
+
+        // throttle
+        if(now - previous >= 5000){
+            updateStore.requestReplaceCard({member_id: loginStore.member_id})
+                .then(result => {
+                    if (result.status===0){
+                        message.success('Your request has already sent.')
+                    }else {
+                        message.error('Fail to request.')
+                    }
+                    previous = now  // reset previous
+                })
+        }else {
+            message.warning('You click too fast')
+        }
+    }
 
     return(
         <div className="settings-content">
@@ -130,7 +150,7 @@ export default function Settings () {
                 </div>
                 <div className="other-link" style={{fontWeight: "bold", marginBottom: 20}}>
                     <h2>Other</h2>
-                    <Link to="">666</Link>
+                    <a onClick={requestNewCard}>Request New Card</a>
                 </div>
 
             </Card>

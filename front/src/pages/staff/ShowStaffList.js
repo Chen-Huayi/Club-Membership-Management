@@ -188,40 +188,40 @@ export default function ShowStaffList () {
         }
     ]
 
+    const buildStaffList=(staffs)=>{
+        const staffList = staffs.staff_list
+        const size = staffList.length
+        let list=[]
+
+        for (let i = 0; i < size; i++) {
+            const user=staffList[i]
+            let formatData={
+                ...user,
+                name: user.firstname+' '+user.middle_name+' '+user.lastname,
+                key: `${i}`
+            }
+            list.push(formatData)
+        }
+        return list
+    }
+
     // load staff list
     useEffect(() => {
         const loadList=async ()=>{
             const active = await userStore.getActiveStaffList({params})
             const inactive = await userStore.getInactiveStaffList({params})
-            const activeList = active.staff_list
-            const inactiveList = inactive.staff_list
-            const activeSize = activeList.length
-            const inactiveSize = inactiveList.length
-            let activeStaffs=[], inactiveStaffs=[]
+            let staffList
 
-            for (let i = 0; i < activeSize; i++) {
-                let formatData={
-                    ...activeList[i],
-                    name: activeList[i].firstname+' '+activeList[i].middle_name+' '+activeList[i].lastname,
-                    key: `${i}`
-                }
-                activeStaffs.push(formatData)
-            }
-            for (let i = 0; i < inactiveSize; i++) {
-                let formatData={
-                    ...inactiveList[i],
-                    name: inactiveList[i].firstname+' '+inactiveList[i].middle_name+' '+inactiveList[i].lastname,
-                    key: `${i}`
-                }
-                inactiveStaffs.push(formatData)
-            }
+            staffList=buildStaffList(active)
             setActiveStaff({
-                list: activeStaffs,
-                count: activeSize,
+                list: staffList,
+                count: staffList.length,
             })
+
+            staffList=buildStaffList(inactive)
             setInactiveStaff({
-                list: inactiveStaffs,
-                count: inactiveSize,
+                list: staffList,
+                count: staffList.length,
             })
         }
         loadList()

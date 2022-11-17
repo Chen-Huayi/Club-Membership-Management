@@ -50,6 +50,14 @@ const getMemberList = async (membershipStatus, res)=>{
     })
 }
 
+const formatDateString = (date)=>{
+    return date.getFullYear() +'/'+ (date.getMonth()+1).toString().padStart(2, '0')+'/'+ date.getDate().toString().padStart(2, '0')
+}
+
+const getLastMonday = (date) => {
+    date.setDate(date.getDate()-7-date.getDay()+1)
+    return formatDateString(date)
+}
 
 
 /*---------------for public (member without login)-------------------*/
@@ -235,7 +243,7 @@ exports.resetPassword = (req, res)=>{
 exports.deactivateMember = (req, res)=>{
     updateInfo(
         req.body.member_id,
-        {membership_status: false, expire_date: new Date().toLocaleDateString()},
+        {membership_status: false, expire_date: formatDateString(new Date())},
         'Deactivate member',
         res
     )
@@ -267,9 +275,9 @@ exports.activateMember = async (req, res)=>{
         effectiveDate=new Date()
     }
 
-    const expire_date = newExpireDate.toLocaleDateString()
-    const effective_date = effectiveDate.toLocaleDateString()
-    const recent_renewal_date = recentRenewalDate.toLocaleDateString()
+    const expire_date = formatDateString(newExpireDate)
+    const effective_date = formatDateString(effectiveDate)
+    const recent_renewal_date = formatDateString(recentRenewalDate)
 
     updateInfo(
         req.body.member_id,
@@ -322,5 +330,57 @@ exports.deleteNotification = (req, res)=>{
             }
             res.handleMessage('This notification delete', 0)
         })
+}
+
+
+exports.requestReplaceCard = (req, res)=>{
+    // res.send()
+    updateInfo(
+        req.body.member_id,
+        {has_card: false},
+        'Request new membership card',
+        res
+    )
+}
+
+exports.getSendCardList = async (req, res) =>{
+    const members = await memberModel.find({
+        has_card: false,
+        membership_status: true,
+        effective_date: {$gte: getLastMonday(new Date())}
+    })
+
+    if (!members){
+        res.handleMessage('Fail to get send card member list.')
+    }else {
+        res.send({
+            member_list: members
+        })
+    }
+}
+
+exports.getReplaceCardList = async (req, res) =>{
+    const members = await memberModel.find({
+        has_card: false,
+        membership_status: true,
+        effective_date: {$lt: getLastMonday(new Date())}
+    })
+
+    if (!members){
+        res.handleMessage('Fail to get send card member list.')
+    }else {
+        res.send({
+            member_list: members
+        })
+    }
+}
+
+exports.deliverCard = (req, res) =>{
+    updateInfo(
+        req.body.member_id,
+        {has_card: true},
+        'Membership card will deliver soon',
+        res
+    )
 }
 

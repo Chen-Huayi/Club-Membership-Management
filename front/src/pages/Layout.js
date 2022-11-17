@@ -68,7 +68,12 @@ const siderMembershipAdminMenus = [
         key: '/send-email',
         icon: <SendOutlined />,
         label: <Link to="/send-email">Send Email</Link>
-    }
+    },
+    {
+        key: '/send-card-list',
+        icon: <BellOutlined />,
+        label: <Link to="/send-card-list">Membership Card</Link>,
+    },
 ]
 const siderSystemAdminMenus = [
     {
@@ -176,7 +181,7 @@ const MainLayout = () => {
                     </Sider>
                 )}
                 {role==='Membership Admin' && (
-                    <Sider className="site-layout-background" width={170}>
+                    <Sider className="site-layout-background" width={220}>
                         <Menu
                             mode="inline"
                             theme="light"

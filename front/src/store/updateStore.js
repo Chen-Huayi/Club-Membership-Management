@@ -22,6 +22,8 @@ class UpdateStore{
 
     activateStaff = async(values) => await http.put('/api/staff/activate', values)
 
+    requestReplaceCard = (values) => http.put('/api/member/request-replace-card', values)
+
 }
 
 export default UpdateStore

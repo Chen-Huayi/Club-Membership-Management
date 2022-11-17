@@ -27,6 +27,7 @@ import UpdateMemberProfile from "./pages/staff/UpdateMemberProfile";
 import UpdateStaffProfile from "./pages/staff/UpdateStaffProfile";
 import SendEmail from "./pages/staff/SendEmail";
 import SystemSettings from "./pages/staff/SystemSettings";
+import SendCardList from "./pages/staff/SendCardList";
 
 
 export default function App() {
@@ -42,6 +43,7 @@ export default function App() {
                     <Route path="notification" element={<MemberAuth><Notification /></MemberAuth>} />
 
                     <Route path="member-list" element={<MembershipAdminAuth><ShowMemberList /></MembershipAdminAuth>} />
+                    <Route path="send-card-list" element={<MembershipAdminAuth><SendCardList /></MembershipAdminAuth>} />
                     <Route path="send-email" element={<MembershipAdminAuth><SendEmail /></MembershipAdminAuth>} />
                     <Route path="update-member-profile" element={<MembershipAdminAuth><UpdateMemberProfile /></MembershipAdminAuth>} />
 

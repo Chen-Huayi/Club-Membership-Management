@@ -1,23 +1,22 @@
-import {EditOutlined, SearchOutlined, UserAddOutlined, UserDeleteOutlined} from '@ant-design/icons'
+import {MailOutlined, SearchOutlined} from '@ant-design/icons'
 import {Breadcrumb, Button, Card, Input, message, Space, Table} from 'antd'
 import React, {useEffect, useRef, useState} from 'react'
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useStore} from "../../store";
 
 
-export default function ShowMemberList () {
-    const {userStore, updateStore}=useStore()
-    const navigate=useNavigate()
+export default function SendCardList () {
+    const {userStore}=useStore()
     const searchInput = useRef(null)
     const [params, setParams] = useState({
         page: 1,
         per_page: 3
     })
-    const [activeMember, setActiveMember]=useState({
+    const [newCard, setNewCard]=useState({
         list: [],
         count: 0
     })
-    const [inactiveMember, setInactiveMember]=useState({
+    const [replaceCard, setReplaceCard]=useState({
         list: [],
         count: 0
     })
@@ -28,27 +27,19 @@ export default function ShowMemberList () {
         })
     }
 
-    const editMemberInfo=(data)=>{
-        navigate(`/update-member-profile?id=${data.member_id}`)
-    }
-
-    const switchMemberStatus=async (data)=>{
-        let res
-
-        if (data.membership_status){
-            res = await updateStore.deactivateMember({member_id: data.member_id})
-        }else {
-            res = await updateStore.activateMember({member_id: data.member_id})
-        }
-        if (res.status===0){
-            message.success(res.message)
-        }else {
-            message.error(res.message)
-        }
-        setParams({
-            ...params,
-            page: 1
-        })
+    const sendCardToMember=(data)=>{
+        userStore.sendToEligibleMember({member_id: data.member_id})
+            .then(result => {
+                console.log(result)
+                if (result.status===0){
+                    message.success('Membership card will deliver soon')
+                    setTimeout(()=>{
+                        window.location.reload()
+                    }, 700)
+                }else {
+                    message.error('Fail to request send card to member')
+                }
+            })
     }
 
     const handleSearch = (selectedKeys, confirm) => {
@@ -135,102 +126,76 @@ export default function ShowMemberList () {
             sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
-            title: 'Birthday',
-            dataIndex: 'birthday',
-            key: 'birthday',
-            ...getColumnSearchProps('birthday'),
-            sorter: (a, b) => a.birthday.localeCompare(b.birthday),
-        },
-        {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
             ...getColumnSearchProps('email'),
-            sorter: (a, b) => a.email.localeCompare(b.email),
         },
         {
-            title: 'Address',
-            dataIndex: 'address_line1',
-            key: 'address_line1',
-            ...getColumnSearchProps('address_line1'),
-            sorter: (a, b) => a.address_line1.localeCompare(b.address_line1),
+            title: 'Mailing Address',
+            dataIndex: 'address',
+            key: 'address',
+            ...getColumnSearchProps('address'),
         },
         {
-            title: 'Expire Date',
-            dataIndex: 'expire_date',
-            key: 'expire_date',
-            ...getColumnSearchProps('expire_date'),
-            sorter: (a, b) => a.expire_date.localeCompare(b.expire_date),
+            title: 'Effective Date',
+            dataIndex: 'effective_date',
+            key: 'effective_date',
+            ...getColumnSearchProps('effective_date'),
+            sorter: (a, b) => a.effective_date.localeCompare(b.effective_date),
         },
         {
-            title: 'Operation',
+            title: 'Send Card',
             render: data => {
                 return (
                     <Space size="middle">
                         <Button
                             type="primary"
-                            shape="circle"
-                            icon={<EditOutlined />}
-                            onClick={()=>editMemberInfo(data)}
+                            shape="round"
+                            icon={<MailOutlined />}
+                            onClick={()=>sendCardToMember(data)}
                         />
-                        {data.membership_status && (
-                            <Button
-                                type="primary"
-                                danger
-                                shape="circle"
-                                icon={<UserDeleteOutlined />}
-                                onClick={()=>switchMemberStatus(data)}
-                            />
-                        )}
-                        {!data.membership_status && (
-                            <Button
-                                type="primary"
-                                shape="circle"
-                                icon={<UserAddOutlined />}
-                                onClick={()=>switchMemberStatus(data)}
-                            />
-                        )}
                     </Space>
                 )
             }
         }
     ]
 
-    const buildMemberList=(members)=>{
-        const memberList = members.member_list
+    const buildSendCardList=(sendCardList)=>{
+        const memberList = sendCardList.member_list
         const size = memberList.length
-        let list=[]
+        let cards=[]
 
         for (let i = 0; i < size; i++) {
             const user=memberList[i]
             let formatData={
                 ...user,
                 name: user.firstname+' '+user.middle_name+' '+user.lastname,
-                birthday: user.birthday_year+'/'+user.birthday_month+'/'+user.birthday_date,
+                address: user.address_line1+' '+user.address_line2+' '+user.address_line3+' '+user.address_city+' '+user.address_country,
                 key: `${i}`
             }
-            list.push(formatData)
+            cards.push(formatData)
         }
-        return list
+        return cards
     }
 
     // load member list
     useEffect(() => {
         const loadList=async ()=>{
-            const active = await userStore.getActiveMemberList({params})
-            const inactive = await userStore.getInactiveMemberList({params})
-            let memberList
+            const newCardList = await userStore.getSendCardList({params})
+            const replaceCardList = await userStore.getReplaceCardList({params})
+            let cardList
 
-            memberList=buildMemberList(active)
-            setActiveMember({
-                list: memberList,
-                count: memberList.length,
+            cardList=buildSendCardList(newCardList)
+            setNewCard({
+                list: cardList,
+                count: cardList.length,
             })
 
-            memberList=buildMemberList(inactive)
-            setInactiveMember({
-                list: memberList,
-                count: memberList.length,
+            cardList=buildSendCardList(replaceCardList)
+            setReplaceCard({
+                list: cardList,
+                count: cardList.length,
             })
         }
         loadList()
@@ -243,29 +208,28 @@ export default function ShowMemberList () {
                     <Breadcrumb.Item>
                         <Link to="/">Home</Link>
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item>Member List</Breadcrumb.Item>
+                    <Breadcrumb.Item>Send Card List</Breadcrumb.Item>
                 </Breadcrumb>
             }
             style={{ marginBottom: 20 }}
         >
-            <h2>{activeMember.count} active members in total</h2>
+            <h2>{newCard.count} eligible member(s) request to send card (activate since last Monday)</h2>
             <Table
-                // rowKey="id"
                 columns={columns}
-                dataSource={activeMember.list}
+                dataSource={newCard.list}
                 pagination={{
                     pageSize: params.per_page,
-                    total: activeMember.count,
+                    total: newCard.count,
                     onChange: pageChange
                 }}
             />
-            <h2>{inactiveMember.count} inactive members in total</h2>
+            <h2>{replaceCard.count} member(s) request to replace card</h2>
             <Table
                 columns={columns}
-                dataSource={inactiveMember.list}
+                dataSource={replaceCard.list}
                 pagination={{
                     pageSize: params.per_page,
-                    total: inactiveMember.count,
+                    total: replaceCard.count,
                     onChange: pageChange
                 }}
             />
