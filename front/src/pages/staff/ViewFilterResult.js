@@ -1,12 +1,15 @@
 import {EditOutlined, SearchOutlined, UserAddOutlined, UserDeleteOutlined} from '@ant-design/icons'
-import {Breadcrumb, Button, Card, Input, message, Space, Table} from 'antd'
+import {Breadcrumb, Button, Card, Input, message, Space, Table, DatePicker, Form} from 'antd'
 import React, {useEffect, useRef, useState} from 'react'
 import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
 
+const { RangePicker } = DatePicker;
 
-export default function ShowMemberList () {
-    const {loginStore, userStore, updateStore}=useStore()
+
+export default function ViewFilterResult () {
+    const [form]=Form.useForm()
+    const {userStore, updateStore}=useStore()
     const navigate=useNavigate()
     const searchInput = useRef(null)
     const [params, setParams] = useState({
@@ -28,29 +31,8 @@ export default function ShowMemberList () {
         })
     }
 
-    const editMemberInfo=(data)=>{
-        navigate(`/update-member-profile?id=${data.member_id}`)
-    }
-
-    const switchMemberStatus=async (data)=>{
-        let res
-
-        if (data.membership_status){
-            await updateStore.membershipDeactivateRecord({member_id: data.member_id, approved_by: loginStore.staff_id})
-            res = await updateStore.deactivateMember({member_id: data.member_id})
-        }else {
-            await updateStore.membershipActivateRecord({member_id: data.member_id, approved_by: loginStore.staff_id})
-            res = await updateStore.activateMember({member_id: data.member_id})
-        }
-        if (res.status===0){
-            message.success(res.message)
-        }else {
-            message.error(res.message)
-        }
-        setParams({
-            ...params,
-            page: 1
-        })
+    const viewMemberInfo=(data)=>{
+        navigate(`/profile?id=${data.member_id}`)
     }
 
     const handleSearch = (selectedKeys, confirm) => {
@@ -137,13 +119,6 @@ export default function ShowMemberList () {
             sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
-            title: 'Birthday',
-            dataIndex: 'birthday',
-            key: 'birthday',
-            ...getColumnSearchProps('birthday'),
-            sorter: (a, b) => a.birthday.localeCompare(b.birthday),
-        },
-        {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
@@ -151,11 +126,11 @@ export default function ShowMemberList () {
             sorter: (a, b) => a.email.localeCompare(b.email),
         },
         {
-            title: 'Address',
-            dataIndex: 'address_line1',
-            key: 'address_line1',
-            ...getColumnSearchProps('address_line1'),
-            sorter: (a, b) => a.address_line1.localeCompare(b.address_line1),
+            title: 'Register Date',
+            dataIndex: 'registered_date',
+            key: 'registered_date',
+            ...getColumnSearchProps('registered_date'),
+            sorter: (a, b) => a.registered_date.localeCompare(b.registered_date),
         },
         {
             title: 'Expire Date',
@@ -163,6 +138,13 @@ export default function ShowMemberList () {
             key: 'expire_date',
             ...getColumnSearchProps('expire_date'),
             sorter: (a, b) => a.expire_date.localeCompare(b.expire_date),
+        },
+        {
+            title: 'Renewal Date',
+            dataIndex: 'recent_renewal_date',
+            key: 'recent_renewal_date',
+            ...getColumnSearchProps('recent_renewal_date'),
+            sorter: (a, b) => a.recent_renewal_date.localeCompare(b.recent_renewal_date),
         },
         {
             title: 'Operation',
@@ -173,25 +155,8 @@ export default function ShowMemberList () {
                             type="primary"
                             shape="circle"
                             icon={<EditOutlined />}
-                            onClick={()=>editMemberInfo(data)}
+                            onClick={()=>viewMemberInfo(data)}
                         />
-                        {data.membership_status && (
-                            <Button
-                                type="primary"
-                                danger
-                                shape="circle"
-                                icon={<UserDeleteOutlined />}
-                                onClick={()=>switchMemberStatus(data)}
-                            />
-                        )}
-                        {!data.membership_status && (
-                            <Button
-                                type="primary"
-                                shape="circle"
-                                icon={<UserAddOutlined />}
-                                onClick={()=>switchMemberStatus(data)}
-                            />
-                        )}
                     </Space>
                 )
             }
@@ -214,6 +179,26 @@ export default function ShowMemberList () {
             list.push(formatData)
         }
         return list
+    }
+
+    const onFinish = (values) => {
+        console.log(values)
+
+        // userStore.getMembershipRecord()
+        //     .then(result => {
+        //         if (result.status===0){
+        //
+        //         }
+        //     })
+
+    }
+
+    const onFinishFailed = (err) => {
+        console.log('Failed: ', err)
+    }
+
+    const resetForm = () => {
+        form.resetFields()
     }
 
     // load member list
@@ -251,23 +236,32 @@ export default function ShowMemberList () {
             style={{ marginBottom: 20 }}
         >
             <h2>{activeMember.count} active members in total</h2>
+
+            <Form
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                form={form}
+                style={{ marginBottom: 20 }}
+            >
+                <Form.Item name="time_range" style={{display: 'inline-block'}} rules={[{required: true, message: 'Please pick a time range!'}]}>
+                    <RangePicker />
+                </Form.Item>
+                <Form.Item style={{display: 'inline-block'}}>
+                    <Button type="primary" htmlType="submit" shape="round" style={{ marginLeft: 30 }}>
+                        Filter
+                    </Button>
+                    <Button type="ghost" onClick={resetForm} shape="round" style={{ marginLeft: 10 }}>
+                        Reset
+                    </Button>
+                </Form.Item>
+            </Form>
+
             <Table
-                // rowKey="id"
                 columns={columns}
                 dataSource={activeMember.list}
                 pagination={{
                     pageSize: params.per_page,
                     total: activeMember.count,
-                    onChange: pageChange
-                }}
-            />
-            <h2>{inactiveMember.count} inactive members in total</h2>
-            <Table
-                columns={columns}
-                dataSource={inactiveMember.list}
-                pagination={{
-                    pageSize: params.per_page,
-                    total: inactiveMember.count,
                     onChange: pageChange
                 }}
             />

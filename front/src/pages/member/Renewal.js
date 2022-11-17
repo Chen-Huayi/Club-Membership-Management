@@ -94,7 +94,6 @@ export default function Renewal () {
                         <Button type="primary" htmlType="submit" size="large" shape="round">
                             Go to Payment Page
                         </Button>
-
                     </Form.Item>
                 </Form>
             </Card>

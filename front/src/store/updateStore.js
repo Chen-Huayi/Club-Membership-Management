@@ -24,6 +24,11 @@ class UpdateStore{
 
     requestReplaceCard = (values) => http.put('/api/member/request-replace-card', values)
 
+    membershipActivateRecord=(values)=>http.post('/api/membership/activate-record', values)
+
+    membershipDeactivateRecord=(values)=>http.post('/api/membership/deactivate-record', values)
+
+
 }
 
 export default UpdateStore

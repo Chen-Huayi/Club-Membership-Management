@@ -1,5 +1,5 @@
-import {Breadcrumb, Button, Card, Form, Input, message, Select} from 'antd';
-import React, {useEffect} from 'react';
+import {Breadcrumb, Button, Card, Checkbox, Form, Input, message, Select} from 'antd';
+import React, {useEffect, useState} from 'react';
 import {useStore} from "../../store";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
 
@@ -26,6 +26,7 @@ export default function UpdateMemberProfile () {
     const {updateStore, userStore}=useStore()
     const [params]=useSearchParams()
     const member_id =params.get('id')
+    const [componentDisabled, setComponentDisabled] = useState(true)
 
     const onFinish = async () => {
         await form.validateFields()
@@ -81,12 +82,19 @@ export default function UpdateMemberProfile () {
                     </Breadcrumb>
                 }
             >
+                <Checkbox
+                    checked={componentDisabled}
+                    onChange={(e) => setComponentDisabled(e.target.checked)}
+                >
+                    View Only
+                </Checkbox>
                 <Form
                     form={form}
                     {...formItemLayout}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     name="update-profile-form"
+                    disabled={componentDisabled}
                     scrollToFirstError
                 >
                     <Form.Item

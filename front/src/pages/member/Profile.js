@@ -2,7 +2,7 @@ import {Breadcrumb, Card, Form, Input, message, Modal, Select} from 'antd';
 import React, {useEffect, useState} from 'react';
 import './Profile.css'
 import {useStore} from "../../store";
-import {Link} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
 
 const { Option } = Select
 const formItemLayout = {
@@ -207,10 +207,17 @@ const UpdateItem = (props) => {
 export default function Profile () {
     const [profile, setProfile] = useState({})
     const {loginStore, userStore}=useStore()
+    const [params]=useSearchParams()
+    const member_id =params.get('id')
 
     useEffect(()=>{
         const loadInfo = async () => {
-            const profileData= await userStore.getMemberInfo(loginStore.member_id)
+            let profileData
+            if (!loginStore.member_id){
+                profileData= await userStore.getMemberInfo(member_id)
+            }else {
+                profileData= await userStore.getMemberInfo(loginStore.member_id)
+            }
             setProfile({...profileData})
         }
         loadInfo()

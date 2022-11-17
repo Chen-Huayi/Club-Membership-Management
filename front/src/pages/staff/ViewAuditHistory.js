@@ -1,23 +1,18 @@
-import {EditOutlined, SearchOutlined, UserAddOutlined, UserDeleteOutlined} from '@ant-design/icons'
-import {Breadcrumb, Button, Card, Input, message, Space, Table} from 'antd'
+import {EditOutlined, SearchOutlined} from '@ant-design/icons'
+import {Breadcrumb, Button, Card, Input, Space, Table} from 'antd'
 import React, {useEffect, useRef, useState} from 'react'
 import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
 
-
-export default function ShowMemberList () {
-    const {loginStore, userStore, updateStore}=useStore()
+export default function ViewAuditHistory () {
+    const {userStore, updateStore}=useStore()
     const navigate=useNavigate()
     const searchInput = useRef(null)
     const [params, setParams] = useState({
         page: 1,
-        per_page: 3
+        per_page: 10
     })
-    const [activeMember, setActiveMember]=useState({
-        list: [],
-        count: 0
-    })
-    const [inactiveMember, setInactiveMember]=useState({
+    const [record, setRecord]=useState({
         list: [],
         count: 0
     })
@@ -28,29 +23,8 @@ export default function ShowMemberList () {
         })
     }
 
-    const editMemberInfo=(data)=>{
-        navigate(`/update-member-profile?id=${data.member_id}`)
-    }
-
-    const switchMemberStatus=async (data)=>{
-        let res
-
-        if (data.membership_status){
-            await updateStore.membershipDeactivateRecord({member_id: data.member_id, approved_by: loginStore.staff_id})
-            res = await updateStore.deactivateMember({member_id: data.member_id})
-        }else {
-            await updateStore.membershipActivateRecord({member_id: data.member_id, approved_by: loginStore.staff_id})
-            res = await updateStore.activateMember({member_id: data.member_id})
-        }
-        if (res.status===0){
-            message.success(res.message)
-        }else {
-            message.error(res.message)
-        }
-        setParams({
-            ...params,
-            page: 1
-        })
+    const viewMemberInfo=(data)=>{
+        navigate(`/profile?id=${data.member_id}`)
     }
 
     const handleSearch = (selectedKeys, confirm) => {
@@ -130,32 +104,11 @@ export default function ShowMemberList () {
             sorter: (a, b) => a.member_id.localeCompare(b.member_id),
         },
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            ...getColumnSearchProps('name'),
-            sorter: (a, b) => a.name.localeCompare(b.name),
-        },
-        {
-            title: 'Birthday',
-            dataIndex: 'birthday',
-            key: 'birthday',
-            ...getColumnSearchProps('birthday'),
-            sorter: (a, b) => a.birthday.localeCompare(b.birthday),
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-            ...getColumnSearchProps('email'),
-            sorter: (a, b) => a.email.localeCompare(b.email),
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address_line1',
-            key: 'address_line1',
-            ...getColumnSearchProps('address_line1'),
-            sorter: (a, b) => a.address_line1.localeCompare(b.address_line1),
+            title: 'Effective Date',
+            dataIndex: 'effective_date',
+            key: 'effective_date',
+            ...getColumnSearchProps('effective_date'),
+            sorter: (a, b) => a.effective_date.localeCompare(b.effective_date),
         },
         {
             title: 'Expire Date',
@@ -163,6 +116,20 @@ export default function ShowMemberList () {
             key: 'expire_date',
             ...getColumnSearchProps('expire_date'),
             sorter: (a, b) => a.expire_date.localeCompare(b.expire_date),
+        },
+        {
+            title: 'Payment Date',
+            dataIndex: 'payment_date',
+            key: 'payment_date',
+            ...getColumnSearchProps('payment_date'),
+            sorter: (a, b) => a.payment_date.localeCompare(b.payment_date),
+        },
+        {
+            title: 'Approved By',
+            dataIndex: 'approved_by',
+            key: 'approved_by',
+            ...getColumnSearchProps('approved_by'),
+            sorter: (a, b) => a.approved_by.localeCompare(b.approved_by),
         },
         {
             title: 'Operation',
@@ -173,42 +140,23 @@ export default function ShowMemberList () {
                             type="primary"
                             shape="circle"
                             icon={<EditOutlined />}
-                            onClick={()=>editMemberInfo(data)}
+                            onClick={()=>viewMemberInfo(data)}
                         />
-                        {data.membership_status && (
-                            <Button
-                                type="primary"
-                                danger
-                                shape="circle"
-                                icon={<UserDeleteOutlined />}
-                                onClick={()=>switchMemberStatus(data)}
-                            />
-                        )}
-                        {!data.membership_status && (
-                            <Button
-                                type="primary"
-                                shape="circle"
-                                icon={<UserAddOutlined />}
-                                onClick={()=>switchMemberStatus(data)}
-                            />
-                        )}
                     </Space>
                 )
             }
         }
     ]
 
-    const buildMemberList=(members)=>{
-        const memberList = members.member_list
-        const size = memberList.length
+    const buildRecordList=(records)=>{
+        const recordList = records.record_list
+        const size = recordList.length
         let list=[]
 
         for (let i = 0; i < size; i++) {
-            const user=memberList[i]
+            const record=recordList[i]
             let formatData={
-                ...user,
-                name: user.firstname+' '+user.middle_name+' '+user.lastname,
-                birthday: user.birthday_year+'/'+user.birthday_month+'/'+user.birthday_date,
+                ...record,
                 key: `${i}`
             }
             list.push(formatData)
@@ -219,20 +167,13 @@ export default function ShowMemberList () {
     // load member list
     useEffect(() => {
         const loadList=async ()=>{
-            const active = await userStore.getActiveMemberList({params})
-            const inactive = await userStore.getInactiveMemberList({params})
-            let memberList
+            const records = await userStore.getMembershipRecord({params})
+            let recordList
 
-            memberList=buildMemberList(active)
-            setActiveMember({
-                list: memberList,
-                count: memberList.length,
-            })
-
-            memberList=buildMemberList(inactive)
-            setInactiveMember({
-                list: memberList,
-                count: memberList.length,
+            recordList=buildRecordList(records)
+            setRecord({
+                list: recordList,
+                count: recordList.length,
             })
         }
         loadList()
@@ -245,29 +186,19 @@ export default function ShowMemberList () {
                     <Breadcrumb.Item>
                         <Link to="/">Home</Link>
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item>Member List</Breadcrumb.Item>
+                    <Breadcrumb.Item>Audit History</Breadcrumb.Item>
                 </Breadcrumb>
             }
             style={{ marginBottom: 20 }}
         >
-            <h2>{activeMember.count} active members in total</h2>
-            <Table
-                // rowKey="id"
-                columns={columns}
-                dataSource={activeMember.list}
-                pagination={{
-                    pageSize: params.per_page,
-                    total: activeMember.count,
-                    onChange: pageChange
-                }}
-            />
-            <h2>{inactiveMember.count} inactive members in total</h2>
+            <h2>{record.count} membership record(s) in total</h2>
+
             <Table
                 columns={columns}
-                dataSource={inactiveMember.list}
+                dataSource={record.list}
                 pagination={{
                     pageSize: params.per_page,
-                    total: inactiveMember.count,
+                    total: record.count,
                     onChange: pageChange
                 }}
             />

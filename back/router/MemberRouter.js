@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const memberHandler=require('../models/MemberHandler')
+const membershipModel=require('../models/membershipModel')
 
 // Previous router:
 // http://localhost:8000/api
@@ -19,6 +20,9 @@ router.put('/member/reset-pwd', memberHandler.resetPassword)  // for user forgot
 
 router.put('/member/deactivate', memberHandler.deactivateMember)
 router.put('/member/activate', memberHandler.activateMember)
+router.post('/membership/activate-record', membershipModel.membershipActivateRecord)
+router.post('/membership/deactivate-record', membershipModel.membershipDeactivateRecord)
+router.get('/membership/record', membershipModel.getMembershipAudit)
 
 router.post('/member/send-email', memberHandler.sendGroupEmail)
 router.get('/member/receive-email/:id', memberHandler.getNotification)

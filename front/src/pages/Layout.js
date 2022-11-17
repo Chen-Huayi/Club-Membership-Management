@@ -1,5 +1,5 @@
 import {
-    BellOutlined,
+    BellOutlined, CalendarOutlined,
     HomeOutlined,
     LogoutOutlined,
     SendOutlined,
@@ -104,14 +104,19 @@ const siderManagementUserMenus = [
         label: <Link to="/">Home</Link>,
     },
     {
-        key: '/',
+        key: '/view-audit',
         icon: <UserOutlined />,
-        label: <Link to="/">2222</Link>,
+        label: <Link to="/view-audit">Audit History</Link>,
     },
     {
-        key: '/',
+        key: '/view-filter-result',
+        icon: <CalendarOutlined />,
+        label: <Link to="/view-filter-result">Account Status</Link>,
+    },
+    {
+        key: '/view-membership-duration',
         icon: <UserOutlined />,
-        label: <Link to="/">3333</Link>,
+        label: <Link to="/view-membership-duration">Membership Duration</Link>,
     },
 ]
 
@@ -203,7 +208,7 @@ const MainLayout = () => {
                     </Sider>
                 )}
                 {role==='Club Management User' && (
-                    <Sider className="site-layout-background" width={190}>
+                    <Sider className="site-layout-background" width={250}>
                         <Menu
                             mode="inline"
                             theme="light"

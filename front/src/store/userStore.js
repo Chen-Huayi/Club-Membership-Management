@@ -24,5 +24,8 @@ class UserStore {
     getReplaceCardList = async ({params}) => await http.get('/api/member/replace-card-list', {params})
     sendToEligibleMember = (values) => http.put('/api/member/deliver-card', values)
 
+    // membership record
+    getMembershipRecord=({params})=>http.get('/api/membership/record', {params})
+
 }
 export default UserStore

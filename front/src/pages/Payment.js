@@ -15,6 +15,7 @@ export default function Payment () {
 
     const onFinish = async (values) => {
         console.log('Pay amount: '+ values.amount)
+        await updateStore.membershipActivateRecord({member_id, approved_by: 'system'})
         await updateStore.activateMember({member_id})
         navigate('/payment-confirmed')
         message.success('Your payment is confirmed!')

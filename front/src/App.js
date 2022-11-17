@@ -1,10 +1,7 @@
 import React from "react"
 import {Route, Routes, unstable_HistoryRouter as HistoryRouter} from "react-router-dom"
 import {history} from "./utils/history"
-import {LoginAuth} from "./components/authorization/loginAuth";
-import {MembershipAdminAuth} from "./components/authorization/membershipAdminAuth";
-import {MemberAuth} from "./components/authorization/memberAuth";
-import {SystemAdminAuth} from "./components/authorization/systemAdminAuth";
+import {LoginAuth, MemberAuth, MembershipAdminAuth, SystemAdminAuth, ManagementUserAuth} from "./components/authorization";
 import NotFound404 from "./pages/404";
 import SuccessPaid from "./pages/SuccessPaid";
 import Payment from "./pages/Payment";
@@ -28,6 +25,9 @@ import UpdateStaffProfile from "./pages/staff/UpdateStaffProfile";
 import SendEmail from "./pages/staff/SendEmail";
 import SystemSettings from "./pages/staff/SystemSettings";
 import SendCardList from "./pages/staff/SendCardList";
+import ViewAuditHistory from "./pages/staff/ViewAuditHistory";
+import ViewFilterResult from "./pages/staff/ViewFilterResult";
+import ViewDuration from "./pages/staff/ViewDuration";
 
 
 export default function App() {
@@ -36,7 +36,8 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<LoginAuth><MainLayout /></LoginAuth>}>
                     <Route index element={<Home />} />
-                    <Route path="profile" element={<MemberAuth><Profile /></MemberAuth>} />
+                    {/*<Route path="profile" element={<MemberAuth><Profile /></MemberAuth>} />*/}
+                    <Route path="profile" element={<Profile />} />
                     <Route path="settings" element={<MemberAuth><Settings /></MemberAuth>}/>
                     <Route path="membership" element={<MemberAuth><Membership /></MemberAuth>}/>
                     <Route path="renewal" element={<MemberAuth><Renewal /></MemberAuth>} />
@@ -51,6 +52,10 @@ export default function App() {
                     <Route path="staff-list" element={<SystemAdminAuth><ShowStaffList /></SystemAdminAuth>} />
                     <Route path="update-staff-profile" element={<SystemAdminAuth><UpdateStaffProfile /></SystemAdminAuth>} />
                     <Route path="system-settings" element={<SystemAdminAuth><SystemSettings /></SystemAdminAuth>} />
+
+                    <Route path="view-audit" element={<ManagementUserAuth><ViewAuditHistory/></ManagementUserAuth>}/>
+                    <Route path="view-filter-result" element={<ManagementUserAuth><ViewFilterResult/></ManagementUserAuth>}/>
+                    <Route path="view-membership-duration" element={<ManagementUserAuth><ViewDuration/></ManagementUserAuth>}/>
 
                     <Route path="/*" element={<NotFound404/>}></Route>
                 </Route>

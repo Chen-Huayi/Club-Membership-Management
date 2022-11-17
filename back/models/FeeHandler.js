@@ -1,4 +1,3 @@
-require('../db/mongo_server')
 const mongoose = require('mongoose')
 const feeSchema = require('../schema/fee')
 const feeModel = mongoose.model('fees', feeSchema)

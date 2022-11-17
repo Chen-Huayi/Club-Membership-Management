@@ -22,8 +22,8 @@ module.exports = {
     jwtSecretKey: 'sa_nv_nei_78',
     expiresIn: '1h',
     PORT: 8000,
-    // dbServer: 'mongodb://localhost:27017/club_member',
-    dbServer: DB_URL,
+    dbServer: 'mongodb://localhost:27017/club_member',
+    // dbServer: DB_URL,
     sysAdmin,
     company: 'green_space_club',
     membership_fee: 648
