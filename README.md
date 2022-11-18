@@ -37,10 +37,10 @@ Continually updated...✅
 ## Preview GIF
 This application have several user roles:
 + System Admin
-![](./preview/system_admin.gif)
+![](gif/system_admin.gif)
 
 + Membership Admin
-![](./preview/membership_admin.gif)
+![](gif/membership_admin.gif)
 
 + Club Member
-![](./preview/member.gif)
+![](gif/member.gif)
