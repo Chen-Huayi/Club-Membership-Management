@@ -5,15 +5,14 @@ const cors = require('cors')
 const joi = require('joi')
 const bodyParser = require("body-parser")
 const config=require('./config')
-const memberRouter=require('./router/memberRouter')
-const staffRouter=require('./router/staffRouter')
+const memberRouter=require('./routers/memberRouter')
+const staffRouter=require('./routers/staffRouter')
 
 // Cross-Origin Resource Sharing
 app.use(cors())
 
 // content-type interceptor
-app.use(bodyParser.json())
-// app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json())  // app.use(express.urlencoded({ extended: false }))
 
 // Handle message middlewares (include both success and failure event)
 app.use((req, res, next)=>{
@@ -41,7 +40,7 @@ app.use((err, req, res, next)=>{
     res.handleMessage(err)  // Unknown error
 })
 
-// Listen at 8000 port
+// Listen at default 8000 port
 app.listen(config.PORT, (err)=>{
     if (err) console.log(err)
     console.log(`Server is running at http://localhost:${config.PORT}`)

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 
-const membershipHistorySchema = new Schema({
+const membershipSchema = new Schema({
     member_id: {type: String, required: true},
     effective_date: {type: String, required: true},  // The membership becomes effective for the current or last period
     expire_date: {type: String, required: true},  // The membership expires after this date
@@ -11,4 +11,6 @@ const membershipHistorySchema = new Schema({
     approved_by: {type: String, required: true}  // If processed by a staff, the user id of the staff. If processed by system, then record “System”
 })
 
-module.exports=membershipHistorySchema
+const membershipModel = mongoose.model('memberships', membershipSchema)
+
+module.exports= {membershipModel}

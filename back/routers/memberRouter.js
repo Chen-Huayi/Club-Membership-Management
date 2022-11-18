@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const member=require('../models/memberModel')
-const membership=require('../models/membershipModel')
+const member=require('../controllers/memberModel')
+const membership=require('../controllers/membershipModel')
 
 // Previous router:
 // http://localhost:8000/api

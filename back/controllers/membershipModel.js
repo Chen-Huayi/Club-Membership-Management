@@ -1,4 +1,5 @@
-const {memberModel, membershipModel}=require('../schema/index')
+const {memberModel, membershipModel}=require('../models')
+
 
 const getUserById =async (member_id)=>{
     let member=null
@@ -136,6 +137,4 @@ exports.getRenewedList=async (req, res)=> {
         record_list: records
     })
 }
-
-
 

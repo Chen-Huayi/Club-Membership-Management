@@ -13,4 +13,6 @@ const staffSchema = new Schema({
     membership_status: {type: Boolean, default: false, required: true},  // true for Active; false for Inactive
 })
 
-module.exports=staffSchema
+const staffModel = mongoose.model('staffs', staffSchema)
+
+module.exports= {staffModel}

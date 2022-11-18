@@ -2,10 +2,8 @@
 // mongod --dbpath /usr/local/var/mongodb --logpath /usr/local/var/log/mongodb/mongo.log --fork
 const mongoose = require('mongoose')
 const config = require('../config')
-const feeSchema = require("../schema/fee")
-const staffSchema = require('../schema/staff')
-const feeModel = mongoose.model('fees', feeSchema)
-const staffModel = mongoose.model('staffs', staffSchema)
+const {feeModel, staffModel}=require('../models')
+
 
 mongoose.connect(config.dbServer)
     .then(()=>{

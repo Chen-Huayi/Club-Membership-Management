@@ -1,10 +1,7 @@
-const mongoose = require('mongoose')
-// const bcrypt=require('bcryptjs')
 const jwt = require('jsonwebtoken')
+// const bcrypt=require('bcryptjs')
 const config = require('../config')
-// const memberSchema = require('../schema/member')
-// const memberModel = mongoose.model('members', memberSchema)
-const {memberModel}=require('../schema/index')
+const {memberModel}=require('../models')
 
 
 const getUserById =async (member_id)=>{

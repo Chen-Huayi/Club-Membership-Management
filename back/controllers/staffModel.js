@@ -1,9 +1,7 @@
-const mongoose = require('mongoose')
-// const bcrypt=require('bcryptjs')
 const jwt = require('jsonwebtoken')
+// const bcrypt=require('bcryptjs')
 const config = require('../config')
-const staffSchema = require('../schema/staff')
-const staffModel = mongoose.model('staffs', staffSchema)
+const {staffModel}=require('../models')
 
 
 const getUserById = async (staff_id)=>{
