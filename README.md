@@ -34,13 +34,13 @@ Continually updated...✅
     npm install
     npm run start
     ```
-## Preview Images
-```HTML
-<video width="320" height="240" controls>
-    <source src="./preview/system.mp4" type="video/mp4">
-</video>
-```
-![](/img/)
-![](/img/)
-![](/img/)
-![](/img/)
+## Preview GIF
+This application have several user roles:
++ System Admin
+![](./preview/system_admin.gif)
+
++ Membership Admin
+![](./preview/membership_admin.gif)
+
++ Club Member
+![](./preview/member.gif)
