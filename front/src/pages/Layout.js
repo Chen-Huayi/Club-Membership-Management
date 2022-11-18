@@ -175,7 +175,7 @@ const MainLayout = () => {
 
             <Layout>
                 {role==='Club Member' && (
-                    <Sider className="site-layout-background" width={170}>
+                    <Sider className="site-layout-background" width={190}>
                         <Menu
                             mode="inline"
                             theme="light"
@@ -197,7 +197,7 @@ const MainLayout = () => {
                     </Sider>
                 )}
                 {role==='System Admin' && (
-                    <Sider className="site-layout-background" width={190}>
+                    <Sider className="site-layout-background" width={200}>
                         <Menu
                             mode="inline"
                             theme="light"

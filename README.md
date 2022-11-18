@@ -35,6 +35,11 @@ Continually updated...✅
     npm run start
     ```
 ## Preview Images
+```HTML
+<video width="320" height="240" controls>
+    <source src="./preview/system.mp4" type="video/mp4">
+</video>
+```
 ![](/img/)
 ![](/img/)
 ![](/img/)
