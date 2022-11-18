@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const staff=require('../controllers/staffModel')
-const fee=require('../controllers/feeModel')
+const staff=require('../controllers/staffController')
+const fee=require('../controllers/feeController')
 
 // Previous router:
 // http://localhost:8000/api
