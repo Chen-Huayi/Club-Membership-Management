@@ -2,17 +2,8 @@ const jwt = require('jsonwebtoken')
 // const bcrypt=require('bcryptjs')
 const config = require('../config')
 const {memberModel}=require('../models')
+const {getUserById, formatDateString, calculateDates}=require('../utils/member_functions')
 
-
-const getUserById =async (member_id)=>{
-    let member=null
-    try {
-        member=await memberModel.findOne({member_id})
-    } catch (err){
-        throw Error(err)
-    }
-    return member
-}
 
 const updateByObjId = (id, update, msg, res) => {
     memberModel.findByIdAndUpdate(id, update, (err)=>{
@@ -25,7 +16,7 @@ const updateByObjId = (id, update, msg, res) => {
 }
 
 const updateInfo = (member_id, update, operationMsg, res)=>{
-    getUserById(member_id)
+    getUserById(memberModel, member_id)
         .then(member=>{
             if (!member){
                 return res.handleMessage('User does not exist!')
@@ -45,10 +36,6 @@ const getMemberList = async (membershipStatus, res)=>{
     res.send({
         member_list: members
     })
-}
-
-const formatDateString = (date)=>{
-    return date.getFullYear() +'/'+ (date.getMonth()+1).toString().padStart(2, '0')+'/'+ date.getDate().toString().padStart(2, '0')
 }
 
 const getLastMonday = (date) => {
@@ -90,7 +77,7 @@ exports.signup = (req, res)=>{
 }
 
 exports.checkLocked = (req, res)=>{
-    getUserById(req.body.member_id)
+    getUserById(memberModel, req.body.member_id)
         .then(member => {
             if (!member){
                 return res.handleMessage('Wrong Member ID!')
@@ -110,7 +97,7 @@ exports.login = (req, res)=>{
     const member_id=userInfo.member_id
     const password=userInfo.password
 
-    getUserById(member_id)
+    getUserById(memberModel, member_id)
         .then(member => {
             if (!member){
                 return res.handleMessage('Wrong Member ID!')
@@ -169,7 +156,7 @@ exports.getInactiveMemberList = (req, res)=>{
 exports.getMemberProfile = (req, res)=>{
     const member_id=req.params.id
 
-    getUserById(member_id)
+    getUserById(memberModel, member_id)
         .then(member=>{
             if (!member){
                 return res.handleMessage('User does not exist!')
@@ -207,7 +194,7 @@ exports.updatePassword = (req, res)=>{
     const oldPassword=req.body.oldPassword
     const newPassword=req.body.newPassword
 
-    getUserById(member_id)
+    getUserById(memberModel, member_id)
         .then(member=>{
             if (!member){
                 return res.handleMessage('User does not exist!')
@@ -226,6 +213,7 @@ exports.updatePassword = (req, res)=>{
         })
 }
 
+// For users who forgot password and reset through security code
 exports.resetPassword = (req, res)=>{
     updateInfo(
         req.body.member_id,
@@ -247,34 +235,13 @@ exports.deactivateMember = (req, res)=>{
 }
 
 exports.activateMember = async (req, res)=>{
-    const member=await getUserById(req.body.member_id)
+    const member=await getUserById(memberModel, req.body.member_id)
 
     if (!member){
         return res.handleMessage('Wrong Member ID!')
     }
-
-    let newExpireDate
-    let effectiveDate
-    let recentRenewalDate=new Date()  // To be today
-    const prevExpireDate=new Date(member.expire_date)
-
-    if (prevExpireDate>new Date()){  // member.expire_date is not expire today(失效日期还没到)
-        // expire_date: previous expire date +1 year
-        newExpireDate = prevExpireDate
-        newExpireDate.setFullYear(newExpireDate.getFullYear()+1)
-        // effectIve_date no change
-        effectiveDate=new Date(member.effective_date)
-    }else {  // membership is expire
-        // expire_date: today + 1 year
-        newExpireDate = new Date()
-        newExpireDate.setFullYear(newExpireDate.getFullYear()+1)
-        // effectIve_date: today
-        effectiveDate=new Date()
-    }
-
-    const expire_date = formatDateString(newExpireDate)
-    const effective_date = formatDateString(effectiveDate)
-    const recent_renewal_date = formatDateString(recentRenewalDate)
+    const {expire_date, effective_date} = calculateDates(member)
+    const recent_renewal_date = formatDateString(new Date())  // To be today
 
     updateInfo(
         req.body.member_id,
@@ -303,7 +270,7 @@ exports.sendGroupEmail = (req, res)=>{
 }
 
 exports.getNotification = (req, res)=>{
-    getUserById(req.params.id)
+    getUserById(memberModel, req.params.id)
         .then(member => {
             if (!member){
                 return res.handleMessage('Wrong Member ID!')
@@ -329,9 +296,8 @@ exports.deleteNotification = (req, res)=>{
         })
 }
 
-
+// Membership cards' operations
 exports.requestReplaceCard = (req, res)=>{
-    // res.send()
     updateInfo(
         req.body.member_id,
         {has_card: false},

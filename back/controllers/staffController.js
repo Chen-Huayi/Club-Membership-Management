@@ -14,6 +14,15 @@ const getUserById = async (staff_id)=>{
     return staff
 }
 
+const updateInfo = (staff_id, update, res) => {
+    staffModel.findOneAndUpdate({staff_id}, {...update}, (err)=>{
+        if (err){
+            return res.handleMessage(err)
+        }
+        res.handleMessage('Deactivate staff successfully!', 0)
+    })
+}
+
 
 exports.signup = (req, res)=>{
     const userInfo=req.body
@@ -130,35 +139,27 @@ exports.getStaffProfile = (req, res)=>{
 }
 
 
-
 exports.updateStaffInfo = (req, res)=> {
-    staffModel.findOneAndUpdate({staff_id: req.body.staff_id}, {...req.body}, (err)=>{
-        if (err){
-            res.handleMessage(err)
-        }
-        res.handleMessage('Deactivate staff successfully!', 0)
-    })
+    updateInfo(
+        req.body.staff_id,
+        req.body,
+        res
+    )
 }
 
-
 exports.deactivateStaff = (req, res)=> {
-    staffModel.findOneAndUpdate({staff_id: req.body.staff_id}, {membership_status: false}, (err)=>{
-        if (err){
-            res.handleMessage(err)
-        }
-        res.handleMessage('Deactivate staff successfully!', 0)
-    })
+    updateInfo(
+        req.body.staff_id,
+        {membership_status: false},
+        res
+    )
 }
 
 exports.activateStaff = (req, res)=> {
-    staffModel.findOneAndUpdate({staff_id: req.body.staff_id}, {membership_status: true}, (err)=>{
-        if (err){
-            res.handleMessage(err)
-        }
-        res.handleMessage('Activate staff successfully!', 0)
-    })
+    updateInfo(
+        req.body.staff_id,
+        {membership_status: true},
+        res
+    )
 }
-
-
-
 
