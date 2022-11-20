@@ -1,9 +1,9 @@
 {
     "name": "membership-server",
     "version": "1.0.0",
-    "main": "app.js",
+    "main": "server.js",
     "scripts": {
-        "server": "nodemon app.js"
+        "server": "nodemon"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",

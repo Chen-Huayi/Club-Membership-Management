@@ -7,7 +7,7 @@ const config='ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@azurecosm
 
 const DB_URL=`mongodb://${username}:${password}@${host}:${port}/${db_name}?${config}`
 
-const sysAdmin= {
+const admin= {
     staff_id: 'sys-admin',
     user_role: 'System Admin',
     firstname: '[firstname]',
@@ -23,8 +23,8 @@ module.exports = {
     expiresIn: '1h',
     PORT: 8000,
     // dbServer: 'mongodb://localhost:27017/club_member',
-    dbServer: DB_URL,
-    sysAdmin,
+    url: DB_URL,
+    admin,
     company: 'green_space_club',
-    membership_fee: 648
+    fee: 648
 }

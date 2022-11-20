@@ -1,12 +1,12 @@
-require('./db/mongo_server')
 const express=require('express')
 const app=express()
 const cors = require('cors')
 const joi = require('joi')
 const bodyParser = require("body-parser")
-const config=require('./config')
 const memberRouter=require('./routers/memberRouter')
 const staffRouter=require('./routers/staffRouter')
+const membershipRouter=require('./routers/membershipRouter')
+const feeRouter=require('./routers/feeRouter')
 
 // Cross-Origin Resource Sharing
 app.use(cors())
@@ -28,7 +28,8 @@ app.use((req, res, next)=>{
 // Main router (Start here)
 app.use('/api', memberRouter)
 app.use('/api', staffRouter)
-
+app.use('/api', membershipRouter)
+app.use('/api', feeRouter)
 
 // Errors middlewares
 app.use((err, req, res, next)=>{
@@ -40,8 +41,4 @@ app.use((err, req, res, next)=>{
     res.handleMessage(err)  // Unknown error
 })
 
-// Listen at default 8000 port
-app.listen(config.PORT, (err)=>{
-    if (err) console.log(err)
-    console.log(`Server is running at http://localhost:${config.PORT}`)
-})
+module.exports = app

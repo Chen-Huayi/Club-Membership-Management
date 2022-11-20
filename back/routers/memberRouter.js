@@ -1,8 +1,6 @@
 const express = require('express')
 const router = express.Router()
-
 const member=require('../controllers/memberController')
-const membership=require('../controllers/membershipController')
 
 // Previous router:
 // http://localhost:8000/api
@@ -21,10 +19,6 @@ router.put('/member/reset-pwd', member.resetPassword)  // for user forgot passwo
 router.put('/member/deactivate', member.deactivateMember)
 router.put('/member/activate', member.activateMember)
 
-router.post('/membership/activate-record', membership.membershipActivateRecord)
-router.post('/membership/deactivate-record', membership.membershipDeactivateRecord)
-router.get('/membership/record', membership.getMembershipAudit)
-
 router.post('/member/send-email', member.sendGroupEmail)
 router.get('/member/receive-email/:id', member.getNotification)
 router.put('/member/delete-email', member.deleteNotification)
@@ -33,9 +27,5 @@ router.put('/member/request-replace-card/', member.requestReplaceCard)
 router.get('/member/send-card-list/', member.getSendCardList)
 router.get('/member/replace-card-list/', member.getReplaceCardList)
 router.put('/member/deliver-card/', member.deliverCard)
-
-router.get('/member/registered/:range', membership.getNewRegisteredList)
-router.get('/member/expired/:range', membership.getExpiredList)
-router.get('/member/renewed/:range', membership.getRenewedList)
 
 module.exports=router

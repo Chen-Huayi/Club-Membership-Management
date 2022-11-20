@@ -1,8 +1,6 @@
 const express = require('express')
 const router = express.Router()
-
 const staff=require('../controllers/staffController')
-const fee=require('../controllers/feeController')
 
 // Previous router:
 // http://localhost:8000/api
@@ -17,8 +15,5 @@ router.put('/staff/update-info', staff.updateStaffInfo)
 
 router.put('/staff/deactivate', staff.deactivateStaff)
 router.put('/staff/activate', staff.activateStaff)
-
-router.put('/annual-fee', fee.updateMembershipFee)
-router.get('/annual-fee', fee.getMembershipFee)
 
 module.exports=router
