@@ -2,6 +2,7 @@ const {memberModel, membershipModel}=require('../models')
 const {getUserById, formatDateString, calculateDates}=require('../utils/member_functions')
 
 
+// Format daytime array to two "YYYY-MM-DD" strings
 const formatDate = (range) => {
     const start=formatDateString(new Date(range.split(' ')[0]))
     const end=formatDateString(new Date(range.split(' ')[1]))
@@ -9,6 +10,7 @@ const formatDate = (range) => {
 }
 
 
+// Record all activating membership operations with (member_id, effective_date, expire_date, payment_date, approved_by)
 exports.membershipActivateRecord= async (req, res)=>{
     const member_id=req.body.member_id
     const member=await getUserById(memberModel, member_id)
@@ -36,6 +38,7 @@ exports.membershipActivateRecord= async (req, res)=>{
 
 }
 
+// Record all deactivating membership operations with (member_id, effective_date, expire_date, payment_date, approved_by)
 exports.membershipDeactivateRecord= async (req, res)=>{
     const member_id=req.body.member_id
     const member=await getUserById(memberModel, member_id)
@@ -62,6 +65,7 @@ exports.membershipDeactivateRecord= async (req, res)=>{
 
 }
 
+// Get all audit histories
 exports.getMembershipAudit=async (req, res)=>{
     const records=await membershipModel.find({})
     res.send({
@@ -71,7 +75,9 @@ exports.getMembershipAudit=async (req, res)=>{
 }
 
 
-
+/* Get member lists in terms of new registered, expire, and recent renewal */
+/* Filter these dates by compare formatted date strings (YYYY-MM-DD) */
+/* Search range by greater than or equal to, and less than or equal to */
 
 exports.getNewRegisteredList= async (req, res)=> {
     const {start, end}=formatDate(req.params.range)

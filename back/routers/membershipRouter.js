@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const membership = require("../controllers/membershipController");
 
-// Previous router:
+// Router start with:
 // http://localhost:8000/api
 router.post('/membership/activate-record', membership.membershipActivateRecord)
 router.post('/membership/deactivate-record', membership.membershipDeactivateRecord)

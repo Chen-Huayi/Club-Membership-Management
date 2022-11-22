@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const fee = require("../controllers/feeController")
 
-// Previous router:
+// Router start with:
 // http://localhost:8000/api
 router.put('/annual-fee', fee.updateMembershipFee)
 router.get('/annual-fee', fee.getMembershipFee)

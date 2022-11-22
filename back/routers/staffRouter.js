@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const staff=require('../controllers/staffController')
 
-// Previous router:
+// Router start with:
 // http://localhost:8000/api
 router.post('/staff/signup', staff.signup)
 router.post('/staff/login', staff.login)

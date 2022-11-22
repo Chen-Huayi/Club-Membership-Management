@@ -4,6 +4,7 @@ const formatDate = (date) => {
 }
 
 
+// Get member users by given member_id
 exports.getUserById = async (memberModel, member_id)=>{
     let member=null
     try {
@@ -14,10 +15,12 @@ exports.getUserById = async (memberModel, member_id)=>{
     return member
 }
 
+// Return and pass Date parameter
 exports.formatDateString = (date)=>{
     return formatDate(date)
 }
 
+// calculate and compute new dates (expire date and effective date) with rules
 exports.calculateDates = (member)=>{
     let newExpireDate
     let effectiveDate

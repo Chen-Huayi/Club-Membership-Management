@@ -28,9 +28,9 @@ const memberSchema = new Schema({
     expire_date: {type: String, default: formatDateString(new Date()), required: true},  // The membership expires after this date
     membership_status: {type: Boolean, default: false, required: true},  // true for Active; false for Inactive
     recent_renewal_date: {type: String, default: 'Never renew', required: true},
-    account_locked: {type: Boolean, default: false, required: true},
-    notifications: [],
-    has_card: {type: Boolean, default: false, required: true},
+    account_locked: {type: Boolean, default: false, required: true},  // password is wrong more than 5 times, lock immediately
+    notifications: [],  // in-app email notification boxes
+    has_card: {type: Boolean, default: false, required: true},  // true for members who have their member cards, false for who never have, or request a replacement of card
 })
 
 const memberModel = mongoose.model('members', memberSchema)

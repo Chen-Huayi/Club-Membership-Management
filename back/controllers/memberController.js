@@ -5,6 +5,7 @@ const {memberModel}=require('../models')
 const {getUserById, formatDateString, calculateDates}=require('../utils/member_functions')
 
 
+// Update value(s) in the database by given (Obj_id, update object, operation message, response)
 const updateByObjId = (id, update, msg, res) => {
     memberModel.findByIdAndUpdate(id, update, (err)=>{
         if (err){
@@ -15,6 +16,7 @@ const updateByObjId = (id, update, msg, res) => {
     })
 }
 
+// Get member user id, and then call updateByObjId function to update things in MongoDB database
 const updateInfo = (member_id, update, operationMsg, res)=>{
     getUserById(memberModel, member_id)
         .then(member=>{
@@ -29,6 +31,7 @@ const updateInfo = (member_id, update, operationMsg, res)=>{
         })
 }
 
+// Get membership status by passing true or false to get active or inactive members, respectively
 const getMemberList = async (membershipStatus, res)=>{
     const members = await memberModel.find({
         membership_status: membershipStatus
@@ -38,13 +41,14 @@ const getMemberList = async (membershipStatus, res)=>{
     })
 }
 
+// Get the date of last Monday by passing JS Date
 const getLastMonday = (date) => {
     date.setDate(date.getDate()-7-date.getDay()+1)
     return formatDateString(date)
 }
 
 
-/*---------------for public (member without login)-------------------*/
+// Sign up a new member
 exports.signup = (req, res)=>{
     const {pay_now, amount, agreement, ...userInfo} = req.body  // delete agreement, and get payment condition
     const member_id=userInfo.member_id
@@ -76,6 +80,7 @@ exports.signup = (req, res)=>{
     })
 }
 
+// Before login, check whether this user's account is locked or not
 exports.checkLocked = (req, res)=>{
     getUserById(memberModel, req.body.member_id)
         .then(member => {
@@ -92,6 +97,7 @@ exports.checkLocked = (req, res)=>{
         })
 }
 
+// Login to user account
 exports.login = (req, res)=>{
     const userInfo=req.body
     const member_id=userInfo.member_id
@@ -102,24 +108,24 @@ exports.login = (req, res)=>{
             if (!member){
                 return res.handleMessage('Wrong Member ID!')
             }
-
+            // if the fail login counts of user's account is more than a certain value, update account_lock attribute to true
             if (member.fail_login_count>=4){
                 updateByObjId(member._id, {$set: {account_locked: true}}, `Your account [${member_id}] is locked`, res)
-                // return res.handleMessage(`Your account [${member_id}] is locked!`)
             }
-
+            // Match password correctness, if wrong, fail_login_count +1
             if (member.password!==password){  // TODO password 加密
                 updateByObjId(member._id, {$inc: {fail_login_count: 1}}, `[${member_id}] failure login count +1`, res)
                 return res.handleMessage('Wrong Password!')
             }
 
+            // If password is matched, clear and reset fail_login_count value to 0
             updateByObjId(member._id, {fail_login_count: 0}, `Club member [${member_id}] login successfully!`, res)
             const userObj = {...member._doc, password:''}
             const {fail_login_count, __v, ...rest} = userObj
             const {firstname, lastname, user_role, membership_status, expire_date}=rest
 
             // TODO user_role加密
-
+            // Create JSON web token
             const tokenStr=jwt.sign(
                 rest,
                 config.jwtSecretKey,
@@ -143,7 +149,6 @@ exports.login = (req, res)=>{
 }
 
 
-/*------------ for only after member login into account------------*/
 // Get user information
 exports.getActiveMemberList = (req, res)=>{
     getMemberList(true, res)
@@ -153,6 +158,7 @@ exports.getInactiveMemberList = (req, res)=>{
     getMemberList(false, res)
 }
 
+// Get a member's personal information
 exports.getMemberProfile = (req, res)=>{
     const member_id=req.params.id
 
@@ -189,6 +195,7 @@ exports.updateMemberInfo = (req, res)=>{
     )
 }
 
+// In-app password change by user themselves, requires member old password to easily make a change
 exports.updatePassword = (req, res)=>{
     const member_id=req.body.member_id
     const oldPassword=req.body.oldPassword
@@ -240,7 +247,7 @@ exports.activateMember = async (req, res)=>{
     if (!member){
         return res.handleMessage('Wrong Member ID!')
     }
-    const {expire_date, effective_date} = calculateDates(member)
+    const {expire_date, effective_date} = calculateDates(member)  // Calculate expire_date and effective_date
     const recent_renewal_date = formatDateString(new Date())  // To be today
 
     updateInfo(
@@ -258,7 +265,8 @@ exports.activateMember = async (req, res)=>{
 }
 
 
-// Emails/Notifications send, receive, and delete operations
+/* Emails/Notifications send, receive, and delete operations*/
+// Send
 exports.sendGroupEmail = (req, res)=>{
     memberModel.updateMany(
         {membership_status: true},
@@ -269,6 +277,7 @@ exports.sendGroupEmail = (req, res)=>{
         })
 }
 
+// Receive
 exports.getNotification = (req, res)=>{
     getUserById(memberModel, req.params.id)
         .then(member => {
@@ -284,6 +293,7 @@ exports.getNotification = (req, res)=>{
         })
 }
 
+// Delete
 exports.deleteNotification = (req, res)=>{
     memberModel.updateOne(
         {member_id: req.body.member_id},
@@ -296,7 +306,8 @@ exports.deleteNotification = (req, res)=>{
         })
 }
 
-// Membership cards' operations
+/* Membership cards' operations */
+// Request card. New member: get a new card, existing member: request a replacement
 exports.requestReplaceCard = (req, res)=>{
     updateInfo(
         req.body.member_id,
@@ -306,6 +317,7 @@ exports.requestReplaceCard = (req, res)=>{
     )
 }
 
+// Get member list of whom newly registered since last Monday
 exports.getSendCardList = async (req, res) =>{
     const members = await memberModel.find({
         has_card: false,
@@ -322,6 +334,7 @@ exports.getSendCardList = async (req, res) =>{
     }
 }
 
+// Get member list of whom request a replacement of membership card
 exports.getReplaceCardList = async (req, res) =>{
     const members = await memberModel.find({
         has_card: false,
@@ -338,6 +351,7 @@ exports.getReplaceCardList = async (req, res) =>{
     }
 }
 
+// After responses to each sending card request, set that member user as waiting to receive, and set "has_card" to true
 exports.deliverCard = (req, res) =>{
     updateInfo(
         req.body.member_id,

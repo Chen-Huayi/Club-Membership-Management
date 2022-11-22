@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const member=require('../controllers/memberController')
 
-// Previous router:
+// Router start with:
 // http://localhost:8000/api
 router.post('/member/signup', member.signup)
 router.post('/login-checked', member.checkLocked)
