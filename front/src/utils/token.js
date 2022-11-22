@@ -1,5 +1,6 @@
 import {secretKey} from '../config'
 
+// Set to local storage with stringify values
 const setValue=(values)=>{
     return window.localStorage.setItem(secretKey, JSON.stringify(values))
 }

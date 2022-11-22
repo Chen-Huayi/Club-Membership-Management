@@ -33,9 +33,10 @@ export default function Login() {
     const onFinish = async (values) => {
         const {member_id, staff_id}=values
 
-        if (member_id){
+        if (member_id){  // If this user is a member
             const result=await loginStore.checkAccountLocked({member_id})
 
+            // Check account status
             if (!result.account_locked){
                 await loginStore.memberLogin(values)
 
@@ -52,7 +53,7 @@ export default function Login() {
                 message.error('Your account is locked, please contact us to unlock!')
             }
 
-        }else if (staff_id){
+        }else if (staff_id){  // If this user is a club staff
             await loginStore.staffLogin(values)
 
             if (loginStore.token!==''){

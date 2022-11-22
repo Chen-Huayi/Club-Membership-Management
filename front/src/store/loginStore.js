@@ -2,6 +2,7 @@ import {makeAutoObservable} from "mobx";
 import {token, member_id, staff_id, firstname, lastname, user_role, membership_status, expire_date, http, setValue, removeToken} from '../utils';
 
 class LoginStore{
+    // Some data of user information when user login
     token=token || ''
     member_id=member_id
     firstname=firstname
