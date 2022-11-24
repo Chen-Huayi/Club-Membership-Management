@@ -49,7 +49,7 @@ const initCompanySystem = () => {
 
 
 
-// Connect to MongoDB database
+/* Connect to MongoDB database */
 mongoose.connect(config.url)
     .then(()=>{
         console.log('Database is connected...')
@@ -57,7 +57,7 @@ mongoose.connect(config.url)
         // init basic role and conditions
         initCompanySystem()
 
-        // Listen at default port: 8000
+        // Listen at default port: 8888
         app.listen(config.PORT, (err)=>{
             if (err) console.log(err)
             console.log(`Server is running at http://localhost:${config.PORT}`)

@@ -4,7 +4,7 @@ const config = require('../config')
 const {staffModel}=require('../models')
 
 
-// Get member users by given staff_id
+/* Get member users by given staff_id */
 const getUserById = async (staff_id)=>{
     let staff=null
     try {
@@ -15,7 +15,7 @@ const getUserById = async (staff_id)=>{
     return staff
 }
 
-// Update value(s) in the database by given (Obj_id, update object, operation message, response)
+/* Update value(s) in the database by given (Obj_id, update object, operation message, response) */
 const updateInfo = (staff_id, update, res) => {
     staffModel.findOneAndUpdate({staff_id}, {...update}, (err)=>{
         if (err){
@@ -26,7 +26,7 @@ const updateInfo = (staff_id, update, res) => {
 }
 
 
-// Register a new staff with staff's role by system admin
+/* Register a new staff with staff's role by system admin */
 exports.signup = (req, res)=>{
     const userInfo=req.body
     const staff_id=userInfo.staff_id
