@@ -21,7 +21,7 @@ const admin= {
 module.exports = {
     jwtSecretKey: 'sa_nv_nei_78',
     expiresIn: '120s',
-    PORT: 8000,
+    PORT: 8888,
     // url: 'mongodb://localhost:27017/club_member',
     url: DB_URL,
     admin,

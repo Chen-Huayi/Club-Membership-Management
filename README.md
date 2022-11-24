@@ -21,7 +21,7 @@ Continually updated...✅
     git clone https://github.com/Chen-Huayi/Membership-Management.git
     ```
 **Run**
-1. Make sure the variable `PORT` must be the same (default: `8000`) in both
+1. Make sure the variable `PORT` must be the same (default: `8888`) in both
    + `/back/config.js`
    + `/front/src/config.js`
 2. In `/back` directory:

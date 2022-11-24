@@ -5,7 +5,7 @@ import {PORT} from "../config"
 
 const http = axios.create({
     baseURL: `http://localhost:${PORT}`,
-    timeout: 6000
+    timeout: 5000
 })
 
 /*Add request interceptors*/
@@ -21,7 +21,6 @@ http.interceptors.request.use((config)=> {
 /*Add response interceptors*/
 http.interceptors.response.use((response)=> {
     // This function is triggered for any status code between 200 and 300 (code>=200 && code<300)
-
     // If token is expired, sent by code 401, then remove the token
     if (response.data.status===401){
         removeToken()
