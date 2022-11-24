@@ -2,7 +2,7 @@ const {memberModel, membershipModel}=require('../models')
 const {getUserById, formatDateString, calculateDates}=require('../utils/member_functions')
 
 
-/* Format daytime array to two "YYYY-MM-DD" strings */
+/* Format daytime array to two "YYYY-MM-DD" string */
 const formatDate = (range) => {
     const start=formatDateString(new Date(range.split(' ')[0]))
     const end=formatDateString(new Date(range.split(' ')[1]))
