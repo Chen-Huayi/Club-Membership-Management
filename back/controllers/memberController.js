@@ -126,7 +126,7 @@ exports.login = (req, res)=>{
 
             // TODO user_role加密
             // Create JSON web token
-            const tokenStr=jwt.sign(
+            const token=jwt.sign(
                 rest,
                 config.jwtSecretKey,
                 {expiresIn: config.expiresIn}
@@ -134,7 +134,7 @@ exports.login = (req, res)=>{
 
             res.send({
                 status: 0,
-                token: 'Bearer '+tokenStr,
+                token,
                 member_id,
                 firstname,
                 lastname,

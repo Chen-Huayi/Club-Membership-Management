@@ -76,14 +76,14 @@ exports.login = (req, res)=>{
             // TODO user_role加密
             console.log(`Staff [${staff_id}] login successfully!`)
 
-            const tokenStr=jwt.sign(
+            const token=jwt.sign(
                 rest,
                 config.jwtSecretKey,
                 {expiresIn: config.expiresIn}
             )
             res.send({
                 status: 0,
-                token: 'Bearer '+tokenStr,
+                token,
                 staff_id,
                 firstname,
                 lastname,

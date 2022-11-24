@@ -1,5 +1,5 @@
 import axios from "axios"
-import {token} from "./token"
+import {token, removeToken} from "./token"
 import {history} from "./history"
 import {PORT} from "../config"
 
@@ -8,9 +8,9 @@ const http = axios.create({
     timeout: 6000
 })
 
-// Add request interceptors
+/*Add request interceptors*/
 http.interceptors.request.use((config)=> {
-    if (token) {
+    if (token) {  // Set headers
         config.headers.Authorization = `Bearer ${token}`
     }
     return config
@@ -18,12 +18,17 @@ http.interceptors.request.use((config)=> {
     return Promise.reject(error)
 })
 
-// Add response interceptors
+/*Add response interceptors*/
 http.interceptors.response.use((response)=> {
     // This function is triggered for any status code between 200 and 300 (code>=200 && code<300)
+
+    // If token is expired, sent by code 401, then remove the token
+    if (response.data.status===401){
+        removeToken()
+    }
     return response.data
 }, (error)=> {
-    // Triggered for any status code outside the 299 range
+    // Triggered for any status code >=300 range
     if (error.response.status===401){
         history.push('/login')
     }
