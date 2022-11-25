@@ -102,7 +102,7 @@ export default function Login() {
                             message: 'Please enter your id!'
                         }]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="member id" />
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="member id" maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
@@ -111,12 +111,9 @@ export default function Login() {
                         rules={[{
                             required: true,
                             message: 'Please enter your Password!'
-                        }, {
-                            min: 6,
-                            message: 'Please enter valid Password!'
                         }]}
                     >
-                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="password"/>
+                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="password" maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item>
@@ -139,7 +136,7 @@ export default function Login() {
                             message: 'Please enter your id!'
                         }]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="staff id" />
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="staff id" maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         className="input-form"
@@ -147,12 +144,9 @@ export default function Login() {
                         rules={[{
                             required: true,
                             message: 'Please enter your Password!'
-                        }, {
-                            min: 6,
-                            message: 'Please enter valid Password!'
                         }]}
                     >
-                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="password"/>
+                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="password" maxLength={30}/>
                     </Form.Item>
                 </>)}
 

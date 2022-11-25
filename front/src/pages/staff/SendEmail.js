@@ -47,7 +47,7 @@ export default function SendEmail () {
                     name="title"
                     rules={[{required: true, message: 'Please enter title'}]}
                 >
-                    <Input placeholder="Enter your title"/>
+                    <Input placeholder="Enter your title" maxLength={100}/>
                 </Form.Item>
                 <Form.Item
                     label="Content"

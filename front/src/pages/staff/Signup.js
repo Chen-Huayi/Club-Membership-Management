@@ -64,17 +64,17 @@ export default function Signup() {
                         rules={[{required: true, message: 'Please enter your first name!'},
                         ]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
                     <Form.Item name="middle_name" label="Middle Name">
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         name="lastname"
                         label="Last Name"
                         rules={[{required: true, message: 'Please enter your last name!'}]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         name="email"
@@ -84,33 +84,38 @@ export default function Signup() {
                             {required: true, message: 'Please enter your E-mail!'}
                         ]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         name="phone"
                         label="Phone Number"
                         rules={[{required: true, message: 'Please enter your phone number!'}]}
                     >
-                        <Input style={{width: '100%'}}/>
+                        <Input maxLength={30} style={{width: '100%'}}/>
                     </Form.Item>
                     <Form.Item
                         name="staff_id"
                         label="Staff ID"
                         tooltip="Create your custom staff ID"
-                        rules={[{required: true, message: 'Please enter your Staff ID!'}]}
+                        rules={[
+                            {min: 3, message: 'Your Staff ID should be at least 3 characters!'},
+                            {max: 20, message: 'Your Staff ID  should be at most 20 characters!'},
+                            {required: true, message: 'Please enter your Staff ID!'}
+                        ]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         name="password"
                         label="Password"
                         rules={[
                             {min: 6, message: 'Your password should be at least 6 characters!'},
+                            {max: 20, message: 'Your password should be at most 20 characters!'},
                             {required: true, message: 'Please enter your password!'}
                         ]}
                         hasFeedback
                     >
-                        <Input.Password />
+                        <Input.Password maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         name="confirm"
@@ -129,7 +134,7 @@ export default function Signup() {
                             })
                         ]}
                     >
-                        <Input.Password type="password" maxLength={ 20 }/>
+                        <Input.Password type="password" maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         name="user_role"

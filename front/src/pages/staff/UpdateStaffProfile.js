@@ -99,17 +99,14 @@ export default function UpdateStaffProfile () {
                         rules={[{required: true, message: 'Please enter your first name!'},
                         ]}
                     >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="middle_name" label="Middle Name">
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         name="lastname"
                         label="Last Name"
                         rules={[{required: true, message: 'Please enter your last name!'}]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         name="email"
@@ -119,14 +116,14 @@ export default function UpdateStaffProfile () {
                             {required: true, message: 'Please enter your E-mail!'}
                         ]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         name="phone"
                         label="Phone Number"
                         rules={[{required: true, message: 'Please enter your phone number!'}]}
                     >
-                        <Input style={{width: '100%'}}/>
+                        <Input maxLength={30} style={{width: '100%'}}/>
                     </Form.Item>
                     <Form.Item
                         name="user_role"

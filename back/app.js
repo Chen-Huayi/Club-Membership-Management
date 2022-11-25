@@ -1,7 +1,7 @@
 const express=require('express')
 const app=express()
 const cors = require('cors')
-const joi = require('joi')
+const Joi = require('joi')
 const {expressjwt: jwt}=require('express-jwt')
 const bodyParser = require("body-parser")
 const config=require('./config')
@@ -30,7 +30,7 @@ app.use((req, res, next)=>{
 
 /* Add authorization to routes but exclude that do not need to be verified (all paths start with "/api") */
 app.use(jwt({secret: config.jwtSecretKey, algorithms: ['HS256']})
-    .unless({ path: [/^\/api\//]}))
+    .unless({ path: [/^\/api\//, '/fee/get-fee', '/member/reset-pwd']}))
 
 /* Main routes (Start here) */
 app.use('/api', userRouter)
@@ -41,7 +41,7 @@ app.use('/fee', feeRouter)
 
 /*Middlewares errors*/
 app.use((err, req, res, next)=>{
-    if (err instanceof joi.ValidationError){  // Error caused by failed validation
+    if (err instanceof Joi.ValidationError){  // Error caused by failed validation
         return res.handleMessage(err)
     }
     if (err.name === 'UnauthorizedError'){

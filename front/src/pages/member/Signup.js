@@ -58,8 +58,8 @@ export default function Signup() {
     }
 
     useEffect( ()=>{
-        const loadFee=()=>{
-            settingStore.getMembershipFee()
+        const loadFee=async ()=>{
+            await settingStore.getMembershipFee()
                 .then(value => {
                     setFee(value.membership_fee)
                     form.setFieldsValue({amount: value.membership_fee})
@@ -69,7 +69,7 @@ export default function Signup() {
                 })
         }
         loadFee()
-    }, [])
+    }, [payment])
 
     return (
         <div className="register">
@@ -80,7 +80,7 @@ export default function Signup() {
                     name="register"
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
-                    initialValues={{middle_name: '', amount: fee}}
+                    initialValues={{middle_name: '', birthday_year: 2000, birthday_date: 1, amount: fee}}
                     scrollToFirstError
                 >
                     <div className="register-heading">Register an Account</div>
@@ -91,11 +91,11 @@ export default function Signup() {
                         rules={[{required: true, message: 'Please enter your first name!'},
                         ]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item name="middle_name" label="Middle Name">
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
@@ -103,7 +103,7 @@ export default function Signup() {
                         label="Last Name"
                         rules={[{required: true, message: 'Please enter your last name!'}]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
@@ -114,16 +114,20 @@ export default function Signup() {
                             {required: true, message: 'Please enter your E-mail!'}
                         ]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
                         name="member_id"
                         label="Member ID"
                         tooltip="Create your custom member ID"
-                        rules={[{required: true, message: 'Please enter your Member ID!'}]}
+                        rules={[
+                            {min: 3, message: 'Your Member ID should be at least 3 characters!'},
+                            {max: 20, message: 'Your Member ID  should be at most 20 characters!'},
+                            {required: true, message: 'Please enter your Member ID!'}
+                        ]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
@@ -131,11 +135,12 @@ export default function Signup() {
                         label="Password"
                         rules={[
                             {min: 6, message: 'Your password should be at least 6 characters!'},
+                            {max: 20, message: 'Your password should be at most 20 characters!'},
                             {required: true, message: 'Please enter your password!'}
                         ]}
                         hasFeedback
                     >
-                        <Input.Password />
+                        <Input.Password maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
@@ -155,7 +160,7 @@ export default function Signup() {
                             })
                         ]}
                     >
-                        <Input.Password type="password" maxLength={ 20 }/>
+                        <Input.Password type="password" maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
@@ -163,15 +168,15 @@ export default function Signup() {
                         label="Address line 1"
                         rules={[{required: true, message: 'Please enter your address!'}]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item name="address_line2" label="Address line 2" initialValue="">
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item name="address_line3" label="Address line 3" initialValue="">
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
@@ -179,7 +184,7 @@ export default function Signup() {
                         label="City"
                         rules={[{required: true, message: 'Please enter your city!'}]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
@@ -187,7 +192,7 @@ export default function Signup() {
                         label="Country"
                         rules={[{required: true, message: 'Please enter your country!'}]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
@@ -195,7 +200,7 @@ export default function Signup() {
                         label="Postal Code"
                         rules={[{required: true, message: 'Please enter your postal code!'}]}
                     >
-                        <Input />
+                        <Input maxLength={30}/>
                     </Form.Item>
 
                     <Form.Item
@@ -203,7 +208,7 @@ export default function Signup() {
                         label="Phone Number"
                         rules={[{required: true, message: 'Please enter your phone number!'}]}
                     >
-                        <Input style={{width: '100%'}}/>
+                        <Input maxLength={30} style={{width: '100%'}}/>
                     </Form.Item>
 
                     <Form.Item
@@ -215,7 +220,7 @@ export default function Signup() {
                             style={{display: 'inline-block', marginRight: 10}}
                             rules={[{required: true, message: 'Enter year!'}]}
                         >
-                            <Input placeholder="YYYY" style={{width: '80px'}}/>
+                            <InputNumber placeholder="YYYY" min={1900} max={2022} style={{width: '80px'}}/>
                         </Form.Item>
                         <Form.Item
                             name="birthday_month"
@@ -242,7 +247,7 @@ export default function Signup() {
                             style={{display: 'inline-block', marginRight: 10}}
                             rules={[{required: true, message: 'Enter date!'}]}
                         >
-                            <Input placeholder="DD" style={{width: '80px'}}/>
+                            <InputNumber placeholder="DD" min={1} max={31} style={{width: '80px'}}/>
                         </Form.Item>
                     </Form.Item>
 
