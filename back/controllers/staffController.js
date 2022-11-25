@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-// const bcrypt=require('bcryptjs')
+const bcrypt=require('bcryptjs')
 const config = require('../config')
 const {staffModel}=require('../models')
 
@@ -39,6 +39,8 @@ exports.signup = (req, res)=>{
         if (result > 0) {  // Already exist this staff id
             return res.handleMessage('Staff ID is occupied!')
         } else {
+            userInfo.password=bcrypt.hashSync(userInfo.password, 10)
+
             staffModel.create(userInfo, (err) => {
                 if (err) {
                     return res.handleMessage(err)
@@ -67,8 +69,11 @@ exports.login = (req, res)=>{
             if (!staff){
                 return res.handleMessage('Wrong Staff ID!')
             }
-            if (staff.password!==password){  // TODO password 加密
-                return res.handleMessage('Wrong Password!')
+            // Check and match password between database
+            const compareResult = bcrypt.compareSync(password, staff.password)
+            // Match password correctness, if wrong, fail_login_count +1
+            if (!compareResult){  // password !== staff.password
+                return res.handleMessage('Wrong password!')
             }
             const userObj = {...staff._doc, password: ''}
             const {__v, ...rest} = userObj

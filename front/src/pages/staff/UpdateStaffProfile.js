@@ -66,7 +66,7 @@ export default function UpdateStaffProfile () {
                 })
         }
         loadDetail()
-    }, [])
+    }, [form, userStore, staff_id])
 
     return (
         <div className="profile-content">

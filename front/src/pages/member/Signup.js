@@ -69,7 +69,7 @@ export default function Signup() {
                 })
         }
         loadFee()
-    }, [payment])
+    }, [payment, form, settingStore])
 
     return (
         <div className="register">

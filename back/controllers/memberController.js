@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-// const bcrypt=require('bcryptjs')
+const bcrypt=require('bcryptjs')
 const config = require('../config')
 const {memberModel}=require('../models')
 const {getUserById, formatDateString, calculateDates}=require('../utils/member_functions')
@@ -10,9 +10,8 @@ const updateByObjId = (id, update, msg, res) => {
     memberModel.findByIdAndUpdate(id, update, (err)=>{
         if (err){
             return res.handleMessage(err)
-        } else{
-            console.log(msg)
         }
+        console.log(msg)
     })
 }
 
@@ -60,6 +59,8 @@ exports.signup = (req, res)=>{
         if (result>0){  // Already exist this member id
             return res.handleMessage('Member ID is occupied!')
         } else {
+            userInfo.password=bcrypt.hashSync(userInfo.password, 10)
+
             memberModel.create(userInfo, (err)=>{
                 if (err){
                     return res.handleMessage(err)
@@ -112,10 +113,12 @@ exports.login = (req, res)=>{
             if (member.fail_login_count>=4){
                 updateByObjId(member._id, {$set: {account_locked: true}}, `Your account [${member_id}] is locked`, res)
             }
+            // Check and match password between database
+            const compareResult = bcrypt.compareSync(password, member.password)
             // Match password correctness, if wrong, fail_login_count +1
-            if (member.password!==password){  // TODO password 加密
+            if (!compareResult){  // member.password !== password
                 updateByObjId(member._id, {$inc: {fail_login_count: 1}}, `[${member_id}] failure login count +1`, res)
-                return res.handleMessage('Wrong Password!')
+                return res.handleMessage('Wrong password!')
             }
 
             // If password is matched, clear and reset fail_login_count value to 0
@@ -199,20 +202,21 @@ exports.updateMemberInfo = (req, res)=>{
 exports.updatePassword = (req, res)=>{
     const member_id=req.body.member_id
     const oldPassword=req.body.oldPassword
-    const newPassword=req.body.newPassword
 
     getUserById(memberModel, member_id)
         .then(member=>{
             if (!member){
                 return res.handleMessage('User does not exist!')
             }
-            if (oldPassword!==member.password){
+            // Determine if the submitted old password is correct
+            const compareResult = bcrypt.compareSync(oldPassword, member.password)
+            // oldPassword !== member.password
+            if (!compareResult) {
                 return res.handleMessage('The old password is wrong!')
             }
-            if (oldPassword===newPassword){
-                return res.handleMessage('The old password and new password are same!')
-            }
+            const newPassword = bcrypt.hashSync(req.body.newPassword, 10)
             updateByObjId(member._id, {$set: {password: newPassword}}, 'Password changed!', res)
+
             res.handleMessage('Password changed!', 0)
         })
         .catch(err => {
