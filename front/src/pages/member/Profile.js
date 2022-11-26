@@ -34,9 +34,6 @@ const UpdateItem = (props) => {
                     .then(result=>{
                         if (result.status===0){
                             message.success(result.message)
-                            setTimeout(()=>{
-                                window.location.reload()
-                            }, 500)
                         } else{
                             message.error(result.message)
                         }
@@ -64,7 +61,7 @@ const UpdateItem = (props) => {
         if (open){
             loadInfo()
         }
-    }, [open])
+    }, [open, form, userStore, loginStore.member_id])
 
     return (
         <>
@@ -221,7 +218,7 @@ export default function Profile () {
             setProfile({...profileData})
         }
         loadInfo()
-    }, [])
+    }, [profile])
 
     return (
         <div className="profile-content">

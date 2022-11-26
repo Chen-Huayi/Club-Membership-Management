@@ -37,9 +37,6 @@ export default function UpdateStaffProfile () {
                         if (result.status===0){
                             navigate('/staff-list')
                             message.success(result.message)
-                            setTimeout(()=>{
-                                window.location.reload()
-                            }, 300)
                         } else {
                             message.error(result.message)
                         }

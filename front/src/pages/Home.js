@@ -37,7 +37,7 @@ export default function Home() {
             })
         }
         loadInfo()
-    }, [])
+    }, [userInfo])
 
     const isExpireInOneMonth = (expireDate) => {
         return new Date(expireDate).getTime() < new Date().getTime()+millisecondsADay*30

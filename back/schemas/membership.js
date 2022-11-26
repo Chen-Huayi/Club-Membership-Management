@@ -1,13 +1,10 @@
-const Joi = require("joi")
-// 0-9, a-z, A-Z, min:3, max: 20
-const id = Joi.string().alphanum().min(3).max(20).required()
-// time range requires: "YYYY-MM-DD YYYY-MM-DD" which has 21 characters
-const range = Joi.string().min(21).max(21).required()
+const {user_id, range}=require('./user')
+
 
 exports.membership_schema={
     body: {
-        member_id: id,
-        approved_by: id,
+        member_id: user_id,
+        approved_by: user_id,
     }
 }
 
@@ -16,6 +13,3 @@ exports.time_range_schema={
         range,
     }
 }
-
-
-

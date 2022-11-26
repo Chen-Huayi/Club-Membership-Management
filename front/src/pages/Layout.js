@@ -148,7 +148,7 @@ const MainLayout = () => {
             })
         }
         loadInfo()
-    }, [])
+    }, [userInfo])
 
     return(
         <Layout style={{height:"100vh"}}>

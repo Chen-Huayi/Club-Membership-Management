@@ -14,7 +14,7 @@ const admin= {
     firstname: 'firstname',
     lastname: 'lastname',
     email: '666666@qq.com',
-    phone: '204-666-6666',
+    phone: '2046666666',
     password: bcrypt.hashSync('000000', 10),
     membership_status: true
 }

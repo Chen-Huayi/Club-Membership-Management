@@ -24,26 +24,17 @@ const SetMembershipFee = () => {
     }
 
     const handleOk = async () => {
-        await form.validateFields()
-            .then(value => {
-                settingStore.updateMembershipFee(value)
-                    .then(result=>{
-                        if (result.status===0){
-                            message.success(result.message)
-                            window.location.reload()
-                        } else{
-                            message.error(result.message)
-                        }
-                        form.resetFields()
-                        setOpen(false)
-                    })
-                    .catch(err=>{
-                        throw Error(err)
-                    })
-            })
-            .catch(reason => {
-                console.log('Validate Failed:', reason)
-            })
+        const value=await form.validateFields()
+        const result=await settingStore.updateMembershipFee(value)
+
+        if (result.status===0){
+            message.success(result.message)
+            window.location.reload()
+        } else{
+            message.error(result.message)
+        }
+        form.resetFields()
+        setOpen(false)
     }
 
     const handleCancel = () => {
@@ -52,14 +43,9 @@ const SetMembershipFee = () => {
     }
 
     useEffect( ()=>{
-        const loadFee=()=>{
-            settingStore.getMembershipFee()
-                .then(value => {
-                    setFee(value.membership_fee)
-                })
-                .catch(err=>{
-                    throw Error(err)
-                })
+        const loadFee=async ()=>{
+            const result=await settingStore.getMembershipFee()
+            setFee(result.membership_fee)
         }
         loadFee()
     }, [])
