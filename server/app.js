@@ -10,6 +10,8 @@ const memberRouter=require('./routers/memberRouter')
 const staffRouter=require('./routers/staffRouter')
 const membershipRouter=require('./routers/membershipRouter')
 const feeRouter=require('./routers/feeRouter')
+const db=require('./utils/db-connect')
+
 
 /* Cross-Origin Resource Sharing */
 app.use(cors())
@@ -56,4 +58,13 @@ app.use((err, req, res, next)=>{
     })
 })
 
-module.exports = app
+db.createConnection().then(()=>{
+    // Listen at default port: 8888
+    app.listen(config.PORT, (err)=>{
+        if (err) {
+            throw Error(err)
+        }else {
+            console.log(`Server is running at http://localhost:${config.PORT}`)
+        }
+    })
+})

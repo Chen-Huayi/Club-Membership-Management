@@ -1,9 +1,8 @@
 // macOS start command:
 // mongod --dbpath /usr/local/var/mongodb --logpath /usr/local/var/log/mongodb/mongo.log --fork
 const mongoose = require('mongoose')
-const config = require('./config')
-const app = require('./app')
-const {feeModel, staffModel}=require('./models')
+const config = require('../config')
+const {feeModel, staffModel}=require('../models')
 
 
 const initSystemAdmin = () => {
@@ -47,23 +46,14 @@ const initCompanySystem = () => {
     })
 }
 
-
-
 /* Connect to MongoDB database */
-mongoose.connect(config.url)
-    .then(()=>{
-        console.log('Database is connected...')
-
-        // init basic role and conditions
-        initCompanySystem()
-
-        // Listen at default port: 8888
-        app.listen(config.PORT, (err)=>{
-            if (err) console.log(err)
-            console.log(`Server is running at http://localhost:${config.PORT}`)
+exports.createConnection = () => {
+    return mongoose.connect(config.url)
+        .then(()=>{
+            console.log('Database is connected...')
+            initCompanySystem()  // init basic role and conditions
         })
-
-    })
-    .catch((reason)=>{
-        console.log('Fail to connect to MongoDB database: ', reason)
-    })
+        .catch((reason)=>{
+            console.log('Fail to connect to MongoDB database: ', reason)
+        })
+}

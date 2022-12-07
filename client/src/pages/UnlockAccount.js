@@ -1,5 +1,5 @@
 // reset password
-// ID, password, confirm. back to login
+// ID, password, confirm. server to login
 import {Button, Col, Form, Input, message, Row} from 'antd'
 import React from 'react';
 import {LockOutlined} from "@ant-design/icons"

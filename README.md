@@ -16,21 +16,23 @@ Continually updated...✅
 
 ## How to Run ▶
 **Clone**
-+ git command
++ Git command
     ```shell
     git clone https://github.com/Chen-Huayi/Membership-Management.git
     ```
 **Run**
 1. Make sure the variable `PORT` must be the same (default: `8888`) in both
-   + `/back/config.js`
-   + `/front/src/config.js`
-2. In `/back` directory:
+   + `/server/config.js`
+   + `/client/src/config.js`
+2. Server Installation: 
     ```shell
+    cd server
     npm install
     npm run server
     ```
-3. In `/front` directory:
+3. Client Installation: 
     ```shell
+    cd client
     npm install
     npm run start
     ```

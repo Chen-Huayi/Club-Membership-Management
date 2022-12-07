@@ -20,6 +20,6 @@ In `config.js` file:
 + expiresIn *( token expire time duration )*
 + PORT *( must be the same with frontend PORT, default `8888` )*
 + url *( the url to connect to mongodb database )*
-+ admin *( default system admin staff )*
++ admin *( default system admin staff, **staff_id**: `sysAdmin`, **password**: `000000` )*
 + company *( company name )*
 + fee *( default annual membership fee )*

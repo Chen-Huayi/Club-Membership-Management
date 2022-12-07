@@ -1,5 +1,5 @@
 const {memberModel, membershipModel}=require('../models')
-const {getUserById, formatDateString, calculateDates}=require('../utils/member_functions')
+const {getUserById, formatDateString, calculateDates}=require('../utils/member-functions')
 
 
 /* Format daytime array to two "YYYY-MM-DD" string */
