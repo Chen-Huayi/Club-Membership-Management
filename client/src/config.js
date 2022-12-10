@@ -1,4 +1,4 @@
 module.exports = {
     secretKey: 'user-data',
-    PORT: 8888,
+    PORT: 8080,
 }

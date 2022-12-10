@@ -59,7 +59,7 @@ app.use((err, req, res, next)=>{
 })
 
 db.createConnection().then(()=>{
-    // Listen at default port: 8888
+    // Listen at default port: 8080
     app.listen(config.PORT, (err)=>{
         if (err) {
             throw Error(err)

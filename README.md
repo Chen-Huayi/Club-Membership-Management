@@ -21,7 +21,7 @@ Continually updated...✅
     git clone https://github.com/Chen-Huayi/Membership-Management.git
     ```
 **Run**
-1. Make sure the variable `PORT` must be the same (default: `8888`) in both
+1. Make sure the variable `PORT` must be the same (default: `8080`) in both
    + `/server/config.js`
    + `/client/src/config.js`
 2. Server Installation: 
@@ -39,10 +39,10 @@ Continually updated...✅
 ## Preview GIF
 This application have several user roles:
 + System Admin
-![](gif/system_admin.gif)
+![](https://res.cloudinary.com/dtq5rbfdn/image/upload/v1670658767/system_admin_zdgheo.gif)
 
 + Membership Admin
-![](gif/membership_admin.gif)
+![](https://res.cloudinary.com/dtq5rbfdn/image/upload/v1670658752/membership_admin_ulrdvd.gif)
 
 + Club Member
-![](gif/member.gif)
+![](https://res.cloudinary.com/dtq5rbfdn/image/upload/v1670658489/member_siqith.gif)
