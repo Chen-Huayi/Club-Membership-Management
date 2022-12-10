@@ -39,10 +39,10 @@ Continually updated...✅
 ## Preview GIF
 This application have several user roles:
 + System Admin
-![](https://res.cloudinary.com/dtq5rbfdn/image/upload/v1670658767/system_admin_zdgheo.gif)
+![](https://github.com/Chen-Huayi/pictures/blob/main/system_admin.gif)
 
 + Membership Admin
-![](https://res.cloudinary.com/dtq5rbfdn/image/upload/v1670658752/membership_admin_ulrdvd.gif)
+![](https://github.com/Chen-Huayi/pictures/blob/main/membership_admin.gif)
 
 + Club Member
-![](https://res.cloudinary.com/dtq5rbfdn/image/upload/v1670658489/member_siqith.gif)
+![](https://github.com/Chen-Huayi/pictures/blob/main/member.gif)
