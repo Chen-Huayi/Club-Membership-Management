@@ -28,7 +28,7 @@ Continually updated...✅
     ```shell
     cd server
     npm install
-    npm run server
+    npm run start
     ```
 3. Client Installation: 
     ```shell

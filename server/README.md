@@ -12,7 +12,7 @@ Node.js (Express)
 ### Run
 ```shell
 npm install
-npm run server
+npm run start
 ```
 ### Configuration
 In `config.js` file:
