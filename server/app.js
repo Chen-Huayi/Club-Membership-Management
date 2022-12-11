@@ -17,7 +17,8 @@ const db=require('./utils/db-connect')
 app.use(cors())
 
 /* content-type interceptor */
-app.use(bodyParser.json())  // app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+// app.use(express.urlencoded({ extended: false }))
 
 // Handle message middlewares (include both success and failure event)
 app.use((req, res, next)=>{
