@@ -25,3 +25,25 @@ In `config.js` file:
 + admin *( default system admin staff, **staff_id**: `sysAdmin`, **password**: `000000` )*
 + company *( company name )*
 + fee *( default annual membership fee )*
+
+
+
+[//]: # (### azure-cosmos-db)
+
+[//]: # (```)
+
+[//]: # (const username='azurecosmos-chuaii12138')
+
+[//]: # (const password='cyJyCwfbIfxK1JDLIcfaNn9AUoTIuf75Gd28qh5Ul4wpUMOd3MucY5z55pugfnnC52bv2xwKDsa3ACDbXBWw4Q==')
+
+[//]: # (const host='azurecosmos-chuaii12138.mongo.cosmos.azure.com')
+
+[//]: # (const port=10255)
+
+[//]: # (const db_name='club')
+
+[//]: # (const config='ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@azurecosmos-chuaii12138@')
+
+[//]: # (const DB_URL=`mongodb://${username}:${password}@${host}:${port}/${db_name}?${config}`)
+
+[//]: # (```)
