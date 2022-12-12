@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
+
 const staffSchema = new Schema({
     staff_id: {type: String, unique: true, required: true},
     user_role: {type: String, required: true},

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const bcrypt=require('bcryptjs')
-const config = require('../config')
+const {jwtSecretKey, expiresIn} = require('../config')
 const {memberModel}=require('../models')
 const {getUserById, formatDateString, calculateDates}=require('../utils/member-functions')
 
@@ -131,8 +131,8 @@ exports.login = (req, res)=>{
             // Create JSON web token
             const token=jwt.sign(
                 rest,
-                config.jwtSecretKey,
-                {expiresIn: config.expiresIn}
+                jwtSecretKey,
+                {expiresIn}
             )
 
             res.send({

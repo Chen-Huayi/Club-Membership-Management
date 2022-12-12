@@ -1,12 +1,12 @@
 // macOS start command:
 // mongod --dbpath /usr/local/var/mongodb --logpath /usr/local/var/log/mongodb/mongo.log --fork
 const mongoose = require('mongoose')
-const config = require('../config')
+const {company, databaseURL, fee, sysAdmin} = require('../config')
 const {feeModel, staffModel}=require('../models')
 
 
 const initSystemAdmin = () => {
-    const userInfo=config.admin
+    const userInfo=sysAdmin
     const staff_id=userInfo.staff_id
     const user_role=userInfo.user_role
 
@@ -31,11 +31,11 @@ const initSystemAdmin = () => {
 
 const initCompanySystem = () => {
     // Initialize default fee
-    feeModel.count({company: config.company}, (err, result)=> {
+    feeModel.count({company: company}, (err, result)=> {
         if (err) {
             console.log('Failed: ',err)
         }else if (result === 0) {  // Initialize default values if this company name doesn't exist
-            feeModel.create({company: config.company, membership_fee: config.fee}, (err) => {
+            feeModel.create({company: company, membership_fee: fee}, (err) => {
                 if (err)
                     console.log('Failed: ',err)
                 else
@@ -46,9 +46,10 @@ const initCompanySystem = () => {
     })
 }
 
+
 /* Connect to MongoDB database */
 exports.createConnection = () => {
-    return mongoose.connect(config.url)
+    return mongoose.connect(databaseURL)
         .then(()=>{
             console.log('Database is connected...')
             initCompanySystem()  // init basic role and conditions

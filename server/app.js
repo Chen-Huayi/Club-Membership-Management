@@ -4,7 +4,7 @@ const cors = require('cors')
 const Joi = require('joi')
 const {expressjwt: jwt}=require('express-jwt')
 const bodyParser = require("body-parser")
-const config=require('./config')
+const {port, jwtSecretKey}=require('./config')
 const userRouter=require('./routers/userRouter')
 const memberRouter=require('./routers/memberRouter')
 const staffRouter=require('./routers/staffRouter')
@@ -18,7 +18,7 @@ app.use(cors())
 
 /* content-type interceptor */
 app.use(bodyParser.json())
-// app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }))
 
 // Handle message middlewares (include both success and failure event)
 app.use((req, res, next)=>{
@@ -32,7 +32,7 @@ app.use((req, res, next)=>{
 })
 
 /* Add authorization to routes but exclude that do not need to be verified (all paths start with "/api") */
-app.use(jwt({secret: config.jwtSecretKey, algorithms: ['HS256']})
+app.use(jwt({secret: jwtSecretKey, algorithms: ['HS256']})
     .unless({ path: [/^\/api\//, '/fee/get-fee', '/member/reset-pwd']}))
 
 /* Main routes (Start here) */
@@ -60,12 +60,12 @@ app.use((err, req, res, next)=>{
 })
 
 db.createConnection().then(()=>{
-    // Listen at default port: 8080
-    app.listen(config.PORT, (err)=>{
+    // Listen at default port: 12138
+    app.listen(port, (err)=>{
         if (err) {
             throw Error(err)
         }else {
-            console.log(`Server is running at http://localhost:${config.PORT}`)
+            console.log(`Server is running at http://localhost:${port}`)
         }
     })
 })

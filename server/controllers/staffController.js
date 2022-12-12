@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const bcrypt=require('bcryptjs')
-const config = require('../config')
+const {jwtSecretKey, expiresIn} = require('../config')
 const {staffModel}=require('../models')
 
 
@@ -83,8 +83,8 @@ exports.login = (req, res)=>{
 
             const token=jwt.sign(
                 rest,
-                config.jwtSecretKey,
-                {expiresIn: config.expiresIn}
+                jwtSecretKey,
+                {expiresIn}
             )
             res.send({
                 status: 0,

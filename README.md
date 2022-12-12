@@ -21,18 +21,18 @@ Continually updated...✅
     git clone https://github.com/Chen-Huayi/Membership-Management.git
     ```
 **Run**
-1. Make sure the variable `PORT` must be the same (default: `8080`) in both
-   + `/server/config.js`
+1. Make sure the configuration variable `port` must be the same (default: `12138`) in both
    + `/client/src/config.js`
-2. Server Installation: 
+   + `/server/.env`
+2. Client Installation:
     ```shell
-    cd server
+    cd client
     npm install
     npm run start
     ```
-3. Client Installation: 
+3. Server Installation: 
     ```shell
-    cd client
+    cd server
     npm install
     npm run start
     ```
