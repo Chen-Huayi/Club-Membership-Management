@@ -4,22 +4,22 @@ import React, {useEffect, useState} from "react";
 import {useStore} from "../../store";
 
 
-export default function Membership () {
-    const {loginStore, userStore}=useStore()
-    const [userInfo, setUserInfo]=useState({
+export default function Membership() {
+    const {loginStore, userStore} = useStore()
+    const [userInfo, setUserInfo] = useState({
         membership: loginStore.membership_status,
     })
 
-    useEffect(()=>{
+    useEffect(() => {
         const loadInfo = async () => {
             await userStore.getMemberInfo(loginStore.member_id)
-                .then(result=>{
-                    setUserInfo({
-                        membership: result.membership_status,
-                        effectiveDate: result.effective_date,
-                        expireDate: result.expire_date,
-                    })
+            .then(result => {
+                setUserInfo({
+                    membership: result.membership_status,
+                    effectiveDate: result.effective_date,
+                    expireDate: result.expire_date,
                 })
+            })
         }
         loadInfo()
     }, [])
@@ -36,7 +36,7 @@ export default function Membership () {
                     </Breadcrumb>
                 }
             >
-                <h2 align="center">{userInfo.membership? '😍 You are' : '😢 You are not'} our membership</h2>
+                <h2 align="center">{userInfo.membership ? '😍 You are' : '😢 You are not'} our membership</h2>
                 <h2>Effective date: </h2>{userInfo.effectiveDate}<br/><br/>
                 <h2>Expire date: </h2>{userInfo.expireDate}<br/><br/>
 

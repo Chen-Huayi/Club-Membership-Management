@@ -4,12 +4,12 @@ import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
 
 
-export default function Renewal () {
-    const [form]=Form.useForm()
-    const navigate=useNavigate()
-    const {loginStore, userStore, settingStore}=useStore()
+export default function Renewal() {
+    const [form] = Form.useForm()
+    const navigate = useNavigate()
+    const {loginStore, userStore, settingStore} = useStore()
     const [fee, setFee] = useState(1)
-    const [userInfo, setUserInfo]=useState({
+    const [userInfo, setUserInfo] = useState({
         membership: loginStore.membership_status
     })
 
@@ -17,35 +17,35 @@ export default function Renewal () {
         navigate(`/payment?id=${loginStore.member_id}&&amount=${values.amount}`)
     }
 
-    const onFinishFailed =async(err) => {
+    const onFinishFailed = async (err) => {
         console.log('Failed:', err)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         const loadInfo = () => {
             userStore.getMemberInfo(loginStore.member_id)
-                .then(result=>{
-                    setUserInfo({
-                        membership: result.membership_status
-                    })
+            .then(result => {
+                setUserInfo({
+                    membership: result.membership_status
                 })
-                .catch(err=>{
-                    throw Error(err)
-                })
+            })
+            .catch(err => {
+                throw Error(err)
+            })
         }
         loadInfo()
     }, [])
 
-    useEffect( ()=>{
-        const loadFee= ()=>{
+    useEffect(() => {
+        const loadFee = () => {
             settingStore.getMembershipFee()
-                .then(result => {
-                    setFee(result.membership_fee)
-                    form.setFieldsValue({amount: result.membership_fee})
-                })
-                .catch(err=>{
-                    throw Error(err)
-                })
+            .then(result => {
+                setFee(result.membership_fee)
+                form.setFieldsValue({amount: result.membership_fee})
+            })
+            .catch(err => {
+                throw Error(err)
+            })
         }
         loadFee()
     }, [])

@@ -5,17 +5,17 @@ import {useStore} from "../../store";
 
 const formItemLayout = {
     labelCol: {
-        sm: { span: 7 }
+        sm: {span: 7}
     },
     wrapperCol: {
-        sm: { span: 12 }
+        sm: {span: 12}
     }
 }
 
 
 const SetMembershipFee = () => {
     const [form] = Form.useForm()
-    const {settingStore}=useStore()
+    const {settingStore} = useStore()
     const [open, setOpen] = useState(false)
     const [fee, setFee] = useState(1)
 
@@ -24,13 +24,13 @@ const SetMembershipFee = () => {
     }
 
     const handleOk = async () => {
-        const value=await form.validateFields()
-        const result=await settingStore.updateMembershipFee(value)
+        const value = await form.validateFields()
+        const result = await settingStore.updateMembershipFee(value)
 
-        if (result.status===0){
+        if (result.status === 0) {
             message.success(result.message)
             window.location.reload()
-        } else{
+        } else {
             message.error(result.message)
         }
         form.resetFields()
@@ -42,9 +42,9 @@ const SetMembershipFee = () => {
         setOpen(false)
     }
 
-    useEffect( ()=>{
-        const loadFee=async ()=>{
-            const result=await settingStore.getMembershipFee()
+    useEffect(() => {
+        const loadFee = async () => {
+            const result = await settingStore.getMembershipFee()
             setFee(result.membership_fee)
         }
         loadFee()
@@ -70,7 +70,7 @@ const SetMembershipFee = () => {
                     <Form.Item
                         label="Membership Fee"
                         name="membership_fee"
-                        rules={[{ required: true, message: 'Please enter membership fee!' }]}
+                        rules={[{required: true, message: 'Please enter membership fee!'}]}
                     >
                         <InputNumber
                             placeholder="Your old password"
@@ -87,8 +87,8 @@ const SetMembershipFee = () => {
 }
 
 
-export default function SystemSettings () {
-    return(
+export default function SystemSettings() {
+    return (
         <div className="settings-content">
             <Card
                 title={
@@ -107,45 +107,13 @@ export default function SystemSettings () {
                 </div>
                 <div className="other-link" style={{fontWeight: "bold", marginBottom: 20}}>
                     <h2>Update annual membership fee</h2>
-                    <SetMembershipFee />
+                    <SetMembershipFee/>
                 </div>
 
             </Card>
         </div>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*

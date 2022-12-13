@@ -5,37 +5,37 @@ import {Link} from "react-router-dom";
 
 
 const DeleteNotification = (props) => {
-    const {loginStore, userStore}=useStore()
+    const {loginStore, userStore} = useStore()
 
-    const onClick=()=>{
+    const onClick = () => {
         userStore.deleteNotification({member_id: loginStore.member_id, notificationContent: props.content})
-            .then(result => {
-                if (result.status===0){
-                    message.success('This notification has been deleted')
-                    window.location.reload()
-                }else {
-                    message.error('Fail to delete')
-                }
-            }).catch(err=>{
-                throw Error(err)
-            })
+        .then(result => {
+            if (result.status === 0) {
+                message.success('This notification has been deleted')
+                window.location.reload()
+            } else {
+                message.error('Fail to delete')
+            }
+        }).catch(err => {
+            throw Error(err)
+        })
     }
 
     return <a type="primary" onClick={onClick} style={{fontWeight: 'bold'}}>Delete</a>
 }
 
 
-export default function Notification () {
+export default function Notification() {
     const [notificationList, setNotificationList] = useState([])
-    const {loginStore, userStore}=useStore()
+    const {loginStore, userStore} = useStore()
 
-    useEffect(()=>{
+    useEffect(() => {
         const loadNotification = async () => {
-            const result= await userStore.getNotificationEmail(loginStore.member_id)
+            const result = await userStore.getNotificationEmail(loginStore.member_id)
 
             setNotificationList(result.notifications
                 .reverse()  // make sure the new notification will display at the top
-                .map((data, i)=>(
+                .map((data, i) => (
                     <Card type="inner" title={data.title} key={i} extra={<DeleteNotification content={data.content}/>}>
                         {data.content}
                     </Card>

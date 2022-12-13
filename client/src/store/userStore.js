@@ -1,5 +1,5 @@
-import {makeAutoObservable} from "mobx";
-import {http} from "../utils";
+import {makeAutoObservable} from "mobx"
+import {http} from "../utils"
 
 class UserStore {
     constructor() {
@@ -25,7 +25,7 @@ class UserStore {
     sendToEligibleMember = (values) => http.put('/member/deliver-card', values)
 
     // Membership record
-    getMembershipRecord=({params})=>http.get('/membership/record', {params})
+    getMembershipRecord = ({params}) => http.get('/membership/record', {params})
 
     // Time range filter
     getNewRegisteredList = async ({params}, range) => await http.get(`/membership/registered/${range}`, {params})
@@ -33,4 +33,5 @@ class UserStore {
     getRenewedList = async ({params}, range) => await http.get(`/membership/renewed/${range}`, {params})
 
 }
+
 export default UserStore

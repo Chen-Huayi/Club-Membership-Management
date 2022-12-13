@@ -26,41 +26,41 @@ const types = [
 
 export default function Login() {
     const [loginType, setLoginType] = useState('member')
-    const navigate=useNavigate()
-    const {loginStore}=useStore()
+    const navigate = useNavigate()
+    const {loginStore} = useStore()
     const [form] = Form.useForm()
 
     const onFinish = async (values) => {
-        const {member_id, staff_id}=values
+        const {member_id, staff_id} = values
 
-        if (member_id){  // If this user is a member
-            const result=await loginStore.checkAccountLocked({member_id})
+        if (member_id) {  // If this user is a member
+            const result = await loginStore.checkAccountLocked({member_id})
 
             // Check account status
-            if (!result.account_locked){
+            if (!result.account_locked) {
                 await loginStore.memberLogin(values)
 
-                if (loginStore.token!==''){
+                if (loginStore.token !== '') {
                     navigate('/')
                     message.success('Successfully login!')
                     window.location.reload()
-                }else {
+                } else {
                     form.setFieldsValue({password: ''})
                     message.error('Invalid Member ID or Password!')
                 }
-            }else {
+            } else {
                 form.setFieldsValue({member_id: '', password: ''})
                 message.error('Your account is locked, please contact us to unlock!')
             }
 
-        }else if (staff_id){  // If this user is a club staff
+        } else if (staff_id) {  // If this user is a club staff
             await loginStore.staffLogin(values)
 
-            if (loginStore.token!==''){
+            if (loginStore.token !== '') {
                 navigate('/')
                 message.success('Successfully login!')
                 window.location.reload()
-            }else {
+            } else {
                 form.setFieldsValue({password: ''})
                 message.error('Invalid Staff ID or Password!')
             }
@@ -68,20 +68,20 @@ export default function Login() {
 
     }
 
-    const onFinishFailed = (err) =>{
+    const onFinishFailed = (err) => {
         console.log('Failed: ', err)
     }
 
-    const redirectToSignup=()=>{
+    const redirectToSignup = () => {
         navigate('/signup')
     }
 
-   const redirectToReset=()=>{
+    const redirectToReset = () => {
         navigate('/unlock-account')
     }
 
     return (
-        <div className="login-page" style={{ backgroundColor: 'white'}}>
+        <div className="login-page" style={{backgroundColor: 'white'}}>
             <div className="login-heading">LOGIN TO ACCOUNT</div>
             <Form
                 onFinish={onFinish}
@@ -91,7 +91,7 @@ export default function Login() {
                     remember: true
                 }}
             >
-                <Tabs centered activeKey={loginType} onChange={(activeKey) => setLoginType(activeKey)} items={types} />
+                <Tabs centered activeKey={loginType} onChange={(activeKey) => setLoginType(activeKey)} items={types}/>
 
                 {loginType === 'member' && (<>
                     <Form.Item
@@ -102,7 +102,11 @@ export default function Login() {
                             message: 'Please enter your id!'
                         }]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="member id" maxLength={30}/>
+                        <Input
+                            prefix={<UserOutlined className="site-form-item-icon"/>}
+                            placeholder="member id"
+                            maxLength={30}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -113,7 +117,12 @@ export default function Login() {
                             message: 'Please enter your Password!'
                         }]}
                     >
-                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="password" maxLength={30}/>
+                        <Input.Password
+                            prefix={<LockOutlined className="site-form-item-icon"/>}
+                            type="password"
+                            placeholder="password"
+                            maxLength={30}
+                        />
                     </Form.Item>
 
                     <Form.Item>
@@ -136,7 +145,8 @@ export default function Login() {
                             message: 'Please enter your id!'
                         }]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="staff id" maxLength={30}/>
+                        <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="staff id"
+                               maxLength={30}/>
                     </Form.Item>
                     <Form.Item
                         className="input-form"
@@ -146,12 +156,14 @@ export default function Login() {
                             message: 'Please enter your Password!'
                         }]}
                     >
-                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="password" maxLength={30}/>
+                        <Input.Password prefix={<LockOutlined className="site-form-item-icon"/>} type="password"
+                                        placeholder="password" maxLength={30}/>
                     </Form.Item>
                 </>)}
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="login-form-button" shape="round" size="large"><b>Log in</b></Button>
+                    <Button type="primary" htmlType="submit" className="login-form-button" shape="round"
+                            size="large"><b>Log in</b></Button>
                 </Form.Item>
 
             </Form>

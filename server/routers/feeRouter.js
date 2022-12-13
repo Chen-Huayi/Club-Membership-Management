@@ -9,4 +9,4 @@ const fee = require("../controllers/feeController")
 router.put('/change-fee', validator(update_fee_schema), fee.updateMembershipFee)
 router.get('/get-fee', fee.getMembershipFee)
 
-module.exports=router
+module.exports = router

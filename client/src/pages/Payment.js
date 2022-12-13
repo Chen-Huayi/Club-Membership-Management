@@ -5,15 +5,16 @@ import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import {useStore} from "../store";
 
 
-export default function Payment () {
+export default function Payment() {
     const [form] = Form.useForm()
-    const [params]=useSearchParams()
-    const {updateStore}=useStore()
-    const navigate=useNavigate()
-    const member_id =params.get('id')
-    const payAmount =params.get('amount')
+    const [params] = useSearchParams()
+    const {updateStore} = useStore()
+    const navigate = useNavigate()
+    const member_id = params.get('id')
+    const payAmount = params.get('amount')
 
     const onFinish = async (values) => {
+        console.log(values)
         // This activating operation is proceeded by member users themselves, that's approved_by system
         await updateStore.membershipActivateRecord({member_id, approved_by: 'system'})
         await updateStore.activateMember({member_id})
@@ -23,13 +24,13 @@ export default function Payment () {
         message.success('Your payment is confirmed!')
     }
 
-    const onFinishFailed =async(err) => {
+    const onFinishFailed = async (err) => {
         console.log('Failed:', err)
     }
 
     return (
         <div className="payment-content">
-            <div className="price-description" >
+            <div className="price-description">
                 <h1 align="center">Our annual membership price is $<b>{payAmount}</b>/year</h1>
             </div>
 

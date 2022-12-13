@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {http} from "../utils";
 
-class UpdateStore{
+class UpdateStore {
     constructor() {
         makeAutoObservable(this)
     }
@@ -15,8 +15,8 @@ class UpdateStore{
     deactivateMember = async (values) => await http.put('/member/deactivate', values)
     activateMember = async (values) => await http.put('/member/activate', values)
 
-    deactivateStaff = async(values) => await http.put('/staff/deactivate', values)
-    activateStaff = async(values) => await http.put('/staff/activate', values)
+    deactivateStaff = async (values) => await http.put('/staff/deactivate', values)
+    activateStaff = async (values) => await http.put('/staff/activate', values)
 
     requestReplaceCard = (values) => http.put('/member/request-replace-card', values)
 

@@ -1,43 +1,43 @@
 /* Format date to "YYYY/MM/DD" string */
 const formatDate = (date) => {
-    return date.getFullYear() +'/'+ (date.getMonth()+1).toString().padStart(2, '0')+'/'+ date.getDate().toString().padStart(2, '0')
+    return date.getFullYear() + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getDate().toString().padStart(2, '0')
 }
 
 
 /* Get member users by given member_id */
-exports.getUserById = async (memberModel, member_id)=>{
-    let member=null
+exports.getUserById = async (memberModel, member_id) => {
+    let member = null
     try {
-        member=await memberModel.findOne({member_id})
-    } catch (err){
+        member = await memberModel.findOne({member_id})
+    } catch (err) {
         throw Error(err)
     }
     return member
 }
 
 /* Return and pass Date parameter */
-exports.formatDateString = (date)=>{
+exports.formatDateString = (date) => {
     return formatDate(date)
 }
 
 /* calculate and compute new dates (expire date and effective date) with rules */
-exports.calculateDates = (member)=>{
+exports.calculateDates = (member) => {
     let newExpireDate
     let effectiveDate
-    const prevExpireDate=new Date(member.expire_date)
+    const prevExpireDate = new Date(member.expire_date)
 
-    if (prevExpireDate>new Date()){  // member.expire_date is not expire today(失效日期还没到)
+    if (prevExpireDate > new Date()) {  // member.expire_date is not expire today(失效日期还没到)
         // expire_date: previous expire date +1 year
         newExpireDate = prevExpireDate
-        newExpireDate.setFullYear(newExpireDate.getFullYear()+1)
+        newExpireDate.setFullYear(newExpireDate.getFullYear() + 1)
         // effectIve_date no change
-        effectiveDate=new Date(member.effective_date)
-    }else {  // membership is expired
+        effectiveDate = new Date(member.effective_date)
+    } else {  // membership is expired
         // expire_date: today + 1 year
         newExpireDate = new Date()
-        newExpireDate.setFullYear(newExpireDate.getFullYear()+1)
+        newExpireDate.setFullYear(newExpireDate.getFullYear() + 1)
         // effectIve_date: today
-        effectiveDate=new Date()
+        effectiveDate = new Date()
     }
     const expire_date = formatDate(newExpireDate)
     const effective_date = formatDate(effectiveDate)

@@ -1,4 +1,4 @@
-const {Joi, validString, user_id, password, email, phone, requiredString, requiredNumber}=require('./user')
+const {Joi, validString, user_id, password, email, phone, requiredString, requiredNumber} = require('./user')
 
 
 exports.profile_schema = {
@@ -7,20 +7,20 @@ exports.profile_schema = {
     }
 }
 
-exports.member_login_schema={
+exports.member_login_schema = {
     body: {
         member_id: user_id,
         password,
     }
 }
 
-exports.login_check_schema={
+exports.login_check_schema = {
     body: {
         member_id: user_id,
     }
 }
 
-exports.member_signup_schema={
+exports.member_signup_schema = {
     body: {
         firstname: validString,
         lastname: validString,
@@ -41,13 +41,13 @@ exports.member_signup_schema={
     }
 }
 
-exports.update_info_schema={
+exports.update_info_schema = {
     body: {
         member_id: user_id,
     }
 }
 
-exports.update_pwd_schema={
+exports.update_pwd_schema = {
     body: {
         member_id: user_id,
         oldPassword: password,
@@ -56,7 +56,7 @@ exports.update_pwd_schema={
     }
 }
 
-exports.reset_pwd_schema={
+exports.reset_pwd_schema = {
     body: {
         member_id: user_id,
         password,
@@ -64,7 +64,7 @@ exports.reset_pwd_schema={
     }
 }
 
-exports.send_email_schema={
+exports.send_email_schema = {
     body: {
         title: Joi.string().min(1).max(100).required(),
         content: Joi.string().min(1).max(1000).required(),

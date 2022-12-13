@@ -1,7 +1,13 @@
 import React from "react"
 import {Route, Routes, unstable_HistoryRouter as HistoryRouter} from "react-router-dom"
 import {history} from "./utils/history"
-import {LoginAuth, MemberAuth, MembershipAdminAuth, SystemAdminAuth, ManagementUserAuth} from "./components/authorization";
+import {
+    LoginAuth,
+    ManagementUserAuth,
+    MemberAuth,
+    MembershipAdminAuth,
+    SystemAdminAuth
+} from "./components/authorization";
 import NotFound404 from "./pages/404";
 import SuccessPaid from "./pages/SuccessPaid";
 import Payment from "./pages/Payment";
@@ -34,41 +40,45 @@ export default function App() {
     return (
         <HistoryRouter history={history}>
             <Routes>
-                <Route path="/" element={<LoginAuth><MainLayout /></LoginAuth>}>
-                    <Route index element={<Home />} />
-                    <Route path="profile" element={<Profile />} />
+                <Route path="/" element={<LoginAuth><MainLayout/></LoginAuth>}>
+                    <Route index element={<Home/>}/>
+                    <Route path="profile" element={<Profile/>}/>
 
                     {/*Club Member use only*/}
-                    <Route path="settings" element={<MemberAuth><Settings /></MemberAuth>}/>
-                    <Route path="membership" element={<MemberAuth><Membership /></MemberAuth>}/>
-                    <Route path="renewal" element={<MemberAuth><Renewal /></MemberAuth>} />
-                    <Route path="notification" element={<MemberAuth><Notification /></MemberAuth>} />
+                    <Route path="settings" element={<MemberAuth><Settings/></MemberAuth>}/>
+                    <Route path="membership" element={<MemberAuth><Membership/></MemberAuth>}/>
+                    <Route path="renewal" element={<MemberAuth><Renewal/></MemberAuth>}/>
+                    <Route path="notification" element={<MemberAuth><Notification/></MemberAuth>}/>
 
                     {/*Membership Admin use only*/}
-                    <Route path="member-list" element={<MembershipAdminAuth><ShowMemberList /></MembershipAdminAuth>} />
-                    <Route path="send-card-list" element={<MembershipAdminAuth><SendCardList /></MembershipAdminAuth>} />
-                    <Route path="send-email" element={<MembershipAdminAuth><SendEmail /></MembershipAdminAuth>} />
-                    <Route path="update-member-profile" element={<MembershipAdminAuth><UpdateMemberProfile /></MembershipAdminAuth>} />
+                    <Route path="member-list" element={<MembershipAdminAuth><ShowMemberList/></MembershipAdminAuth>}/>
+                    <Route path="send-card-list" element={<MembershipAdminAuth><SendCardList/></MembershipAdminAuth>}/>
+                    <Route path="send-email" element={<MembershipAdminAuth><SendEmail/></MembershipAdminAuth>}/>
+                    <Route path="update-member-profile"
+                           element={<MembershipAdminAuth><UpdateMemberProfile/></MembershipAdminAuth>}/>
 
                     {/*System Admin use only*/}
-                    <Route path="register-staff" element={<SystemAdminAuth><StaffSignup /></SystemAdminAuth>} />
-                    <Route path="staff-list" element={<SystemAdminAuth><ShowStaffList /></SystemAdminAuth>} />
-                    <Route path="update-staff-profile" element={<SystemAdminAuth><UpdateStaffProfile /></SystemAdminAuth>} />
-                    <Route path="system-settings" element={<SystemAdminAuth><SystemSettings /></SystemAdminAuth>} />
+                    <Route path="register-staff" element={<SystemAdminAuth><StaffSignup/></SystemAdminAuth>}/>
+                    <Route path="staff-list" element={<SystemAdminAuth><ShowStaffList/></SystemAdminAuth>}/>
+                    <Route path="update-staff-profile"
+                           element={<SystemAdminAuth><UpdateStaffProfile/></SystemAdminAuth>}/>
+                    <Route path="system-settings" element={<SystemAdminAuth><SystemSettings/></SystemAdminAuth>}/>
 
                     {/*Club Management User use only*/}
                     <Route path="view-audit" element={<ManagementUserAuth><ViewAuditHistory/></ManagementUserAuth>}/>
-                    <Route path="view-filter-result" element={<ManagementUserAuth><ViewFilterResult/></ManagementUserAuth>}/>
-                    <Route path="view-membership-duration" element={<ManagementUserAuth><ViewDuration/></ManagementUserAuth>}/>
+                    <Route path="view-filter-result"
+                           element={<ManagementUserAuth><ViewFilterResult/></ManagementUserAuth>}/>
+                    <Route path="view-membership-duration"
+                           element={<ManagementUserAuth><ViewDuration/></ManagementUserAuth>}/>
 
                     {/*Not found pages*/}
                     <Route path="/*" element={<NotFound404/>}></Route>
                 </Route>
-                <Route path="/signup" element={<MemberSignup />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/payment-confirmed" element={<SuccessPaid />} />
-                <Route path="/payment" element={<Payment />} />
-                <Route path="/unlock-account" element={<UnlockAccount />} />
+                <Route path="/signup" element={<MemberSignup/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/payment-confirmed" element={<SuccessPaid/>}/>
+                <Route path="/payment" element={<Payment/>}/>
+                <Route path="/unlock-account" element={<UnlockAccount/>}/>
             </Routes>
         </HistoryRouter>
     )

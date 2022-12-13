@@ -11,7 +11,7 @@ const {
     delete_notification_schema,
     card_proceed_schema
 } = require('../schemas/member')
-const member=require('../controllers/memberController')
+const member = require('../controllers/memberController')
 
 // Router start with:
 // http://localhost:8000/member
@@ -35,4 +35,4 @@ router.get('/send-card-list/', member.getSendCardList)
 router.get('/replace-card-list/', member.getReplaceCardList)
 router.put('/deliver-card/', validator(card_proceed_schema), member.deliverCard)
 
-module.exports=router
+module.exports = router

@@ -1,21 +1,21 @@
-const {memberModel, membershipModel}=require('../models')
-const {getUserById, formatDateString, calculateDates}=require('../utils/member-functions')
+const {memberModel, membershipModel} = require('../models')
+const {getUserById, formatDateString, calculateDates} = require('../utils/member-functions')
 
 
 /* Format daytime array to two "YYYY-MM-DD" string */
 const formatDate = (range) => {
-    const start=formatDateString(new Date(range.split(' ')[0]))
-    const end=formatDateString(new Date(range.split(' ')[1]))
+    const start = formatDateString(new Date(range.split(' ')[0]))
+    const end = formatDateString(new Date(range.split(' ')[1]))
     return {start, end}
 }
 
 
 /* Record all activating membership operations with (member_id, effective_date, expire_date, payment_date, approved_by) */
-exports.membershipActivateRecord= async (req, res)=>{
-    const member_id=req.body.member_id
-    const member=await getUserById(memberModel, member_id)
+exports.membershipActivateRecord = async (req, res) => {
+    const member_id = req.body.member_id
+    const member = await getUserById(memberModel, member_id)
 
-    if (!member){
+    if (!member) {
         return res.handleMessage('Wrong Member ID!')
     }
     const {expire_date, effective_date} = calculateDates(member)
@@ -39,11 +39,11 @@ exports.membershipActivateRecord= async (req, res)=>{
 }
 
 /* Record all deactivating membership operations with (member_id, effective_date, expire_date, payment_date, approved_by) */
-exports.membershipDeactivateRecord= async (req, res)=>{
-    const member_id=req.body.member_id
-    const member=await getUserById(memberModel, member_id)
+exports.membershipDeactivateRecord = async (req, res) => {
+    const member_id = req.body.member_id
+    const member = await getUserById(memberModel, member_id)
 
-    if (!member){
+    if (!member) {
         return res.handleMessage('Wrong Member ID!')
     }
 
@@ -66,8 +66,8 @@ exports.membershipDeactivateRecord= async (req, res)=>{
 }
 
 /* Get all audit histories */
-exports.getMembershipAudit=async (req, res)=>{
-    const records=await membershipModel.find({})
+exports.getMembershipAudit = async (req, res) => {
+    const records = await membershipModel.find({})
     res.send({
         status: 0,
         record_list: records
@@ -79,9 +79,9 @@ exports.getMembershipAudit=async (req, res)=>{
 /* Filter these dates by compare formatted date strings (YYYY-MM-DD) */
 /* Search range by greater than or equal to, and less than or equal to */
 
-exports.getNewRegisteredList= async (req, res)=> {
-    const {start, end}=formatDate(req.params.range)
-    const records=await memberModel.find({
+exports.getNewRegisteredList = async (req, res) => {
+    const {start, end} = formatDate(req.params.range)
+    const records = await memberModel.find({
         registered_date: {$gte: start, $lte: end}
     })
 
@@ -91,9 +91,9 @@ exports.getNewRegisteredList= async (req, res)=> {
     })
 }
 
-exports.getExpiredList=async (req, res)=> {
-    const {start, end}=formatDate(req.params.range)
-    const records=await memberModel.find({
+exports.getExpiredList = async (req, res) => {
+    const {start, end} = formatDate(req.params.range)
+    const records = await memberModel.find({
         expire_date: {$gte: start, $lte: end}
     })
 
@@ -103,9 +103,9 @@ exports.getExpiredList=async (req, res)=> {
     })
 }
 
-exports.getRenewedList=async (req, res)=> {
-    const {start, end}=formatDate(req.params.range)
-    const records=await memberModel.find({
+exports.getRenewedList = async (req, res) => {
+    const {start, end} = formatDate(req.params.range)
+    const records = await memberModel.find({
         recent_renewal_date: {$gte: start, $lte: end}
     })
 

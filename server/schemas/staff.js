@@ -1,14 +1,14 @@
-const {Joi, validString, user_id, password, email, phone, requiredString}=require('./user')
+const {Joi, validString, user_id, password, email, phone, requiredString} = require('./user')
 
 
-exports.staff_login_schema={
+exports.staff_login_schema = {
     body: {
         staff_id: user_id,
         password,
     }
 }
 
-exports.staff_signup_schema={
+exports.staff_signup_schema = {
     body: {
         firstname: validString,
         lastname: validString,
@@ -27,7 +27,7 @@ exports.profile_schema = {
     }
 }
 
-exports.update_info_schema={
+exports.update_info_schema = {
     body: {
         firstname: validString,
         lastname: validString,
@@ -38,7 +38,7 @@ exports.update_info_schema={
     }
 }
 
-exports.switch_status_schema={
+exports.switch_status_schema = {
     body: {
         staff_id: user_id,
     }

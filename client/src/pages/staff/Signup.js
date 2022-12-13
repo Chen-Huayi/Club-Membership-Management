@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
 import React from "react";
 
-const { Option } = Select
+const {Option} = Select
 const formItemLayout = {
     labelCol: {
         span: 9
@@ -22,26 +22,26 @@ const tailFormItemLayout = {
 
 export default function Signup() {
     const [form] = Form.useForm()
-    const navigate=useNavigate()
-    const {signupStore}=useStore()
+    const navigate = useNavigate()
+    const {signupStore} = useStore()
 
     const onFinish = (values) => {
         signupStore.staffSignup(values)
-            .then(result=>{
-                if (result.status===0){
-                    navigate('/')
-                    message.success(result.message)
-                } else {
-                    form.setFieldsValue({staff_id: ''})
-                    message.error(result.message)
-                }
-            })
-            .catch(err => {
-                throw Error(err)
-            })
+        .then(result => {
+            if (result.status === 0) {
+                navigate('/')
+                message.success(result.message)
+            } else {
+                form.setFieldsValue({staff_id: ''})
+                message.error(result.message)
+            }
+        })
+        .catch(err => {
+            throw Error(err)
+        })
     }
 
-    const onFinishFailed = (err) =>{
+    const onFinishFailed = (err) => {
         console.log('Failed: ', err)
     }
 
@@ -124,7 +124,7 @@ export default function Signup() {
                         hasFeedback
                         rules={[
                             {required: true, message: 'Please confirm your password!'},
-                            ({ getFieldValue }) => ({
+                            ({getFieldValue}) => ({
                                 validator(_, value) {
                                     if (!value || getFieldValue('password') === value) {
                                         return Promise.resolve();

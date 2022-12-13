@@ -4,7 +4,7 @@ const validator = require('@escook/express-joi')
 const {member_signup_schema, member_login_schema, login_check_schema} = require('../schemas/member')
 const {staff_signup_schema, staff_login_schema} = require('../schemas/staff')
 const member = require("../controllers/memberController")
-const staff=require('../controllers/staffController')
+const staff = require('../controllers/staffController')
 
 // Router start with:
 // http://localhost:8000/api
@@ -15,4 +15,4 @@ router.post('/member/login', validator(member_login_schema), member.login)
 router.post('/staff/signup', validator(staff_signup_schema), staff.signup)
 router.post('/staff/login', validator(staff_login_schema), staff.login)
 
-module.exports=router
+module.exports = router

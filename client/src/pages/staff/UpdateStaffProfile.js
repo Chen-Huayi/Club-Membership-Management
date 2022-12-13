@@ -3,13 +3,13 @@ import React, {useEffect} from 'react';
 import {useStore} from "../../store";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
 
-const { Option } = Select
+const {Option} = Select
 const formItemLayout = {
     labelCol: {
-        sm: { span: 7 }
+        sm: {span: 7}
     },
     wrapperCol: {
-        sm: { span: 12 }
+        sm: {span: 12}
     }
 }
 const tailFormItemLayout = {
@@ -20,47 +20,47 @@ const tailFormItemLayout = {
 }
 
 
-export default function UpdateStaffProfile () {
+export default function UpdateStaffProfile() {
     const [form] = Form.useForm()
-    const navigate=useNavigate()
-    const {updateStore, userStore}=useStore()
-    const [params]=useSearchParams()
-    const staff_id =params.get('id')
+    const navigate = useNavigate()
+    const {updateStore, userStore} = useStore()
+    const [params] = useSearchParams()
+    const staff_id = params.get('id')
 
     const onFinish = async () => {
         await form.validateFields()
-            .then(value => {
-                const userInfo={staff_id, ...value}
+        .then(value => {
+            const userInfo = {staff_id, ...value}
 
-                updateStore.updateStaffInfo(userInfo)
-                    .then(result=>{
-                        if (result.status===0){
-                            navigate('/staff-list')
-                            message.success(result.message)
-                        } else {
-                            message.error(result.message)
-                        }
-                    })
+            updateStore.updateStaffInfo(userInfo)
+            .then(result => {
+                if (result.status === 0) {
+                    navigate('/staff-list')
+                    message.success(result.message)
+                } else {
+                    message.error(result.message)
+                }
             })
-            .catch(reason => {
-                console.log('Validate Failed:', reason)
-            })
+        })
+        .catch(reason => {
+            console.log('Validate Failed:', reason)
+        })
     }
 
-    const onFinishFailed =async(err) => {
+    const onFinishFailed = async (err) => {
         console.log('Failed:', err)
     }
 
     // backfill the user information to the form
-    useEffect(()=>{
-        const loadDetail= ()=>{
+    useEffect(() => {
+        const loadDetail = () => {
             userStore.getStaffInfo(staff_id)
-                .then(currProfile=>{
-                    form.setFieldsValue(currProfile)
-                })
-                .catch(err=>{
-                    throw Error(err)
-                })
+            .then(currProfile => {
+                form.setFieldsValue(currProfile)
+            })
+            .catch(err => {
+                throw Error(err)
+            })
         }
         loadDetail()
     }, [form, userStore, staff_id])

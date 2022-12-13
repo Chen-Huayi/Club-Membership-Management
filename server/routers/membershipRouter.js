@@ -14,4 +14,4 @@ router.get('/registered/:range', validator(time_range_schema), membership.getNew
 router.get('/expired/:range', validator(time_range_schema), membership.getExpiredList)
 router.get('/renewed/:range', validator(time_range_schema), membership.getRenewedList)
 
-module.exports=router
+module.exports = router

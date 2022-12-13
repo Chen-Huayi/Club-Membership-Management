@@ -6,17 +6,17 @@ import {useStore} from "../../store";
 
 const formItemLayout = {
     labelCol: {
-        sm: { span: 7 }
+        sm: {span: 7}
     },
     wrapperCol: {
-        sm: { span: 12 }
+        sm: {span: 12}
     }
 }
 
 const ResetPwd = () => {
     const [form] = Form.useForm()
     const [open, setOpen] = useState(false)
-    const {updateStore, loginStore}=useStore()
+    const {updateStore, loginStore} = useStore()
 
     const showDialog = () => {
         setOpen(true)
@@ -24,22 +24,22 @@ const ResetPwd = () => {
 
     const handleOk = async () => {
         await form.validateFields()
-            .then(value => {
-                const userInfo={...value, member_id: loginStore.member_id}
+        .then(value => {
+            const userInfo = {...value, member_id: loginStore.member_id}
 
-                updateStore.updatePassword(userInfo)
-                    .then(result=>{
-                        if (result.status===0)
-                            message.success(result.message)
-                        else
-                            message.error(result.message)
-                    })
-                form.resetFields()
-                setOpen(false)
+            updateStore.updatePassword(userInfo)
+            .then(result => {
+                if (result.status === 0)
+                    message.success(result.message)
+                else
+                    message.error(result.message)
             })
-            .catch(reason => {
-                console.log('Validate Failed:', reason)
-            })
+            form.resetFields()
+            setOpen(false)
+        })
+        .catch(reason => {
+            console.log('Validate Failed:', reason)
+        })
     }
 
     const handleCancel = () => {
@@ -66,9 +66,9 @@ const ResetPwd = () => {
                     <Form.Item
                         label="Old Password"
                         name="oldPassword"
-                        rules={[{ required: true, message: 'Please enter old password!' }]}
+                        rules={[{required: true, message: 'Please enter old password!'}]}
                     >
-                        <Input type="password" placeholder="Your old password" maxLength={20} />
+                        <Input type="password" placeholder="Your old password" maxLength={20}/>
                     </Form.Item>
 
                     <Form.Item
@@ -90,7 +90,7 @@ const ResetPwd = () => {
                         hasFeedback
                         rules={[
                             {required: true, message: 'Please retype new password'},
-                            ({ getFieldValue }) => ({
+                            ({getFieldValue}) => ({
                                 validator(_, value) {
                                     if (!value || getFieldValue('newPassword') === value) {
                                         return Promise.resolve();
@@ -109,30 +109,30 @@ const ResetPwd = () => {
 }
 
 
-export default function Settings () {
-    const {updateStore, loginStore}=useStore()
+export default function Settings() {
+    const {updateStore, loginStore} = useStore()
     let previous = 0
 
     const requestNewCard = () => {
         let now = Date.now()
 
         // throttle
-        if(now - previous >= 5000){
+        if (now - previous >= 5000) {
             updateStore.requestReplaceCard({member_id: loginStore.member_id})
-                .then(result => {
-                    if (result.status===0){
-                        message.success('Your request has already sent.')
-                    }else {
-                        message.error('Fail to request.')
-                    }
-                    previous = now  // reset previous
-                })
-        }else {
+            .then(result => {
+                if (result.status === 0) {
+                    message.success('Your request has already sent.')
+                } else {
+                    message.error('Fail to request.')
+                }
+                previous = now  // reset previous
+            })
+        } else {
             message.warning('You click too fast')
         }
     }
 
-    return(
+    return (
         <div className="settings-content">
             <Card
                 title={
@@ -146,7 +146,7 @@ export default function Settings () {
             >
                 <div className="password-link" style={{fontWeight: "bold", marginBottom: 20}}>
                     <h2>Password</h2>
-                    <ResetPwd >Change Password</ResetPwd>
+                    <ResetPwd>Change Password</ResetPwd>
                 </div>
                 <div className="other-link" style={{fontWeight: "bold", marginBottom: 20}}>
                     <h2>Other</h2>

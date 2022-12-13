@@ -1,112 +1,49 @@
 import {SearchOutlined} from '@ant-design/icons'
-import {Breadcrumb, Button, Card, DatePicker, Form, Input, Space, Table} from 'antd'
+import {Breadcrumb, Button, Card, DatePicker, Form, Space, Table} from 'antd'
 import React, {useEffect, useRef, useState} from 'react'
 import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
+import {getFilterProps} from '../../utils'
 
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
 
 
-export default function ViewFilterResult () {
-    const [form]=Form.useForm()
-    const {userStore}=useStore()
-    const navigate=useNavigate()
+export default function ViewFilterResult() {
+    const [form] = Form.useForm()
+    const {userStore} = useStore()
+    const navigate = useNavigate()
     const searchInput = useRef(null)
     const [params, setParams] = useState({
         page: 1,
         per_page: 3
     })
-    const [registeredMember, setRegisteredMember]=useState({
+    const [registeredMember, setRegisteredMember] = useState({
         list: [],
         count: 0
     })
-    const [expiredMember, setExpiredMember]=useState({
+    const [expiredMember, setExpiredMember] = useState({
         list: [],
         count: 0
     })
-    const [renewedMember, setRenewedMember]=useState({
+    const [renewedMember, setRenewedMember] = useState({
         list: [],
         count: 0
     })
-    const [timeRange, setTimeRange]=useState('1970-01-02 2099-12-30')
+    const [timeRange, setTimeRange] = useState('1970-01-02 2099-12-30')
 
-    const pageChange = (page)=>{
+    const pageChange = (page) => {
         setParams({
             ...params, page
         })
     }
 
-    const viewMemberInfo=(data)=>{
+    const viewMemberInfo = (data) => {
         navigate(`/profile?id=${data.member_id}`)
     }
 
-    const handleSearch = (selectedKeys, confirm) => {
-        confirm()
-    }
-
-    const handleReset = (clearFilters) => {
-        clearFilters()
-    }
-
-    const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-            <div
-                style={{
-                    padding: 8,
-                }}
-            >
-                <Input
-                    ref={searchInput}
-                    placeholder={`Search ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{
-                        marginBottom: 8,
-                        display: 'block',
-                    }}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{width: 90}}
-                    >
-                        Search
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            clearFilters && handleReset(clearFilters)
-                            confirm({closeDropdown: false})
-                        }}
-                        size="small"
-                        style={{width: 90}}
-                    >
-                        Reset
-                    </Button>
-                    <Button type="link" size="small" onClick={() => close()}>
-                        Close
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered) => (
-            <SearchOutlined
-                style={{
-                    color: filtered ? '#1890ff' : undefined,
-                }}
-            />
-        ),
-        onFilter: (value, record) =>
-            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
-            }
-        },
-    })
+    const getColumnSearchProps = (dataIndex) => (
+        getFilterProps(dataIndex, searchInput)
+    )
 
     const columns = [
         {
@@ -159,8 +96,8 @@ export default function ViewFilterResult () {
                         <Button
                             type="primary"
                             shape="circle"
-                            icon={<SearchOutlined />}
-                            onClick={()=>viewMemberInfo(data)}
+                            icon={<SearchOutlined/>}
+                            onClick={() => viewMemberInfo(data)}
                         />
                     </Space>
                 )
@@ -168,16 +105,16 @@ export default function ViewFilterResult () {
         }
     ]
 
-    const buildMemberList=(members)=>{
+    const buildMemberList = (members) => {
         const memberList = members.record_list
         const size = memberList.length
-        let list=[]
+        let list = []
 
         for (let i = 0; i < size; i++) {
-            const user=memberList[i]
-            let formatData={
+            const user = memberList[i]
+            let formatData = {
                 ...user,
-                name: user.firstname+' '+user.middle_name+' '+user.lastname,
+                name: user.firstname + ' ' + user.middle_name + ' ' + user.lastname,
                 key: `${i}`
             }
             list.push(formatData)
@@ -185,14 +122,14 @@ export default function ViewFilterResult () {
         return list
     }
 
-    const formatDateString = (date)=>{
-        return date.getFullYear() +'-'+ (date.getMonth()+1).toString().padStart(2, '0')+'-'+ (date.getDate()+1).toString().padStart(2, '0')
+    const formatDateString = (date) => {
+        return date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + (date.getDate() + 1).toString().padStart(2, '0')
     }
 
     const onFinish = (values) => {
-        const start=formatDateString(new Date(values.time_range[0]._d))
-        const end=formatDateString(new Date(values.time_range[1]._d))
-        const range=start+' '+end
+        const start = formatDateString(new Date(values.time_range[0]._d))
+        const end = formatDateString(new Date(values.time_range[1]._d))
+        const range = start + ' ' + end
         setTimeRange(range)
     }
 
@@ -207,25 +144,25 @@ export default function ViewFilterResult () {
 
     // load member list
     useEffect(() => {
-        const loadList=async ()=>{
+        const loadList = async () => {
             const registered = await userStore.getNewRegisteredList({params}, timeRange)
             const expired = await userStore.getExpiredList({params}, timeRange)
             const renewed = await userStore.getRenewedList({params}, timeRange)
             let memberList
 
-            memberList=buildMemberList(registered)
+            memberList = buildMemberList(registered)
             setRegisteredMember({
                 list: memberList,
                 count: memberList.length,
             })
 
-            memberList=buildMemberList(expired)
+            memberList = buildMemberList(expired)
             setExpiredMember({
                 list: memberList,
                 count: memberList.length,
             })
 
-            memberList=buildMemberList(renewed)
+            memberList = buildMemberList(renewed)
             setRenewedMember({
                 list: memberList,
                 count: memberList.length,
@@ -244,22 +181,26 @@ export default function ViewFilterResult () {
                     <Breadcrumb.Item>Member Account Status List</Breadcrumb.Item>
                 </Breadcrumb>
             }
-            style={{ marginBottom: 20 }}
+            style={{marginBottom: 20}}
         >
             <Form
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 form={form}
-                style={{ marginBottom: 20 }}
+                style={{marginBottom: 20}}
             >
-                <Form.Item name="time_range" style={{display: 'inline-block'}} rules={[{required: true, message: 'Please pick a time range!'}]}>
-                    <RangePicker />
+                <Form.Item
+                    name="time_range"
+                    style={{display: 'inline-block'}}
+                    rules={[{required: true, message: 'Please pick a time range!'}]}
+                >
+                    <RangePicker/>
                 </Form.Item>
                 <Form.Item style={{display: 'inline-block'}}>
-                    <Button type="primary" htmlType="submit" shape="round" style={{ marginLeft: 30 }}>
+                    <Button type="primary" htmlType="submit" shape="round" style={{marginLeft: 30}}>
                         Filter
                     </Button>
-                    <Button type="ghost" onClick={resetForm} shape="round" style={{ marginLeft: 10 }}>
+                    <Button type="ghost" onClick={resetForm} shape="round" style={{marginLeft: 10}}>
                         Reset
                     </Button>
                 </Form.Item>

@@ -1,114 +1,51 @@
-import {MailOutlined, SearchOutlined} from '@ant-design/icons'
-import {Breadcrumb, Button, Card, Input, message, Space, Table} from 'antd'
+import {MailOutlined} from '@ant-design/icons'
+import {Breadcrumb, Button, Card, message, Space, Table} from 'antd'
 import React, {useEffect, useRef, useState} from 'react'
 import {Link} from "react-router-dom";
 import {useStore} from "../../store";
+import {getFilterProps} from "../../utils";
 
 
-export default function SendCardList () {
-    const {userStore}=useStore()
+export default function SendCardList() {
+    const {userStore} = useStore()
     const searchInput = useRef(null)
     const [params, setParams] = useState({
         page: 1,
         per_page: 3
     })
-    const [newCard, setNewCard]=useState({
+    const [newCard, setNewCard] = useState({
         list: [],
         count: 0
     })
-    const [replaceCard, setReplaceCard]=useState({
+    const [replaceCard, setReplaceCard] = useState({
         list: [],
         count: 0
     })
 
-    const pageChange = (page)=>{
+    const pageChange = (page) => {
         setParams({
             ...params, page
         })
     }
 
-    const sendCardToMember=(data)=>{
+    const sendCardToMember = (data) => {
         userStore.sendToEligibleMember({member_id: data.member_id})
-            .then(result => {
-                console.log(result)
-                if (result.status===0){
-                    message.success('Membership card will deliver soon')
-                    setTimeout(()=>{
-                        window.location.reload()
-                    }, 700)
-                }else {
-                    message.error('Fail to request send card to member')
-                }
-            })
-    }
-
-    const handleSearch = (selectedKeys, confirm) => {
-        confirm()
-    }
-
-    const handleReset = (clearFilters) => {
-        clearFilters()
-    }
-
-    const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-            <div
-                style={{
-                    padding: 8,
-                }}
-            >
-                <Input
-                    ref={searchInput}
-                    placeholder={`Search ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{
-                        marginBottom: 8,
-                        display: 'block',
-                    }}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{width: 90}}
-                    >
-                        Search
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            clearFilters && handleReset(clearFilters)
-                            confirm({closeDropdown: false})
-                        }}
-                        size="small"
-                        style={{width: 90}}
-                    >
-                        Reset
-                    </Button>
-                    <Button type="link" size="small" onClick={() => close()}>
-                        Close
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered) => (
-            <SearchOutlined
-                style={{
-                    color: filtered ? '#1890ff' : undefined,
-                }}
-            />
-        ),
-        onFilter: (value, record) =>
-            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
+        .then(result => {
+            console.log(result)
+            if (result.status === 0) {
+                message.success('Membership card will deliver soon')
+                setTimeout(() => {
+                    window.location.reload()
+                }, 700)
+            } else {
+                message.error('Fail to request send card to member')
             }
-        },
-    })
+        })
+    }
+
+    const getColumnSearchProps = (dataIndex) => (
+        getFilterProps(dataIndex, searchInput)
+    )
 
     const columns = [
         {
@@ -152,8 +89,8 @@ export default function SendCardList () {
                         <Button
                             type="primary"
                             shape="round"
-                            icon={<MailOutlined />}
-                            onClick={()=>sendCardToMember(data)}
+                            icon={<MailOutlined/>}
+                            onClick={() => sendCardToMember(data)}
                         />
                     </Space>
                 )
@@ -161,17 +98,17 @@ export default function SendCardList () {
         }
     ]
 
-    const buildSendCardList=(sendCardList)=>{
+    const buildSendCardList = (sendCardList) => {
         const memberList = sendCardList.member_list
         const size = memberList.length
-        let cards=[]
+        let cards = []
 
         for (let i = 0; i < size; i++) {
-            const user=memberList[i]
-            let formatData={
+            const user = memberList[i]
+            let formatData = {
                 ...user,
-                name: user.firstname+' '+user.middle_name+' '+user.lastname,
-                address: user.address_line1+' '+user.address_line2+' '+user.address_line3+' '+user.address_city+' '+user.address_country,
+                name: user.firstname + ' ' + user.middle_name + ' ' + user.lastname,
+                address: user.address_line1 + ' ' + user.address_line2 + ' ' + user.address_line3 + ' ' + user.address_city + ' ' + user.address_country,
                 key: `${i}`
             }
             cards.push(formatData)
@@ -181,18 +118,18 @@ export default function SendCardList () {
 
     // load member list
     useEffect(() => {
-        const loadList=async ()=>{
+        const loadList = async () => {
             const newCardList = await userStore.getSendCardList({params})
             const replaceCardList = await userStore.getReplaceCardList({params})
             let cardList
 
-            cardList=buildSendCardList(newCardList)
+            cardList = buildSendCardList(newCardList)
             setNewCard({
                 list: cardList,
                 count: cardList.length,
             })
 
-            cardList=buildSendCardList(replaceCardList)
+            cardList = buildSendCardList(replaceCardList)
             setReplaceCard({
                 list: cardList,
                 count: cardList.length,
@@ -211,7 +148,7 @@ export default function SendCardList () {
                     <Breadcrumb.Item>Send Card List</Breadcrumb.Item>
                 </Breadcrumb>
             }
-            style={{ marginBottom: 20 }}
+            style={{marginBottom: 20}}
         >
             <h2>{newCard.count} eligible member(s) request to send card (activate since last Monday)</h2>
             <Table

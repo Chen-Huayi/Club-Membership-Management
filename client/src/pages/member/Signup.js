@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import './Signup.css'
 import {useStore} from '../../store';
 
-const { Option } = Select
+const {Option} = Select
 const formItemLayout = {
     labelCol: {
         span: 9
@@ -23,33 +23,33 @@ const tailFormItemLayout = {
 
 export default function Signup() {
     const [form] = Form.useForm()
-    const navigate=useNavigate()
-    const {signupStore, settingStore}=useStore()
+    const navigate = useNavigate()
+    const {signupStore, settingStore} = useStore()
     const [fee, setFee] = useState(1)
-    const [payment, setPayment]=useState(true)
+    const [payment, setPayment] = useState(true)
 
     const onFinish = async (values) => {
         await signupStore.memberSignup(values)
-            .then(result=>{
+        .then(result => {
 
-                if (result.status===0){
-                    if (result.pay_now){
-                        navigate(`/payment?id=${result.member_id}&&amount=${result.amount}`)
-                    }else {
-                        navigate('/')
-                    }
-                    message.success(result.message)
+            if (result.status === 0) {
+                if (result.pay_now) {
+                    navigate(`/payment?id=${result.member_id}&&amount=${result.amount}`)
                 } else {
-                    form.setFieldsValue({member_id: ''})
-                    message.error(result.message)
+                    navigate('/')
                 }
-            })
-            .catch(err => {
-                throw Error(err)
-            })
+                message.success(result.message)
+            } else {
+                form.setFieldsValue({member_id: ''})
+                message.error(result.message)
+            }
+        })
+        .catch(err => {
+            throw Error(err)
+        })
     }
 
-    const onFinishFailed = (err) =>{
+    const onFinishFailed = (err) => {
         console.log('Failed: ', err)
     }
 
@@ -57,16 +57,16 @@ export default function Signup() {
         setPayment(!value)
     }
 
-    useEffect( ()=>{
-        const loadFee=async ()=>{
+    useEffect(() => {
+        const loadFee = async () => {
             await settingStore.getMembershipFee()
-                .then(value => {
-                    setFee(value.membership_fee)
-                    form.setFieldsValue({amount: value.membership_fee})
-                })
-                .catch(err=>{
-                    throw Error(err)
-                })
+            .then(value => {
+                setFee(value.membership_fee)
+                form.setFieldsValue({amount: value.membership_fee})
+            })
+            .catch(err => {
+                throw Error(err)
+            })
         }
         loadFee()
     }, [payment, form, settingStore])
@@ -150,7 +150,7 @@ export default function Signup() {
                         hasFeedback
                         rules={[
                             {required: true, message: 'Please confirm your password!'},
-                            ({ getFieldValue }) => ({
+                            ({getFieldValue}) => ({
                                 validator(_, value) {
                                     if (!value || getFieldValue('password') === value) {
                                         return Promise.resolve();
@@ -286,8 +286,7 @@ export default function Signup() {
                         rules={[{
                             validator: (_, value) =>
                                 value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
-                            }
-                        ]}
+                        }]}
                         {...tailFormItemLayout}
                     >
                         <Checkbox>

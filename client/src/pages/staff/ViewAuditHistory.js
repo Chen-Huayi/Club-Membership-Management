@@ -1,99 +1,37 @@
-import {EditOutlined, SearchOutlined} from '@ant-design/icons'
-import {Breadcrumb, Button, Card, Input, Space, Table} from 'antd'
+import {EditOutlined} from '@ant-design/icons'
+import {Breadcrumb, Button, Card, Space, Table} from 'antd'
 import React, {useEffect, useRef, useState} from 'react'
 import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
+import {getFilterProps} from "../../utils";
 
-export default function ViewAuditHistory () {
-    const {userStore, updateStore}=useStore()
-    const navigate=useNavigate()
+
+export default function ViewAuditHistory() {
+    const {userStore} = useStore()
+    const navigate = useNavigate()
     const searchInput = useRef(null)
     const [params, setParams] = useState({
         page: 1,
         per_page: 10
     })
-    const [record, setRecord]=useState({
+    const [record, setRecord] = useState({
         list: [],
         count: 0
     })
 
-    const pageChange = (page)=>{
+    const pageChange = (page) => {
         setParams({
             ...params, page
         })
     }
 
-    const viewMemberInfo=(data)=>{
+    const viewMemberInfo = (data) => {
         navigate(`/profile?id=${data.member_id}`)
     }
 
-    const handleSearch = (selectedKeys, confirm) => {
-        confirm()
-    }
-
-    const handleReset = (clearFilters) => {
-        clearFilters()
-    }
-
-    const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-            <div
-                style={{
-                    padding: 8,
-                }}
-            >
-                <Input
-                    ref={searchInput}
-                    placeholder={`Search ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{
-                        marginBottom: 8,
-                        display: 'block',
-                    }}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{width: 90}}
-                    >
-                        Search
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            clearFilters && handleReset(clearFilters)
-                            confirm({closeDropdown: false})
-                        }}
-                        size="small"
-                        style={{width: 90}}
-                    >
-                        Reset
-                    </Button>
-                    <Button type="link" size="small" onClick={() => close()}>
-                        Close
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered) => (
-            <SearchOutlined
-                style={{
-                    color: filtered ? '#1890ff' : undefined,
-                }}
-            />
-        ),
-        onFilter: (value, record) =>
-            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
-            }
-        },
-    })
+    const getColumnSearchProps = (dataIndex) => (
+        getFilterProps(dataIndex, searchInput)
+    )
 
     const columns = [
         {
@@ -139,8 +77,8 @@ export default function ViewAuditHistory () {
                         <Button
                             type="primary"
                             shape="circle"
-                            icon={<EditOutlined />}
-                            onClick={()=>viewMemberInfo(data)}
+                            icon={<EditOutlined/>}
+                            onClick={() => viewMemberInfo(data)}
                         />
                     </Space>
                 )
@@ -148,14 +86,14 @@ export default function ViewAuditHistory () {
         }
     ]
 
-    const buildRecordList=(records)=>{
+    const buildRecordList = (records) => {
         const recordList = records.record_list
         const size = recordList.length
-        let list=[]
+        let list = []
 
         for (let i = 0; i < size; i++) {
-            const record=recordList[i]
-            let formatData={
+            const record = recordList[i]
+            let formatData = {
                 ...record,
                 key: `${i}`
             }
@@ -166,11 +104,11 @@ export default function ViewAuditHistory () {
 
     // load member list
     useEffect(() => {
-        const loadList=async ()=>{
+        const loadList = async () => {
             const records = await userStore.getMembershipRecord({params})
             let recordList
 
-            recordList=buildRecordList(records)
+            recordList = buildRecordList(records)
             setRecord({
                 list: recordList,
                 count: recordList.length,
@@ -189,7 +127,7 @@ export default function ViewAuditHistory () {
                     <Breadcrumb.Item>Audit History</Breadcrumb.Item>
                 </Breadcrumb>
             }
-            style={{ marginBottom: 20 }}
+            style={{marginBottom: 20}}
         >
             <h2>{record.count} membership record(s) in total</h2>
 

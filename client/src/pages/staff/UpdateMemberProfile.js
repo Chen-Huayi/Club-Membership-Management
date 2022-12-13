@@ -3,13 +3,13 @@ import React, {useEffect, useState} from 'react';
 import {useStore} from "../../store";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
 
-const { Option } = Select
+const {Option} = Select
 const formItemLayout = {
     labelCol: {
-        sm: { span: 7 }
+        sm: {span: 7}
     },
     wrapperCol: {
-        sm: { span: 12 }
+        sm: {span: 12}
     }
 }
 const tailFormItemLayout = {
@@ -20,49 +20,49 @@ const tailFormItemLayout = {
 }
 
 
-export default function UpdateMemberProfile () {
+export default function UpdateMemberProfile() {
     const [form] = Form.useForm()
-    const navigate=useNavigate()
-    const {updateStore, userStore}=useStore()
-    const [params]=useSearchParams()
-    const member_id =params.get('id')
+    const navigate = useNavigate()
+    const {updateStore, userStore} = useStore()
+    const [params] = useSearchParams()
+    const member_id = params.get('id')
     const [componentDisabled, setComponentDisabled] = useState(true)
 
     const onFinish = async () => {
         await form.validateFields()
-            .then(value => {
-                const userInfo={member_id, ...value}
+        .then(value => {
+            const userInfo = {member_id, ...value}
 
-                updateStore.updateMemberInfo(userInfo)
-                    .then(result=>{
-                        if (result.status===0){
-                            navigate('/member-list')
-                            message.success(result.message)
-                        } else {
-                            message.error(result.message)
-                        }
-                    })
+            updateStore.updateMemberInfo(userInfo)
+            .then(result => {
+                if (result.status === 0) {
+                    navigate('/member-list')
+                    message.success(result.message)
+                } else {
+                    message.error(result.message)
+                }
             })
-            .catch(reason => {
-                console.log('Validate Failed:', reason)
-            })
+        })
+        .catch(reason => {
+            console.log('Validate Failed:', reason)
+        })
     }
 
-    const onFinishFailed =async(err) => {
+    const onFinishFailed = async (err) => {
         console.log('Failed:', err)
     }
 
     // backfill the user information to the form
-    useEffect(()=>{
-        const loadDetail=async ()=>{
+    useEffect(() => {
+        const loadDetail = async () => {
             await userStore.getMemberInfo(member_id)
-                .then(currProfile=>{
-                    const {birthday, ...userInfo}=currProfile
-                    form.setFieldsValue({...userInfo})
-                })
-                .catch(err=>{
-                    throw Error(err)
-                })
+            .then(currProfile => {
+                const {birthday, ...userInfo} = currProfile
+                form.setFieldsValue({...userInfo})
+            })
+            .catch(err => {
+                throw Error(err)
+            })
         }
         loadDetail()
     }, [])
@@ -100,17 +100,17 @@ export default function UpdateMemberProfile () {
                     <Form.Item
                         label="First Name"
                         name="firstname"
-                        rules={[{ required: true, message: 'Please enter old first name!' }]}
+                        rules={[{required: true, message: 'Please enter old first name!'}]}
                     >
-                        <Input placeholder="Your first name" />
+                        <Input placeholder="Your first name"/>
                     </Form.Item>
 
                     <Form.Item
                         label="Last Name"
                         name="lastname"
-                        rules={[{ required: true, message: 'Please enter old last name!' }]}
+                        rules={[{required: true, message: 'Please enter old last name!'}]}
                     >
-                        <Input placeholder="Your last name" />
+                        <Input placeholder="Your last name"/>
                     </Form.Item>
 
                     <Form.Item
@@ -129,15 +129,15 @@ export default function UpdateMemberProfile () {
                         label="Address line 1"
                         rules={[{required: true, message: 'Please enter your address!'}]}
                     >
-                        <Input />
+                        <Input/>
                     </Form.Item>
 
                     <Form.Item name="address_line2" label="Address line 2" initialValue="">
-                        <Input />
+                        <Input/>
                     </Form.Item>
 
                     <Form.Item name="address_line3" label="Address line 3" initialValue="">
-                        <Input />
+                        <Input/>
                     </Form.Item>
 
                     <Form.Item
@@ -145,7 +145,7 @@ export default function UpdateMemberProfile () {
                         label="City"
                         rules={[{required: true, message: 'Please enter your city!'}]}
                     >
-                        <Input />
+                        <Input/>
                     </Form.Item>
 
                     <Form.Item
@@ -153,7 +153,7 @@ export default function UpdateMemberProfile () {
                         label="Country"
                         rules={[{required: true, message: 'Please enter your country!'}]}
                     >
-                        <Input />
+                        <Input/>
                     </Form.Item>
 
                     <Form.Item
@@ -161,7 +161,7 @@ export default function UpdateMemberProfile () {
                         label="Postal Code"
                         rules={[{required: true, message: 'Please enter your postal code!'}]}
                     >
-                        <Input />
+                        <Input/>
                     </Form.Item>
 
                     <Form.Item

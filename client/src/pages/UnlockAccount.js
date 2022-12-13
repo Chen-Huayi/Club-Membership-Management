@@ -9,20 +9,20 @@ import {useNavigate} from "react-router-dom";
 
 export default function UnlockAccount() {
     const [form] = Form.useForm()
-    const {updateStore}=useStore()
-    const navigate=useNavigate()
+    const {updateStore} = useStore()
+    const navigate = useNavigate()
 
     const onFinish = async (values) => {
         await updateStore.resetPassword(values)
-            .then(result=>{
-                if (result.status===0){
-                    navigate('/')
-                    message.success(result.message)
-                } else{
-                    form.setFieldsValue({member_id: ''})
-                    message.error(result.message)
-                }
-            })
+        .then(result => {
+            if (result.status === 0) {
+                navigate('/')
+                message.success(result.message)
+            } else {
+                form.setFieldsValue({member_id: ''})
+                message.error(result.message)
+            }
+        })
     }
 
     const onFinishFailed = (errorInfo) => {
@@ -48,7 +48,7 @@ export default function UnlockAccount() {
                 tooltip="Your member ID"
                 rules={[{required: true, message: 'Please enter your Member ID!'}]}
             >
-                <Input />
+                <Input/>
             </Form.Item>
             <Form.Item
                 name="password"
@@ -59,7 +59,7 @@ export default function UnlockAccount() {
                 ]}
                 hasFeedback
             >
-                <Input.Password />
+                <Input.Password/>
             </Form.Item>
             <Form.Item
                 name="confirm"
@@ -68,7 +68,7 @@ export default function UnlockAccount() {
                 hasFeedback
                 rules={[
                     {required: true, message: 'Please confirm your password!'},
-                    ({ getFieldValue }) => ({
+                    ({getFieldValue}) => ({
                         validator(_, value) {
                             if (!value || getFieldValue('password') === value) {
                                 return Promise.resolve();
@@ -78,10 +78,10 @@ export default function UnlockAccount() {
                     })
                 ]}
             >
-                <Input.Password type="password" maxLength={ 20 }/>
+                <Input.Password type="password" maxLength={20}/>
             </Form.Item>
 
-            <Form.Item label="Captcha" >
+            <Form.Item label="Captcha">
                 <Row gutter={8}>
                     <Col span={10}>
                         <Form.Item
@@ -95,7 +95,7 @@ export default function UnlockAccount() {
                                 message: 'Your captcha must be digits!'
                             }]}
                         >
-                            <Input prefix={<LockOutlined className="prefixIcon"/>} placeholder="Enter captcha" />
+                            <Input prefix={<LockOutlined className="prefixIcon"/>} placeholder="Enter captcha"/>
                         </Form.Item>
                     </Col>
                     <Col span={8}>

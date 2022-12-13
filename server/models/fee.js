@@ -8,4 +8,4 @@ const feeSchema = new Schema({
 
 const feeModel = mongoose.model('fees', feeSchema)
 
-module.exports= {feeModel}
+module.exports = {feeModel}

@@ -12,26 +12,26 @@ import {useStore} from "../store";
 
 
 export default function Home() {
-    const millisecondsADay=1000*60*60*24
-    const {loginStore, userStore}=useStore()
-    const [userInfo, setUserInfo]=useState({
-        name: loginStore.firstname+' '+loginStore.lastname,
+    const millisecondsADay = 1000 * 60 * 60 * 24
+    const {loginStore, userStore} = useStore()
+    const [userInfo, setUserInfo] = useState({
+        name: loginStore.firstname + ' ' + loginStore.lastname,
         membership: loginStore.membership_status,
         expireDate: loginStore.expire_date
     })
 
-    useEffect(()=>{
+    useEffect(() => {
         const loadInfo = async () => {
-            const role=loginStore.user_role
+            const role = loginStore.user_role
             let userData
 
-            if (role==='Club Member'){
-                userData=await userStore.getMemberInfo(loginStore.member_id)
-            }else if (role==='Membership Admin' || role==='System Admin' || role==='Club Management User'){
-                userData=await userStore.getStaffInfo(loginStore.staff_id)
+            if (role === 'Club Member') {
+                userData = await userStore.getMemberInfo(loginStore.member_id)
+            } else if (role === 'Membership Admin' || role === 'System Admin' || role === 'Club Management User') {
+                userData = await userStore.getStaffInfo(loginStore.staff_id)
             }
             setUserInfo({
-                name: userData.firstname+' '+userData.lastname,
+                name: userData.firstname + ' ' + userData.lastname,
                 membership: userData.membership_status,
                 expireDate: userData.expire_date
             })
@@ -40,13 +40,13 @@ export default function Home() {
     }, [userInfo])
 
     const isExpireInOneMonth = (expireDate) => {
-        return new Date(expireDate).getTime() < new Date().getTime()+millisecondsADay*30
+        return new Date(expireDate).getTime() < new Date().getTime() + millisecondsADay * 30
     }
-    
+
     const calculateRemainDays = (expireDate) => {
-        return Math.ceil((new Date(expireDate).getTime()-new Date().getTime())/millisecondsADay)
+        return Math.ceil((new Date(expireDate).getTime() - new Date().getTime()) / millisecondsADay)
     }
-    
+
     return (
         <div className="home-page">
             <div className="home-page-content">

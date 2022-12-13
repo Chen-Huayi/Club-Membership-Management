@@ -13,4 +13,4 @@ const membershipSchema = new Schema({
 
 const membershipModel = mongoose.model('memberships', membershipSchema)
 
-module.exports= {membershipModel}
+module.exports = {membershipModel}

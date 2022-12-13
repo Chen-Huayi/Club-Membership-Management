@@ -4,13 +4,13 @@ import './Profile.css'
 import {useStore} from "../../store";
 import {Link, useSearchParams} from "react-router-dom";
 
-const { Option } = Select
+const {Option} = Select
 const formItemLayout = {
     labelCol: {
-        sm: { span: 7 }
+        sm: {span: 7}
     },
     wrapperCol: {
-        sm: { span: 12 }
+        sm: {span: 12}
     }
 }
 
@@ -19,7 +19,7 @@ const formItemLayout = {
 const UpdateItem = (props) => {
     const [form] = Form.useForm()
     const [open, setOpen] = useState(false)
-    const {updateStore, loginStore, userStore}=useStore()
+    const {updateStore, loginStore, userStore} = useStore()
 
     const showDialog = () => {
         setOpen(true)
@@ -27,23 +27,23 @@ const UpdateItem = (props) => {
 
     const handleOk = async () => {
         await form.validateFields()
-            .then(value => {
-                const userInfo={member_id: loginStore.member_id, ...value}
+        .then(value => {
+            const userInfo = {member_id: loginStore.member_id, ...value}
 
-                updateStore.updateMemberInfo(userInfo)
-                    .then(result=>{
-                        if (result.status===0){
-                            message.success(result.message)
-                        } else{
-                            message.error(result.message)
-                        }
-                    })
-                form.resetFields()
-                setOpen(false)
+            updateStore.updateMemberInfo(userInfo)
+            .then(result => {
+                if (result.status === 0) {
+                    message.success(result.message)
+                } else {
+                    message.error(result.message)
+                }
             })
-            .catch(reason => {
-                console.log('Validate Failed:', reason)
-            })
+            form.resetFields()
+            setOpen(false)
+        })
+        .catch(reason => {
+            console.log('Validate Failed:', reason)
+        })
     }
 
     const handleCancel = () => {
@@ -52,13 +52,13 @@ const UpdateItem = (props) => {
     }
 
     // backfill the user information to the form
-    useEffect(()=>{
+    useEffect(() => {
         const loadInfo = async () => {
-            const profileData= await userStore.getMemberInfo(loginStore.member_id)
-            const {birthday, ...userInfo}=profileData
+            const profileData = await userStore.getMemberInfo(loginStore.member_id)
+            const {birthday, ...userInfo} = profileData
             form.setFieldsValue({...userInfo})
         }
-        if (open){
+        if (open) {
             loadInfo()
         }
     }, [open, form, userStore, loginStore.member_id])
@@ -75,18 +75,26 @@ const UpdateItem = (props) => {
                 cancelText="Cancel"
             >
                 <Form form={form} name="form_in_modal" {...formItemLayout}>
-                    {props.attribute==='name' && (<>
-                        <Form.Item name="firstname" label="First Name" rules={[{required: true, message: 'Please enter your first name!'}]}>
-                            <Input />
+                    {props.attribute === 'name' && (<>
+                        <Form.Item
+                            name="firstname"
+                            label="First Name"
+                            rules={[{required: true, message: 'Please enter your first name!'}]}
+                        >
+                            <Input/>
                         </Form.Item>
                         <Form.Item name="middle_name" label="Middle Name" initialValue="">
-                            <Input />
+                            <Input/>
                         </Form.Item>
-                        <Form.Item name="lastname" label="Last Name" rules={[{required: true, message: 'Please enter your last name!'}]}>
-                            <Input />
+                        <Form.Item
+                            name="lastname"
+                            label="Last Name"
+                            rules={[{required: true, message: 'Please enter your last name!'}]}
+                        >
+                            <Input/>
                         </Form.Item>
                     </>)}
-                    {props.attribute==='gender' && (
+                    {props.attribute === 'gender' && (
                         <Form.Item
                             name="gender"
                             label="Gender"
@@ -99,7 +107,7 @@ const UpdateItem = (props) => {
                             </Select>
                         </Form.Item>
                     )}
-                    {props.attribute==='birthday' && (
+                    {props.attribute === 'birthday' && (
                         <Form.Item label="Birthday">
                             <Form.Item
                                 name="birthday_year"
@@ -137,43 +145,43 @@ const UpdateItem = (props) => {
                             </Form.Item>
                         </Form.Item>
                     )}
-                    {props.attribute==='address' && (<>
+                    {props.attribute === 'address' && (<>
                         <Form.Item
                             name="address_line1"
                             label="Address line 1"
                             rules={[{required: true, message: 'Please enter your address!'}]}
                         >
-                            <Input />
+                            <Input/>
                         </Form.Item>
                         <Form.Item name="address_line2" label="Address line 2" initialValue="">
-                            <Input />
+                            <Input/>
                         </Form.Item>
                         <Form.Item name="address_line3" label="Address line 3" initialValue="">
-                            <Input />
+                            <Input/>
                         </Form.Item>
                         <Form.Item
                             name="address_city"
                             label="City"
                             rules={[{required: true, message: 'Please enter your city!'}]}
                         >
-                            <Input />
+                            <Input/>
                         </Form.Item>
                         <Form.Item
                             name="address_country"
                             label="Country"
                             rules={[{required: true, message: 'Please enter your country!'}]}
                         >
-                            <Input />
+                            <Input/>
                         </Form.Item>
                         <Form.Item
                             name="address_postalcode"
                             label="Postal Code"
                             rules={[{required: true, message: 'Please enter your postal code!'}]}
                         >
-                            <Input />
+                            <Input/>
                         </Form.Item>
                     </>)}
-                    {props.attribute==='email' && (
+                    {props.attribute === 'email' && (
                         <Form.Item
                             name="email"
                             label="E-mail"
@@ -182,10 +190,10 @@ const UpdateItem = (props) => {
                                 {required: true, message: 'Please enter your E-mail!'}
                             ]}
                         >
-                            <Input />
+                            <Input/>
                         </Form.Item>
                     )}
-                    {props.attribute==='phone' && (
+                    {props.attribute === 'phone' && (
                         <Form.Item
                             name="phone"
                             label="Phone Number"
@@ -201,19 +209,19 @@ const UpdateItem = (props) => {
 }
 
 
-export default function Profile () {
+export default function Profile() {
     const [profile, setProfile] = useState({})
-    const {loginStore, userStore}=useStore()
-    const [params]=useSearchParams()
-    const member_id =params.get('id')
+    const {loginStore, userStore} = useStore()
+    const [params] = useSearchParams()
+    const member_id = params.get('id')
 
-    useEffect(()=>{
+    useEffect(() => {
         const loadInfo = async () => {
             let profileData
-            if (!loginStore.member_id){
-                profileData= await userStore.getMemberInfo(member_id)
-            }else {
-                profileData= await userStore.getMemberInfo(loginStore.member_id)
+            if (!loginStore.member_id) {
+                profileData = await userStore.getMemberInfo(member_id)
+            } else {
+                profileData = await userStore.getMemberInfo(loginStore.member_id)
             }
             setProfile({...profileData})
         }
@@ -240,13 +248,13 @@ export default function Profile () {
                     {profile.firstname} {profile.middle_name} {profile.lastname}
                 </Card>
                 <Card type="inner" title="GENDER" extra={<UpdateItem attribute={'gender'}/>} hoverable>
-                    {(profile.gender==='male') ? 'Male' : (profile.gender==='female') ? 'Female' : 'Other'}
+                    {(profile.gender === 'male') ? 'Male' : (profile.gender === 'female') ? 'Female' : 'Other'}
                 </Card>
                 <Card type="inner" title="BIRTHDAY" extra={<UpdateItem attribute={'birthday'}/>} hoverable>
                     {profile.birthday_year}/{profile.birthday_month}/{profile.birthday_date}
                 </Card>
                 <Card type="inner" title="ADDRESS" extra={<UpdateItem attribute={'address'}/>} hoverable>
-                    {profile.address_line1}{profile.address_line2?`, ${profile.address_line2}`:''}{profile.address_line3?`, ${profile.address_line3}`:''}<br/>
+                    {profile.address_line1}{profile.address_line2 ? `, ${profile.address_line2}` : ''}{profile.address_line3 ? `, ${profile.address_line3}` : ''}<br/>
                     {profile.address_city}, {profile.address_country}<br/>
                     {profile.address_postalcode}
                 </Card>
@@ -266,7 +274,7 @@ export default function Profile () {
                     {profile.expire_date}
                 </Card>
                 <Card type="inner" title="MEMBERSHIP STATUS" hoverable>
-                    {(profile.membership_status? 'Yes':'No')}
+                    {(profile.membership_status ? 'Yes' : 'No')}
                 </Card>
 
             </Card>

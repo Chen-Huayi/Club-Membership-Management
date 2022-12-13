@@ -1,48 +1,49 @@
-import {EditOutlined, SearchOutlined, UserAddOutlined, UserDeleteOutlined} from '@ant-design/icons'
-import {Breadcrumb, Button, Card, Input, message, Space, Table} from 'antd'
+import {EditOutlined, UserAddOutlined, UserDeleteOutlined} from '@ant-design/icons'
+import {Breadcrumb, Button, Card, message, Space, Table} from 'antd'
 import React, {useEffect, useRef, useState} from 'react'
 import {Link, useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
+import {getFilterProps} from "../../utils";
 
 
-export default function ShowStaffList () {
-    const {userStore, updateStore}=useStore()
-    const navigate=useNavigate()
+export default function ShowStaffList() {
+    const {userStore, updateStore} = useStore()
+    const navigate = useNavigate()
     const searchInput = useRef(null)
     const [params, setParams] = useState({
         page: 1,
         per_page: 3
     })
-    const [activeStaff, setActiveStaff]=useState({
+    const [activeStaff, setActiveStaff] = useState({
         list: [],
         count: 0
     })
-    const [inactiveStaff, setInactiveStaff]=useState({
+    const [inactiveStaff, setInactiveStaff] = useState({
         list: [],
         count: 0
     })
 
-    const pageChange = (page)=>{
+    const pageChange = (page) => {
         setParams({
             ...params, page
         })
     }
 
-    const editStaffInfo=(data)=>{
+    const editStaffInfo = (data) => {
         navigate(`/update-staff-profile?id=${data.staff_id}`)
     }
 
-    const switchStaffStatus=async (data)=>{
+    const switchStaffStatus = async (data) => {
         let res
 
-        if (data.membership_status){
+        if (data.membership_status) {
             res = await updateStore.deactivateStaff({staff_id: data.staff_id})
-        }else {
+        } else {
             res = await updateStore.activateStaff({staff_id: data.staff_id})
         }
-        if (res.status===0){
+        if (res.status === 0) {
             message.success(res.message)
-        }else {
+        } else {
             message.error(res.message)
         }
         setParams({
@@ -51,73 +52,9 @@ export default function ShowStaffList () {
         })
     }
 
-    const handleSearch = (selectedKeys, confirm) => {
-        confirm()
-    }
-
-    const handleReset = (clearFilters) => {
-        clearFilters()
-    }
-
-    const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-            <div
-                style={{
-                    padding: 8,
-                }}
-            >
-                <Input
-                    ref={searchInput}
-                    placeholder={`Search ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{
-                        marginBottom: 8,
-                        display: 'block',
-                    }}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{width: 90}}
-                    >
-                        Search
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            clearFilters && handleReset(clearFilters)
-                            confirm({closeDropdown: false})
-                        }}
-                        size="small"
-                        style={{width: 90}}
-                    >
-                        Reset
-                    </Button>
-                    <Button type="link" size="small" onClick={() => close()}>
-                        Close
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered) => (
-            <SearchOutlined
-                style={{
-                    color: filtered ? '#1890ff' : undefined,
-                }}
-            />
-        ),
-        onFilter: (value, record) =>
-            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
-            }
-        },
-    })
+    const getColumnSearchProps = (dataIndex) => (
+        getFilterProps(dataIndex, searchInput)
+    )
 
     const columns = [
         {
@@ -162,24 +99,24 @@ export default function ShowStaffList () {
                         <Button
                             type="primary"
                             shape="circle"
-                            icon={<EditOutlined />}
-                            onClick={()=>editStaffInfo(data)}
+                            icon={<EditOutlined/>}
+                            onClick={() => editStaffInfo(data)}
                         />
                         {data.membership_status && (
                             <Button
                                 type="primary"
                                 danger
                                 shape="circle"
-                                icon={<UserDeleteOutlined />}
-                                onClick={()=>switchStaffStatus(data)}
+                                icon={<UserDeleteOutlined/>}
+                                onClick={() => switchStaffStatus(data)}
                             />
                         )}
                         {!data.membership_status && (
                             <Button
                                 type="primary"
                                 shape="circle"
-                                icon={<UserAddOutlined />}
-                                onClick={()=>switchStaffStatus(data)}
+                                icon={<UserAddOutlined/>}
+                                onClick={() => switchStaffStatus(data)}
                             />
                         )}
                     </Space>
@@ -188,16 +125,16 @@ export default function ShowStaffList () {
         }
     ]
 
-    const buildStaffList=(staffs)=>{
+    const buildStaffList = (staffs) => {
         const staffList = staffs.staff_list
         const size = staffList.length
-        let list=[]
+        let list = []
 
         for (let i = 0; i < size; i++) {
-            const user=staffList[i]
-            let formatData={
+            const user = staffList[i]
+            let formatData = {
                 ...user,
-                name: user.firstname+' '+user.middle_name+' '+user.lastname,
+                name: user.firstname + ' ' + user.middle_name + ' ' + user.lastname,
                 key: `${i}`
             }
             list.push(formatData)
@@ -207,18 +144,18 @@ export default function ShowStaffList () {
 
     // load staff list
     useEffect(() => {
-        const loadList=async ()=>{
+        const loadList = async () => {
             const active = await userStore.getActiveStaffList({params})
             const inactive = await userStore.getInactiveStaffList({params})
             let staffList
 
-            staffList=buildStaffList(active)
+            staffList = buildStaffList(active)
             setActiveStaff({
                 list: staffList,
                 count: staffList.length,
             })
 
-            staffList=buildStaffList(inactive)
+            staffList = buildStaffList(inactive)
             setInactiveStaff({
                 list: staffList,
                 count: staffList.length,
@@ -237,7 +174,7 @@ export default function ShowStaffList () {
                     <Breadcrumb.Item>Staff List</Breadcrumb.Item>
                 </Breadcrumb>
             }
-            style={{ marginBottom: 20 }}
+            style={{marginBottom: 20}}
         >
             <h2>{activeStaff.count} active staffs in total</h2>
             <Table

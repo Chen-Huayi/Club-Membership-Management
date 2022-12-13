@@ -1,10 +1,10 @@
 import {user_role} from '../../utils';
 import {Navigate} from 'react-router-dom'
 
-function SystemAdminAuth({children}){
-    if (user_role==='System Admin'){
+function SystemAdminAuth({children}) {
+    if (user_role === 'System Admin') {
         return <>{children}</>
-    }else {
+    } else {
         return <Navigate to="/" replace/>
     }
 }

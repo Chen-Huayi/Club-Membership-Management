@@ -4,15 +4,15 @@ import React from 'react'
 import {Link} from "react-router-dom";
 import {useStore} from "../../store";
 
-const { TextArea } = Input;
+const {TextArea} = Input;
 
-export default function SendEmail () {
+
+export default function SendEmail() {
     const [form] = Form.useForm()
-    const {userStore}=useStore()
+    const {userStore} = useStore()
 
-    const onFinish = async(values)=> {
+    const onFinish = async (values) => {
         form.resetFields()
-        console.log(values)
         await userStore.sendGroupEmail(values)
         message.success('Email sent successfully!')
     }
@@ -31,14 +31,14 @@ export default function SendEmail () {
                     <Breadcrumb.Item>Send Group Email</Breadcrumb.Item>
                 </Breadcrumb>
             }
-            style={{ marginBottom: 20 }}
+            style={{marginBottom: 20}}
         >
             <h2>Send group email to all active members:</h2>
             <Form
                 form={form}
-                labelCol={{ span: 4 }}
-                wrapperCol={{ span: 16 }}
-                initialValues={{ content: '' }}
+                labelCol={{span: 4}}
+                wrapperCol={{span: 16}}
+                initialValues={{content: ''}}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             >
@@ -62,10 +62,10 @@ export default function SendEmail () {
                         placeholder="Enter your content here"
                     />
                 </Form.Item>
-                <Form.Item wrapperCol={{ offset: 4 }}>
+                <Form.Item wrapperCol={{offset: 4}}>
                     <Space>
                         <Button size="large" type="primary" htmlType="submit" shape="round">
-                            <SendOutlined />Send
+                            <SendOutlined/>Send
                         </Button>
                     </Space>
                 </Form.Item>
