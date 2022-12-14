@@ -18,16 +18,16 @@ const updateByObjId = (id, update, msg, res) => {
 /* Get member user id, and then call updateByObjId function to update things in MongoDB database */
 const updateInfo = (member_id, update, operationMsg, res) => {
     getUserById(memberModel, member_id)
-    .then(member => {
-        if (!member) {
-            return res.handleMessage('User does not exist!')
-        }
-        updateByObjId(member._id, {$set: update}, `${operationMsg} successfully!`, res)
-        res.handleMessage(`${operationMsg} successfully!`, 0)
-    })
-    .catch(err => {
-        throw Error(err)
-    })
+        .then(member => {
+            if (!member) {
+                return res.handleMessage('User does not exist!')
+            }
+            updateByObjId(member._id, {$set: update}, `${operationMsg} successfully!`, res)
+            res.handleMessage(`${operationMsg} successfully!`, 0)
+        })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 /* Get membership status by passing true or false to get active or inactive members, respectively */
@@ -84,18 +84,18 @@ exports.signup = (req, res) => {
 /* Before login, check whether this user's account is locked or not */
 exports.checkLocked = (req, res) => {
     getUserById(memberModel, req.body.member_id)
-    .then(member => {
-        if (!member) {
-            return res.handleMessage('Wrong Member ID!')
-        }
-        res.send({
-            status: 0,
-            account_locked: member.account_locked
+        .then(member => {
+            if (!member) {
+                return res.handleMessage('Wrong Member ID!')
+            }
+            res.send({
+                status: 0,
+                account_locked: member.account_locked
+            })
         })
-    })
-    .catch(err => {
-        throw Error(err)
-    })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 /* Login to user account */
@@ -105,50 +105,50 @@ exports.login = (req, res) => {
     const password = userInfo.password
 
     getUserById(memberModel, member_id)
-    .then(member => {
-        if (!member) {
-            return res.handleMessage('Wrong Member ID!')
-        }
-        // if the fail login counts of user's account is more than a certain value, update account_lock attribute to true
-        if (member.fail_login_count >= 4) {
-            updateByObjId(member._id, {$set: {account_locked: true}}, `Your account [${member_id}] is locked`, res)
-        }
-        // Check and match password between database
-        const compareResult = bcrypt.compareSync(password, member.password)
-        // Match password correctness, if wrong, fail_login_count +1
-        if (!compareResult) {  // member.password !== password
-            updateByObjId(member._id, {$inc: {fail_login_count: 1}}, `[${member_id}] failure login count +1`, res)
-            return res.handleMessage('Wrong password!')
-        }
+        .then(member => {
+            if (!member) {
+                return res.handleMessage('Wrong Member ID!')
+            }
+            // if the fail login counts of user's account is more than a certain value, update account_lock attribute to true
+            if (member.fail_login_count >= 4) {
+                updateByObjId(member._id, {$set: {account_locked: true}}, `Your account [${member_id}] is locked`, res)
+            }
+            // Check and match password between database
+            const compareResult = bcrypt.compareSync(password, member.password)
+            // Match password correctness, if wrong, fail_login_count +1
+            if (!compareResult) {  // member.password !== password
+                updateByObjId(member._id, {$inc: {fail_login_count: 1}}, `[${member_id}] failure login count +1`, res)
+                return res.handleMessage('Wrong password!')
+            }
 
-        // If password is matched, clear and reset fail_login_count value to 0
-        updateByObjId(member._id, {fail_login_count: 0}, `Club member [${member_id}] login successfully!`, res)
-        const userObj = {...member._doc, password: ''}
-        const {fail_login_count, __v, ...rest} = userObj
-        const {firstname, lastname, user_role, membership_status, expire_date} = rest
+            // If password is matched, clear and reset fail_login_count value to 0
+            updateByObjId(member._id, {fail_login_count: 0}, `Club member [${member_id}] login successfully!`, res)
+            const userObj = {...member._doc, password: ''}
+            const {fail_login_count, __v, ...rest} = userObj
+            const {firstname, lastname, user_role, membership_status, expire_date} = rest
 
-        // TODO user_role加密
-        // Create JSON web token
-        const token = jwt.sign(
-            rest,
-            jwtSecretKey,
-            {expiresIn}
-        )
+            // TODO user_role加密
+            // Create JSON web token
+            const token = jwt.sign(
+                rest,
+                jwtSecretKey,
+                {expiresIn}
+            )
 
-        res.send({
-            status: 0,
-            token,
-            member_id,
-            firstname,
-            lastname,
-            user_role,
-            membership_status,
-            expire_date
+            res.send({
+                status: 0,
+                token,
+                member_id,
+                firstname,
+                lastname,
+                user_role,
+                membership_status,
+                expire_date
+            })
         })
-    })
-    .catch(err => {
-        throw Error(err)
-    })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 
@@ -166,25 +166,25 @@ exports.getMemberProfile = (req, res) => {
     const member_id = req.params.id
 
     getUserById(memberModel, member_id)
-    .then(member => {
-        if (!member) {
-            return res.handleMessage('User does not exist!')
-        }
-        const {
-            member_id, firstname, middle_name, lastname, gender, birthday_year, birthday_month,
-            birthday_date, address_line1, address_line2, address_line3, address_city, address_country,
-            address_postalcode, email, phone, registered_date, effective_date, expire_date, membership_status
-        } = member
+        .then(member => {
+            if (!member) {
+                return res.handleMessage('User does not exist!')
+            }
+            const {
+                member_id, firstname, middle_name, lastname, gender, birthday_year, birthday_month,
+                birthday_date, address_line1, address_line2, address_line3, address_city, address_country,
+                address_postalcode, email, phone, registered_date, effective_date, expire_date, membership_status
+            } = member
 
-        res.send({
-            member_id, firstname, middle_name, lastname, gender, birthday_year, birthday_month,
-            birthday_date, address_line1, address_line2, address_line3, address_city, address_country,
-            address_postalcode, email, phone, registered_date, effective_date, expire_date, membership_status
+            res.send({
+                member_id, firstname, middle_name, lastname, gender, birthday_year, birthday_month,
+                birthday_date, address_line1, address_line2, address_line3, address_city, address_country,
+                address_postalcode, email, phone, registered_date, effective_date, expire_date, membership_status
+            })
         })
-    })
-    .catch(err => {
-        throw Error(err)
-    })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 
@@ -204,24 +204,24 @@ exports.updatePassword = (req, res) => {
     const oldPassword = req.body.oldPassword
 
     getUserById(memberModel, member_id)
-    .then(member => {
-        if (!member) {
-            return res.handleMessage('User does not exist!')
-        }
-        // Determine if the submitted old password is correct
-        const compareResult = bcrypt.compareSync(oldPassword, member.password)
-        // oldPassword !== member.password
-        if (!compareResult) {
-            return res.handleMessage('The old password is wrong!')
-        }
-        const newPassword = bcrypt.hashSync(req.body.newPassword, 10)
-        updateByObjId(member._id, {$set: {password: newPassword}}, 'Password changed!', res)
+        .then(member => {
+            if (!member) {
+                return res.handleMessage('User does not exist!')
+            }
+            // Determine if the submitted old password is correct
+            const compareResult = bcrypt.compareSync(oldPassword, member.password)
+            // oldPassword !== member.password
+            if (!compareResult) {
+                return res.handleMessage('The old password is wrong!')
+            }
+            const newPassword = bcrypt.hashSync(req.body.newPassword, 10)
+            updateByObjId(member._id, {$set: {password: newPassword}}, 'Password changed!', res)
 
-        res.handleMessage('Password changed!', 0)
-    })
-    .catch(err => {
-        throw Error(err)
-    })
+            res.handleMessage('Password changed!', 0)
+        })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 /* For users who forgot password and reset through security code */
@@ -284,17 +284,17 @@ exports.sendGroupEmail = (req, res) => {
 // Receive
 exports.getNotification = (req, res) => {
     getUserById(memberModel, req.params.id)
-    .then(member => {
-        if (!member) {
-            return res.handleMessage('Wrong Member ID!')
-        }
-        res.send({
-            notifications: member.notifications
+        .then(member => {
+            if (!member) {
+                return res.handleMessage('Wrong Member ID!')
+            }
+            res.send({
+                notifications: member.notifications
+            })
         })
-    })
-    .catch(err => {
-        throw Error(err)
-    })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 // Delete

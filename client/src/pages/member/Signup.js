@@ -30,23 +30,23 @@ export default function Signup() {
 
     const onFinish = async (values) => {
         await signupStore.memberSignup(values)
-        .then(result => {
+            .then(result => {
 
-            if (result.status === 0) {
-                if (result.pay_now) {
-                    navigate(`/payment?id=${result.member_id}&&amount=${result.amount}`)
+                if (result.status === 0) {
+                    if (result.pay_now) {
+                        navigate(`/payment?id=${result.member_id}&&amount=${result.amount}`)
+                    } else {
+                        navigate('/')
+                    }
+                    message.success(result.message)
                 } else {
-                    navigate('/')
+                    form.setFieldsValue({member_id: ''})
+                    message.error(result.message)
                 }
-                message.success(result.message)
-            } else {
-                form.setFieldsValue({member_id: ''})
-                message.error(result.message)
-            }
-        })
-        .catch(err => {
-            throw Error(err)
-        })
+            })
+            .catch(err => {
+                throw Error(err)
+            })
     }
 
     const onFinishFailed = (err) => {
@@ -60,13 +60,13 @@ export default function Signup() {
     useEffect(() => {
         const loadFee = async () => {
             await settingStore.getMembershipFee()
-            .then(value => {
-                setFee(value.membership_fee)
-                form.setFieldsValue({amount: value.membership_fee})
-            })
-            .catch(err => {
-                throw Error(err)
-            })
+                .then(value => {
+                    setFee(value.membership_fee)
+                    form.setFieldsValue({amount: value.membership_fee})
+                })
+                .catch(err => {
+                    throw Error(err)
+                })
         }
         loadFee()
     }, [payment, form, settingStore])

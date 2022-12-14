@@ -30,17 +30,17 @@ export default function SendCardList() {
 
     const sendCardToMember = (data) => {
         userStore.sendToEligibleMember({member_id: data.member_id})
-        .then(result => {
-            console.log(result)
-            if (result.status === 0) {
-                message.success('Membership card will deliver soon')
-                setTimeout(() => {
-                    window.location.reload()
-                }, 700)
-            } else {
-                message.error('Fail to request send card to member')
-            }
-        })
+            .then(result => {
+                console.log(result)
+                if (result.status === 0) {
+                    message.success('Membership card will deliver soon')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 700)
+                } else {
+                    message.error('Fail to request send card to member')
+                }
+            })
     }
 
     const getColumnSearchProps = (dataIndex) => (

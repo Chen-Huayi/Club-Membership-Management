@@ -29,22 +29,22 @@ export default function UpdateStaffProfile() {
 
     const onFinish = async () => {
         await form.validateFields()
-        .then(value => {
-            const userInfo = {staff_id, ...value}
+            .then(value => {
+                const userInfo = {staff_id, ...value}
 
-            updateStore.updateStaffInfo(userInfo)
-            .then(result => {
-                if (result.status === 0) {
-                    navigate('/staff-list')
-                    message.success(result.message)
-                } else {
-                    message.error(result.message)
-                }
+                updateStore.updateStaffInfo(userInfo)
+                    .then(result => {
+                        if (result.status === 0) {
+                            navigate('/staff-list')
+                            message.success(result.message)
+                        } else {
+                            message.error(result.message)
+                        }
+                    })
             })
-        })
-        .catch(reason => {
-            console.log('Validate Failed:', reason)
-        })
+            .catch(reason => {
+                console.log('Validate Failed:', reason)
+            })
     }
 
     const onFinishFailed = async (err) => {
@@ -55,12 +55,12 @@ export default function UpdateStaffProfile() {
     useEffect(() => {
         const loadDetail = () => {
             userStore.getStaffInfo(staff_id)
-            .then(currProfile => {
-                form.setFieldsValue(currProfile)
-            })
-            .catch(err => {
-                throw Error(err)
-            })
+                .then(currProfile => {
+                    form.setFieldsValue(currProfile)
+                })
+                .catch(err => {
+                    throw Error(err)
+                })
         }
         loadDetail()
     }, [form, userStore, staff_id])

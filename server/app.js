@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 
 /* Add authorization to routes but exclude that do not need to be verified (all paths start with "/api") */
 app.use(jwt({secret: jwtSecretKey, algorithms: ['HS256']})
-.unless({path: [/^\/api\//, '/fee/get-fee', '/member/reset-pwd']}))
+    .unless({path: [/^\/api\//, '/fee/get-fee', '/member/reset-pwd']}))
 
 /* Main routes (Start here) */
 app.use('/api', userRouter)

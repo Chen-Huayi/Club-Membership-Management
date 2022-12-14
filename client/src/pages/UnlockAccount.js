@@ -14,15 +14,15 @@ export default function UnlockAccount() {
 
     const onFinish = async (values) => {
         await updateStore.resetPassword(values)
-        .then(result => {
-            if (result.status === 0) {
-                navigate('/')
-                message.success(result.message)
-            } else {
-                form.setFieldsValue({member_id: ''})
-                message.error(result.message)
-            }
-        })
+            .then(result => {
+                if (result.status === 0) {
+                    navigate('/')
+                    message.success(result.message)
+                } else {
+                    form.setFieldsValue({member_id: ''})
+                    message.error(result.message)
+                }
+            })
     }
 
     const onFinishFailed = (errorInfo) => {

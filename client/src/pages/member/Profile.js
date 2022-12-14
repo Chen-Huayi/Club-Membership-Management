@@ -27,23 +27,23 @@ const UpdateItem = (props) => {
 
     const handleOk = async () => {
         await form.validateFields()
-        .then(value => {
-            const userInfo = {member_id: loginStore.member_id, ...value}
+            .then(value => {
+                const userInfo = {member_id: loginStore.member_id, ...value}
 
-            updateStore.updateMemberInfo(userInfo)
-            .then(result => {
-                if (result.status === 0) {
-                    message.success(result.message)
-                } else {
-                    message.error(result.message)
-                }
+                updateStore.updateMemberInfo(userInfo)
+                    .then(result => {
+                        if (result.status === 0) {
+                            message.success(result.message)
+                        } else {
+                            message.error(result.message)
+                        }
+                    })
+                form.resetFields()
+                setOpen(false)
             })
-            form.resetFields()
-            setOpen(false)
-        })
-        .catch(reason => {
-            console.log('Validate Failed:', reason)
-        })
+            .catch(reason => {
+                console.log('Validate Failed:', reason)
+            })
     }
 
     const handleCancel = () => {

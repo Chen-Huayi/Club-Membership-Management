@@ -20,6 +20,14 @@ export default function Home() {
         expireDate: loginStore.expire_date
     })
 
+    const isExpireInOneMonth = (expireDate) => {
+        return new Date(expireDate).getTime() < new Date().getTime() + millisecondsADay * 30
+    }
+
+    const calculateRemainDays = (expireDate) => {
+        return Math.ceil((new Date(expireDate).getTime() - new Date().getTime()) / millisecondsADay)
+    }
+
     useEffect(() => {
         const loadInfo = async () => {
             const role = loginStore.user_role
@@ -38,15 +46,7 @@ export default function Home() {
         }
         loadInfo()
     }, [userInfo])
-
-    const isExpireInOneMonth = (expireDate) => {
-        return new Date(expireDate).getTime() < new Date().getTime() + millisecondsADay * 30
-    }
-
-    const calculateRemainDays = (expireDate) => {
-        return Math.ceil((new Date(expireDate).getTime() - new Date().getTime()) / millisecondsADay)
-    }
-
+    
     return (
         <div className="home-page">
             <div className="home-page-content">

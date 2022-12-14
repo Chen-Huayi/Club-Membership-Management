@@ -27,18 +27,18 @@ export default function Signup() {
 
     const onFinish = (values) => {
         signupStore.staffSignup(values)
-        .then(result => {
-            if (result.status === 0) {
-                navigate('/')
-                message.success(result.message)
-            } else {
-                form.setFieldsValue({staff_id: ''})
-                message.error(result.message)
-            }
-        })
-        .catch(err => {
-            throw Error(err)
-        })
+            .then(result => {
+                if (result.status === 0) {
+                    navigate('/')
+                    message.success(result.message)
+                } else {
+                    form.setFieldsValue({staff_id: ''})
+                    message.error(result.message)
+                }
+            })
+            .catch(err => {
+                throw Error(err)
+            })
     }
 
     const onFinishFailed = (err) => {

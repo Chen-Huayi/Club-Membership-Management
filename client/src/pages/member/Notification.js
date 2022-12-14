@@ -9,14 +9,14 @@ const DeleteNotification = (props) => {
 
     const onClick = () => {
         userStore.deleteNotification({member_id: loginStore.member_id, notificationContent: props.content})
-        .then(result => {
-            if (result.status === 0) {
-                message.success('This notification has been deleted')
-                window.location.reload()
-            } else {
-                message.error('Fail to delete')
-            }
-        }).catch(err => {
+            .then(result => {
+                if (result.status === 0) {
+                    message.success('This notification has been deleted')
+                    window.location.reload()
+                } else {
+                    message.error('Fail to delete')
+                }
+            }).catch(err => {
             throw Error(err)
         })
     }

@@ -50,11 +50,11 @@ const initCompanySystem = () => {
 /* Connect to MongoDB database */
 exports.createConnection = () => {
     return mongoose.connect(databaseURL)
-    .then(() => {
-        console.log('Database is connected...')
-        initCompanySystem()  // init basic role and conditions
-    })
-    .catch((reason) => {
-        console.log('Fail to connect to MongoDB database: ', reason)
-    })
+        .then(() => {
+            console.log('Database is connected...')
+            initCompanySystem()  // init basic role and conditions
+        })
+        .catch((reason) => {
+            console.log('Fail to connect to MongoDB database: ', reason)
+        })
 }

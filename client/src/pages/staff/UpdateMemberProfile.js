@@ -30,22 +30,22 @@ export default function UpdateMemberProfile() {
 
     const onFinish = async () => {
         await form.validateFields()
-        .then(value => {
-            const userInfo = {member_id, ...value}
+            .then(value => {
+                const userInfo = {member_id, ...value}
 
-            updateStore.updateMemberInfo(userInfo)
-            .then(result => {
-                if (result.status === 0) {
-                    navigate('/member-list')
-                    message.success(result.message)
-                } else {
-                    message.error(result.message)
-                }
+                updateStore.updateMemberInfo(userInfo)
+                    .then(result => {
+                        if (result.status === 0) {
+                            navigate('/member-list')
+                            message.success(result.message)
+                        } else {
+                            message.error(result.message)
+                        }
+                    })
             })
-        })
-        .catch(reason => {
-            console.log('Validate Failed:', reason)
-        })
+            .catch(reason => {
+                console.log('Validate Failed:', reason)
+            })
     }
 
     const onFinishFailed = async (err) => {
@@ -56,13 +56,13 @@ export default function UpdateMemberProfile() {
     useEffect(() => {
         const loadDetail = async () => {
             await userStore.getMemberInfo(member_id)
-            .then(currProfile => {
-                const {birthday, ...userInfo} = currProfile
-                form.setFieldsValue({...userInfo})
-            })
-            .catch(err => {
-                throw Error(err)
-            })
+                .then(currProfile => {
+                    const {birthday, ...userInfo} = currProfile
+                    form.setFieldsValue({...userInfo})
+                })
+                .catch(err => {
+                    throw Error(err)
+                })
         }
         loadDetail()
     }, [])

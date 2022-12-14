@@ -24,14 +24,14 @@ export default function Renewal() {
     useEffect(() => {
         const loadInfo = () => {
             userStore.getMemberInfo(loginStore.member_id)
-            .then(result => {
-                setUserInfo({
-                    membership: result.membership_status
+                .then(result => {
+                    setUserInfo({
+                        membership: result.membership_status
+                    })
                 })
-            })
-            .catch(err => {
-                throw Error(err)
-            })
+                .catch(err => {
+                    throw Error(err)
+                })
         }
         loadInfo()
     }, [])
@@ -39,13 +39,13 @@ export default function Renewal() {
     useEffect(() => {
         const loadFee = () => {
             settingStore.getMembershipFee()
-            .then(result => {
-                setFee(result.membership_fee)
-                form.setFieldsValue({amount: result.membership_fee})
-            })
-            .catch(err => {
-                throw Error(err)
-            })
+                .then(result => {
+                    setFee(result.membership_fee)
+                    form.setFieldsValue({amount: result.membership_fee})
+                })
+                .catch(err => {
+                    throw Error(err)
+                })
         }
         loadFee()
     }, [])

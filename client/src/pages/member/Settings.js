@@ -24,22 +24,22 @@ const ResetPwd = () => {
 
     const handleOk = async () => {
         await form.validateFields()
-        .then(value => {
-            const userInfo = {...value, member_id: loginStore.member_id}
+            .then(value => {
+                const userInfo = {...value, member_id: loginStore.member_id}
 
-            updateStore.updatePassword(userInfo)
-            .then(result => {
-                if (result.status === 0)
-                    message.success(result.message)
-                else
-                    message.error(result.message)
+                updateStore.updatePassword(userInfo)
+                    .then(result => {
+                        if (result.status === 0)
+                            message.success(result.message)
+                        else
+                            message.error(result.message)
+                    })
+                form.resetFields()
+                setOpen(false)
             })
-            form.resetFields()
-            setOpen(false)
-        })
-        .catch(reason => {
-            console.log('Validate Failed:', reason)
-        })
+            .catch(reason => {
+                console.log('Validate Failed:', reason)
+            })
     }
 
     const handleCancel = () => {
@@ -119,14 +119,14 @@ export default function Settings() {
         // throttle
         if (now - previous >= 5000) {
             updateStore.requestReplaceCard({member_id: loginStore.member_id})
-            .then(result => {
-                if (result.status === 0) {
-                    message.success('Your request has already sent.')
-                } else {
-                    message.error('Fail to request.')
-                }
-                previous = now  // reset previous
-            })
+                .then(result => {
+                    if (result.status === 0) {
+                        message.success('Your request has already sent.')
+                    } else {
+                        message.error('Fail to request.')
+                    }
+                    previous = now  // reset previous
+                })
         } else {
             message.warning('You click too fast')
         }

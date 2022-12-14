@@ -13,13 +13,13 @@ export default function Membership() {
     useEffect(() => {
         const loadInfo = async () => {
             await userStore.getMemberInfo(loginStore.member_id)
-            .then(result => {
-                setUserInfo({
-                    membership: result.membership_status,
-                    effectiveDate: result.effective_date,
-                    expireDate: result.expire_date,
+                .then(result => {
+                    setUserInfo({
+                        membership: result.membership_status,
+                        effectiveDate: result.effective_date,
+                        expireDate: result.expire_date,
+                    })
                 })
-            })
         }
         loadInfo()
     }, [])

@@ -65,40 +65,40 @@ exports.login = (req, res) => {
     const password = userInfo.password
 
     getUserById(staff_id)
-    .then(staff => {
-        if (!staff) {
-            return res.handleMessage('Wrong Staff ID!')
-        }
-        // Check and match password between database
-        const compareResult = bcrypt.compareSync(password, staff.password)
-        // Match password correctness, if wrong, fail_login_count +1
-        if (!compareResult) {  // password !== staff.password
-            return res.handleMessage('Wrong password!')
-        }
-        const userObj = {...staff._doc, password: ''}
-        const {__v, ...rest} = userObj
-        const {firstname, lastname, user_role, membership_status} = rest
-        // TODO user_role加密
-        console.log(`Staff [${staff_id}] login successfully!`)
+        .then(staff => {
+            if (!staff) {
+                return res.handleMessage('Wrong Staff ID!')
+            }
+            // Check and match password between database
+            const compareResult = bcrypt.compareSync(password, staff.password)
+            // Match password correctness, if wrong, fail_login_count +1
+            if (!compareResult) {  // password !== staff.password
+                return res.handleMessage('Wrong password!')
+            }
+            const userObj = {...staff._doc, password: ''}
+            const {__v, ...rest} = userObj
+            const {firstname, lastname, user_role, membership_status} = rest
+            // TODO user_role加密
+            console.log(`Staff [${staff_id}] login successfully!`)
 
-        const token = jwt.sign(
-            rest,
-            jwtSecretKey,
-            {expiresIn}
-        )
-        res.send({
-            status: 0,
-            token,
-            staff_id,
-            firstname,
-            lastname,
-            user_role,
-            membership_status
+            const token = jwt.sign(
+                rest,
+                jwtSecretKey,
+                {expiresIn}
+            )
+            res.send({
+                status: 0,
+                token,
+                staff_id,
+                firstname,
+                lastname,
+                user_role,
+                membership_status
+            })
         })
-    })
-    .catch(err => {
-        throw Error(err)
-    })
+        .catch(err => {
+            throw Error(err)
+        })
 
 }
 
@@ -127,26 +127,26 @@ exports.getStaffProfile = (req, res) => {
     const staff_id = req.params.id
 
     getUserById(staff_id)
-    .then(staff => {
-        if (!staff) {
-            return res.handleMessage('User does not exist!')
-        }
-        const {staff_id, firstname, middle_name, lastname, email, phone, membership_status, user_role} = staff
+        .then(staff => {
+            if (!staff) {
+                return res.handleMessage('User does not exist!')
+            }
+            const {staff_id, firstname, middle_name, lastname, email, phone, membership_status, user_role} = staff
 
-        res.send({
-            staff_id,
-            firstname,
-            middle_name,
-            lastname,
-            email,
-            phone,
-            membership_status,
-            user_role
+            res.send({
+                staff_id,
+                firstname,
+                middle_name,
+                lastname,
+                email,
+                phone,
+                membership_status,
+                user_role
+            })
         })
-    })
-    .catch(err => {
-        throw Error(err)
-    })
+        .catch(err => {
+            throw Error(err)
+        })
 }
 
 

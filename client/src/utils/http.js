@@ -17,7 +17,7 @@ http.interceptors.request.use((config) => {
 }, (error) => {
     return Promise.reject(error)
 })
- 
+
 /* Add response interceptors */
 http.interceptors.response.use((response) => {
     // This function is triggered for any status code between 200 and 300 (code>=200 && code<300)
