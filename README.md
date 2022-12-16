@@ -36,7 +36,7 @@ Continually updated...✅
     npm install
     npm run start
     ```
-## Preview GIF
+## Preview GIFs
 This application have several user roles:
 + System Admin
 ![](https://github.com/Chen-Huayi/pictures/blob/main/system_admin.gif)
