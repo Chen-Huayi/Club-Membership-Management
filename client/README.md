@@ -15,7 +15,7 @@ React
 ### Run
 ```shell
 npm install
-npm run start
+npm start
 ```
 ### Configuration
 In `config.js` file:

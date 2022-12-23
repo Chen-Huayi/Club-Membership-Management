@@ -28,13 +28,13 @@ Continually updated...✅
     ```shell
     cd client
     npm install
-    npm run start
+    npm start
     ```
 3. Server Installation: 
     ```shell
     cd server
     npm install
-    npm run start
+    npm start
     ```
 ## Preview GIFs
 This application have several user roles:
