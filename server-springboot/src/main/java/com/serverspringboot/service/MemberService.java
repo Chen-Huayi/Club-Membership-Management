@@ -11,28 +11,29 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 @Slf4j
 @Service
 public class MemberService {
-    /**
-     * 设置集合名称
-     */
+    /*** 设置集合名称*/
     private static final String COLLECTION_NAME = "members";
 
     @Resource
     private MongoTemplate mongoTemplate;
 
-    /**
-     * 查询集合中的【全部】文档数据
-     * @return 全部文档列表
-     */
+    /*** 查询集合中的【全部】文档数据*/
     public Object findAll() {
         // 执行查询集合中全部文档信息
-        List<Member> documentList=mongoTemplate.findAll(Member.class, COLLECTION_NAME);
+        List<Member> documentList = mongoTemplate.findAll(Member.class, COLLECTION_NAME);
         // 输出结果
         for (Member member : documentList) {
             log.info("用户信息：{}", member);
@@ -40,10 +41,7 @@ public class MemberService {
         return documentList;
     }
 
-    /**
-     * 根据【文档ID】查询集合中文档数据
-     * @return 文档信息
-     */
+    /*** 根据【文档ID】查询集合中文档数据*/
     public Object findById() {
         // 设置查询的文档 ID
         String id = "1";
@@ -54,10 +52,7 @@ public class MemberService {
         return member;
     }
 
-    /**
-     * 根据【条件】查询集合中【符合条件】的文档，只取【第一条】数据
-     * @return 符合条件的第一条文档
-     */
+    /*** 根据【条件】查询集合中【符合条件】的文档，只取【第一条】数据*/
     public Member findOne(String key, Object value) {
         // 创建条件对象
         Criteria criteria = Criteria.where(key).is(value);
@@ -70,124 +65,160 @@ public class MemberService {
         return member;
     }
 
+
     public Member findByMemberId(String member_id) {
-        // 创建条件对象
         Criteria criteria = Criteria.where("member_id").is(member_id);
-        // 创建查询对象，然后将条件对象添加到其中
         Query query = new Query(criteria);
-        // 查询一条文档，如果查询结果中有多条文档，那么就取第一条
-        Member member = mongoTemplate.findOne(query, Member.class, COLLECTION_NAME);
-        // 输出结果
-        log.info("用户信息：{}", member);
-        return member;
+
+        return mongoTemplate.findOne(query, Member.class, COLLECTION_NAME);
     }
 
-    /**
-     * 根据【条件】查询集合中【符合条件】的文档，获取其【文档列表】
-     * @return 符合条件的文档列表
-     */
+    /*** 根据【条件】查询集合中【符合条件】的文档，获取其【文档列表】*/
     public Object findByCondition(String key, Object value) {
-        // 设置查询条件参数, 创建条件对象
         Criteria criteria = Criteria.where(key).is(value);
-        // 创建查询对象，然后将条件对象添加到其中
         Query query = new Query(criteria);
-        // 查询并返回结果
+
         List<Member> documentList = mongoTemplate.find(query, Member.class, COLLECTION_NAME);
-        // 输出结果
         for (Member member : documentList) {
             log.info("用户信息：{}", member);
         }
         return documentList;
     }
 
-    /**
-     * 更新集合中【匹配】查询到的第一条文档数据，如果没有找到就【创建并插入一个新文档】
-     * @return 执行更新的结果
-     */
+    /*** 更新集合中【匹配】查询到的第一条文档数据，如果没有找到就【创建并插入一个新文档】*/
     public Object updateMemberInfo(Member member) {
-        // 创建条件对象
         Criteria criteria = Criteria.where("member_id").is(member.getMember_id());
-        // 创建查询对象，然后将条件对象添加到其中
         Query query = new Query(criteria);
-        // 创建更新对象,并设置更新的内容
         Update update = new Update();
 
-        if (member.getFirstname()!=null)
+        if (member.getFirstname() != null)
             update.set("firstname", member.getFirstname());
-        if (member.getMiddle_name()!=null)
+        if (member.getMiddle_name() != null)
             update.set("middle_name", member.getMiddle_name());
-        if (member.getLastname()!=null)
+        if (member.getLastname() != null)
             update.set("lastname", member.getLastname());
-        if (member.getGender()!=null)
+        if (member.getGender() != null)
             update.set("gender", member.getGender());
-        if (member.getBirthday_year()!=null)
+        if (member.getBirthday_year() != null)
             update.set("birthday_year", member.getBirthday_year());
-        if (member.getBirthday_month()!=null)
+        if (member.getBirthday_month() != null)
             update.set("birthday_month", member.getBirthday_month());
-        if (member.getBirthday_date()!=null)
+        if (member.getBirthday_date() != null)
             update.set("birthday_date", member.getBirthday_date());
-        if (member.getAddress_line1()!=null)
+        if (member.getAddress_line1() != null)
             update.set("address_line1", member.getAddress_line1());
-        if (member.getAddress_line2()!=null)
+        if (member.getAddress_line2() != null)
             update.set("address_line2", member.getAddress_line2());
-        if (member.getAddress_line3()!=null)
+        if (member.getAddress_line3() != null)
             update.set("address_line3", member.getAddress_line3());
-        if (member.getAddress_city()!=null)
+        if (member.getAddress_city() != null)
             update.set("address_city", member.getAddress_city());
-        if (member.getAddress_country()!=null)
+        if (member.getAddress_country() != null)
             update.set("address_country", member.getAddress_country());
-        if (member.getAddress_postalcode()!=null)
+        if (member.getAddress_postalcode() != null)
             update.set("address_postalcode", member.getAddress_postalcode());
-        if (member.getEmail()!=null)
+        if (member.getEmail() != null)
             update.set("email", member.getEmail());
-        if (member.getPhone()!=null)
+        if (member.getPhone() != null)
             update.set("phone", member.getPhone());
-        if (member.getEffective_date()!=null)
+        if (member.getEffective_date() != null)
             update.set("effective_date", member.getEffective_date());
-        if (member.getExpire_date()!=null)
+        if (member.getExpire_date() != null)
             update.set("expire_date", member.getExpire_date());
-        if (member.getRecent_renewal_date()!=null)
+        if (member.getRecent_renewal_date() != null)
             update.set("recent_renewal_date", member.getRecent_renewal_date());
 
-        // 执行更新，如果没有找到匹配查询的文档，则创建并插入一个新文档
         UpdateResult result = mongoTemplate.updateFirst(query, update, Member.class, COLLECTION_NAME);
-        // 输出结果信息
-        String resultInfo = "匹配到" + result.getMatchedCount() + "条数据, 对第一条数据进行了更改";
-        log.info("更新结果：{}", resultInfo);
-        return resultInfo;
+        return "匹配到" + result.getMatchedCount() + "条数据, 对第一条数据进行了更改";
     }
 
     public Object updateMemberPassword(Member member) {
-        // 创建条件对象
-        if (member.getOldPassword().compareTo(member.getNewPassword())==0){
+        if (member.getOldPassword().compareTo(member.getNewPassword()) == 0) {
             return "新密码和旧密码一致!";
         }
         Criteria criteria = Criteria.where("member_id").is(member.getMember_id());
-        String hashedPwd=findByMemberId(member.getMember_id()).getPassword();
-
+        String hashedPwd = findByMemberId(member.getMember_id()).getPassword();
         boolean isCorrect = BCrypt.checkpw(member.getOldPassword(), hashedPwd);
 
-        if (isCorrect){
-            // 创建查询对象，然后将条件对象添加到其中
+        if (isCorrect) {
             Query query = new Query(criteria);
             String newPassword = BCrypt.hashpw(member.getNewPassword(), BCrypt.gensalt(10));
-            // 创建更新对象,并设置更新的内容
             Update update = new Update().set("password", newPassword);
-            // 执行更新，如果没有找到匹配查询的文档，则创建并插入一个新文档
+
             UpdateResult result = mongoTemplate.updateFirst(query, update, Member.class, COLLECTION_NAME);
-            // 输出结果信息
-            String resultInfo = "匹配到" + result.getMatchedCount() + "条数据, 对第一条数据进行了更改";
-            log.info("更新结果：{}", resultInfo);
-            return resultInfo;
-        }else {
+            return "匹配到" + result.getMatchedCount() + "条数据, 对第一条数据进行了更改";
+        } else {
             return "匹配到" + 0 + "条数据";
         }
     }
 
-    /**
-     * 根据【条件】查询集合中【符合条件】的文档，获取其【文档列表】并【排序】
-     * @return 符合条件的文档列表
-     */
+    public Object resetMemberPassword(Member member) {
+        Criteria criteria = Criteria.where("member_id").is(member.getMember_id());
+        String newPassword = BCrypt.hashpw(member.getPassword(), BCrypt.gensalt(10));
+        Query query = new Query(criteria);
+        Update update = new Update()
+                .set("password", newPassword)
+                .set("account_locked", false)
+                .set("fail_login_count", 0);
+
+        UpdateResult result = mongoTemplate.updateFirst(query, update, Member.class, COLLECTION_NAME);
+        return "匹配到" + result.getMatchedCount() + "条数据, 对第一条数据进行了更改";
+    }
+
+    public Object deactivateMember(Member member) {
+        Criteria criteria = Criteria.where("member_id").is(member.getMember_id());
+        Query query = new Query(criteria);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Update update = new Update()
+                .set("membership_status", false)
+                .set("expire_date", sdf.format(new Date()));
+
+        UpdateResult result = mongoTemplate.updateFirst(query, update, Member.class, COLLECTION_NAME);
+        return "匹配到" + result.getMatchedCount() + "条数据, 对第一条数据进行了更改";
+    }
+
+    public String[] calculateDates(Member member) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date newExpireDate;
+        Date effectiveDate;
+        Date prevExpireDate = sdf.parse(member.getExpire_date());
+
+        if (prevExpireDate.after(new Date())) {  // member.expire_date is not expire today(失效日期还没到)
+            // expire_date: previous expire date +1 year
+            Calendar specialDate = Calendar.getInstance();
+            specialDate.setTime(prevExpireDate); //注意在此处将 specialDate 的值改为特定日期
+            specialDate.add(Calendar.YEAR, 1); //特定时间的1年后
+            newExpireDate = specialDate.getTime();
+            // effectIve_date no change
+            effectiveDate = sdf.parse(member.getEffective_date());
+        } else {
+            // expire_date: today + 1 year
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.YEAR, 1); //今天时间的1年后
+            newExpireDate = calendar.getTime();
+            // effectIve_date: today
+            effectiveDate = new Date();
+        }
+        return new String[]{sdf.format(newExpireDate), sdf.format(effectiveDate)};
+    }
+
+    public Object activateMember(Member member) throws ParseException {
+        Criteria criteria = Criteria.where("member_id").is(member.getMember_id());
+        Query query = new Query(criteria);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String[] dates = calculateDates(member);
+        Update update = new Update()
+                .set("membership_status", true)
+                .set("expiry_date", dates[0])
+                .set("effective_date", dates[1])
+                .set("recent_renewal_date", sdf.format(new Date()));
+
+        UpdateResult result = mongoTemplate.updateFirst(query, update, Member.class, COLLECTION_NAME);
+        return "匹配到" + result.getMatchedCount() + "条数据, 对第一条数据进行了更改";
+    }
+
+
+    /*** 根据【条件】查询集合中【符合条件】的文档，获取其【文档列表】并【排序】*/
     public Object findByConditionAndSort() {
         // 设置查询条件参数
         String sex = "男";
@@ -205,10 +236,7 @@ public class MemberService {
         return documentList;
     }
 
-    /**
-     * 根据【单个条件】查询集合中的文档数据，并【按指定字段进行排序】与【限制指定数目】
-     * @return 符合条件的文档列表
-     */
+    /*** 根据【单个条件】查询集合中的文档数据，并【按指定字段进行排序】与【限制指定数目】*/
     public Object findByConditionAndSortLimit() {
         // 设置查询条件参数
         String sex = "男";
@@ -227,10 +255,7 @@ public class MemberService {
         return documentList;
     }
 
-    /**
-     * 根据【单个条件】查询集合中的文档数据，并【按指定字段进行排序】与【并跳过指定数目】
-     * @return 符合条件的文档列表
-     */
+    /*** 根据【单个条件】查询集合中的文档数据，并【按指定字段进行排序】与【并跳过指定数目】*/
     public Object findByConditionAndSortSkip() {
         // 设置查询条件参数
         String sex = "男";
@@ -249,10 +274,7 @@ public class MemberService {
         return documentList;
     }
 
-    /**
-     * 查询【存在指定字段名称】的文档数据
-     * @return 符合条件的文档列表
-     */
+    /*** 查询【存在指定字段名称】的文档数据*/
     public Object findByExistsField(String key) {
         // 设置查询条件参数
         String field = "sex";
@@ -269,10 +291,7 @@ public class MemberService {
         return documentList;
     }
 
-    /**
-     * 根据【AND】关联多个查询条件，查询集合中的文档数据
-     * @return 符合条件的文档列表
-     */
+    /*** 根据【AND】关联多个查询条件，查询集合中的文档数据*/
     public Object findByAndCondition() {
         // 设置查询条件参数
         String sex = "男";
@@ -293,10 +312,7 @@ public class MemberService {
         return documentList;
     }
 
-    /**
-     * 根据【OR】关联多个查询条件，查询集合中的文档数据
-     * @return 符合条件的文档列表
-     */
+    /*** 根据【OR】关联多个查询条件，查询集合中的文档数据*/
     public Object findByOrCondition() {
         // 设置查询条件参数
         String sex = "男";
@@ -317,10 +333,7 @@ public class MemberService {
         return documentList;
     }
 
-    /**
-     * 根据【IN】关联多个查询条件，查询集合中的文档数据
-     * @return 符合条件的文档列表
-     */
+    /*** 根据【IN】关联多个查询条件，查询集合中的文档数据*/
     public Object findByInCondition() {
         // 设置查询条件参数
         Integer[] ages = {20, 22, 25};
@@ -339,10 +352,7 @@ public class MemberService {
         return documentList;
     }
 
-    /**
-     * 根据【逻辑运算符】查询集合中的文档数据
-     * @return 符合条件的文档列表
-     */
+    /*** 根据【逻辑运算符】查询集合中的文档数据*/
     public Object findByOperator() {
         // 设置查询条件参数
         int min = 25;
@@ -360,10 +370,7 @@ public class MemberService {
         return documentList;
     }
 
-    /**
-     * 根据【正则表达式】查询集合中的文档数据
-     * @return 符合条件的文档列表
-     */
+    /*** 根据【正则表达式】查询集合中的文档数据*/
     public Object findByRegex() {
         // 设置查询条件参数
         String regex = "^zh*";
@@ -380,10 +387,7 @@ public class MemberService {
         return documentList;
     }
 
-    /**
-     * 统计集合中符合【查询条件】的文档【数量】
-     * @return 符合条件的文档列表
-     */
+    /*** 统计集合中符合【查询条件】的文档【数量】*/
     public Object countNumber() {
         // 设置查询条件参数
         int age = 22;
