@@ -10,7 +10,7 @@ const memberRouter = require('./routers/memberRouter')
 const staffRouter = require('./routers/staffRouter')
 const membershipRouter = require('./routers/membershipRouter')
 const feeRouter = require('./routers/feeRouter')
-const db = require('./utils/db-connect')
+const db = require('./db/mongo')
 
 
 /* Cross-Origin Resource Sharing */

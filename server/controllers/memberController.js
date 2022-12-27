@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const {jwtSecretKey, expiresIn} = require('../config')
 const {memberModel} = require('../models')
-const {getUserById, formatDateString, calculateDates} = require('../utils/member-functions')
+const {getUserById, formatDateString, calculateDates} = require('./memberFunctions')
 
 
 /* Update value(s) in the database by given (Obj_id, update object, operation message, response) */

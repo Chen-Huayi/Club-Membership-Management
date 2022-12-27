@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const {formatDateString} = require('../utils/member-functions')
+const {formatDateString} = require('../controllers/memberFunctions')
 
 
 const memberSchema = new Schema({
