@@ -5,12 +5,12 @@ const {profile_schema, update_info_schema, switch_status_schema} = require('../s
 const staff = require('../controllers/staffController')
 
 // Router start with:
-// http://localhost:8000/staff
-router.get('/active-list', staff.getActiveStaffList)
-router.get('/inactive-list', staff.getInactiveStaffList)
+// http://localhost:12138/staff
+router.get('/active', staff.getActiveStaffList)
+router.get('/inactive', staff.getInactiveStaffList)
 router.get('/profile/:id', validator(profile_schema), staff.getStaffProfile)
 
-router.put('/update-info', validator(update_info_schema), staff.updateStaffInfo)
+router.put('/profile/update', validator(update_info_schema), staff.updateStaffInfo)
 
 router.put('/deactivate', validator(switch_status_schema), staff.deactivateStaff)
 router.put('/activate', validator(switch_status_schema), staff.activateStaff)

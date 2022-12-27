@@ -1,14 +1,14 @@
-package com.serverspringboot.controllers;
+package com.mongo.server.controllers;
 
-import com.serverspringboot.models.Member;
-import com.serverspringboot.service.MemberService;
+import com.mongo.server.models.Member;
+import com.mongo.server.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
 @RestController
-@RequestMapping(value = "/member", consumes = {"application/json"})
+@RequestMapping(value = "/member", consumes = {"application/json", "application/x-www-form-urlencoded"})
 @CrossOrigin("*")
 public class MemberController {
     private final MemberService memberService;
@@ -32,8 +32,8 @@ public class MemberController {
 
     @GetMapping("/profile/{id}")
     @ResponseBody
-    public Object getMemberProfile(@PathVariable("id") String member_id) {
-        return memberService.findByMemberId(member_id);
+    public Object getMemberProfile(@PathVariable("id") String id) {
+        return memberService.findByMemberId(id);
     }
 
     @PutMapping("/update-info")

@@ -30,16 +30,6 @@ const updateInfo = (member_id, update, operationMsg, res) => {
         })
 }
 
-/* Get membership status by passing true or false to get active or inactive members, respectively */
-const getMemberList = async (membershipStatus, res) => {
-    const members = await memberModel.find({
-        membership_status: membershipStatus
-    })
-    res.send({
-        member_list: members
-    })
-}
-
 /* Get the date of last Monday by passing JS Date */
 const getLastMonday = (date) => {
     date.setDate(date.getDate() - 7 - date.getDay() + 1)
@@ -153,12 +143,22 @@ exports.login = (req, res) => {
 
 
 /* Get user information */
-exports.getActiveMemberList = (req, res) => {
-    getMemberList(true, res)
+exports.getActiveMemberList = async (req, res) => {
+    const members = await memberModel.find({
+        membership_status: true
+    })
+    res.send({
+        member_list: members
+    })
 }
 
-exports.getInactiveMemberList = (req, res) => {
-    getMemberList(false, res)
+exports.getInactiveMemberList = async (req, res) => {
+    const members = await memberModel.find({
+        membership_status: false
+    })
+    res.send({
+        member_list: members
+    })
 }
 
 /* Get a member's personal information */

@@ -1,8 +1,8 @@
-package com.serverspringboot.service;
+package com.mongo.server.service;
 
 
+import com.mongo.server.models.Member;
 import com.mongodb.client.result.UpdateResult;
-import com.serverspringboot.models.Member;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -63,6 +63,16 @@ public class MemberService {
         // 输出结果
         log.info("用户信息：{}", member);
         return member;
+    }
+
+
+    public Object signup(Member member) {
+        if ((long) countNumber(member.getMember_id()) > 0) {
+            return "Member ID is occupied!";
+        }
+
+
+        return null;
     }
 
 
@@ -388,16 +398,10 @@ public class MemberService {
     }
 
     /*** 统计集合中符合【查询条件】的文档【数量】*/
-    public Object countNumber() {
-        // 设置查询条件参数
-        int age = 22;
-        // 创建条件对象
-        Criteria criteria = Criteria.where("age").is(age);
-        // 创建查询对象，然后将条件对象添加到其中
+    public Object countNumber(String id) {
+        Criteria criteria = Criteria.where("member_id").is(id);
         Query query = new Query(criteria);
-        // 查询并返回结果
         long count = mongoTemplate.count(query, Member.class, COLLECTION_NAME);
-        // 输出结果
         log.info("符合条件的文档数量：{}", count);
         return count;
     }

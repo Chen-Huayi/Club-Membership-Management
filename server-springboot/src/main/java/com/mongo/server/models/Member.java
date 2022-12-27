@@ -1,13 +1,13 @@
-package com.serverspringboot.models;
+package com.mongo.server.models;
 
 
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="members")
+@Document(collection = "members")
 @Data
 public class Member {
-//    @Id
+    //    @Id
     public String member_id;//: {type: String, unique: true, required: true},
     public String user_role;//: {type: String, default: 'Club Member', required: true},
     public String firstname;//: {type: String, required: true},

@@ -6,11 +6,11 @@ class UpdateStore {
         makeAutoObservable(this)
     }
 
-    updateMemberInfo = async (values) => await http.put('/member/update-info', values)
-    updateStaffInfo = async (values) => await http.put('/staff/update-info', values)
+    updateMemberInfo = async (values) => await http.put('/member/profile/update', values)
+    updateStaffInfo = async (values) => await http.put('/staff/profile/update', values)
 
-    updatePassword = async (values) => await http.put('/member/update-pwd', values)
-    resetPassword = async (values) => await http.put('/member/reset-pwd', values)
+    updatePassword = async (values) => await http.put('/member/pw/update', values)
+    resetPassword = async (values) => await http.put('/member/pw/reset', values)
 
     deactivateMember = async (values) => await http.put('/member/deactivate', values)
     activateMember = async (values) => await http.put('/member/activate', values)
@@ -18,10 +18,10 @@ class UpdateStore {
     deactivateStaff = async (values) => await http.put('/staff/deactivate', values)
     activateStaff = async (values) => await http.put('/staff/activate', values)
 
-    requestReplaceCard = (values) => http.put('/member/request-replace-card', values)
+    requestReplaceCard = (values) => http.put('/member/card/request', values)
 
-    membershipActivateRecord = (values) => http.post('/membership/activate-record', values)
-    membershipDeactivateRecord = (values) => http.post('/membership/deactivate-record', values)
+    membershipActivateRecord = (values) => http.post('/membership/record/activate', values)
+    membershipDeactivateRecord = (values) => http.post('/membership/record/deactivate', values)
 
 }
 

@@ -5,8 +5,8 @@ const {update_fee_schema} = require('../schemas/fee')
 const fee = require("../controllers/feeController")
 
 // Router start with:
-// http://localhost:8000/fee
-router.put('/change-fee', validator(update_fee_schema), fee.updateMembershipFee)
-router.get('/get-fee', fee.getMembershipFee)
+// http://localhost:12138/fee
+router.put('/change', validator(update_fee_schema), fee.updateMembershipFee)
+router.get('/get', fee.getMembershipFee)
 
 module.exports = router
