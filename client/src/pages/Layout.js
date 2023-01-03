@@ -1,15 +1,4 @@
-import {
-    BellOutlined,
-    CalendarOutlined,
-    HomeOutlined,
-    LogoutOutlined,
-    SendOutlined,
-    SettingOutlined,
-    ShoppingOutlined,
-    TeamOutlined,
-    UserAddOutlined,
-    UserOutlined
-} from '@ant-design/icons';
+import {BellOutlined, CalendarOutlined, HomeOutlined, LogoutOutlined, SendOutlined, SettingOutlined, ShoppingOutlined, TeamOutlined, UserAddOutlined, UserOutlined} from '@ant-design/icons';
 import {Layout, Menu, Popconfirm} from 'antd';
 import {observer} from 'mobx-react-lite'
 import './Layout.css'

@@ -46,7 +46,7 @@ export default function Home() {
         }
         loadInfo()
     }, [userInfo])
-    
+
     return (
         <div className="home-page">
             <div className="home-page-content">
@@ -58,10 +58,7 @@ export default function Home() {
                     {userInfo.membership ? `${isExpireInOneMonth(userInfo.expireDate) ? `Your membership is expire in ${calculateRemainDays(userInfo.expireDate)} day(s)` : ''}` : ''}
                 </div>
                 <div className="home-page-image">
-                    <img
-                        src={home_img}
-                        alt="homePageImage"
-                    />
+                    <img src={home_img} alt="homePageImage"/>
                 </div>
             </div>
         </div>
