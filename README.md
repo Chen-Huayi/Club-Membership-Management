@@ -2,12 +2,17 @@
 
 ## Introduction
 
+This web application is a membership management system, associated with 4 roles
+of users (Club Member, Membership Admin, Club Management User, System Admin)
+to use and manage. Each type of users login will display a different window, respectively.
+
 ## Core Features
 
 + MEMBERS
     + **Club Member**
         + register an account
         + user login
+        + lock account after 5 failure login
         + view and update profile
         + view and activate/renew membership
         + update password
@@ -26,6 +31,7 @@
     + **Club Management User**
         + view membership fee audit history
         + view account status (new registered, expired, renewed)
+        + filter target member users by given time range
     + **System Admin**
         + register a staff account
         + view and update staffs profile
