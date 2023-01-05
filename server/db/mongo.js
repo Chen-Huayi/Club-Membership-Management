@@ -20,11 +20,12 @@ const initSystemAdmin = () => {
         } else {
             staffModel.create(userInfo, (err) => {
                 if (err)
-                    console.log(err)
+                    throw Error(err)
                 else
                     console.log(`Insert [${user_role}: ${staff_id}] successfully!`)  // insert to the database successfully
             })
         }
+
     })
 
 }
@@ -37,7 +38,7 @@ const initCompanySystem = () => {
         } else if (result === 0) {  // Initialize default values if this company name doesn't exist
             feeModel.create({company: company, membership_fee: fee}, (err) => {
                 if (err)
-                    console.log('Failed: ', err)
+                    throw Error(err)
                 else
                     console.log('Register company basic information successfully!')
             })

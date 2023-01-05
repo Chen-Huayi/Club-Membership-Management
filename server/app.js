@@ -69,6 +69,7 @@ app.use((err, req, res, next) => {
     })
 })
 
+/* Create database connection, and listen given port */
 db.createConnection().then(() => {
     // Listen at default port: 12138
     app.listen(port, (err) => {
