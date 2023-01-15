@@ -7,12 +7,12 @@ const staff = require('../controllers/staffController')
 // Router start with:
 // http://localhost:12138/staff
 router.get('/active', staff.getActiveStaffList)
+router.put('/active', validator(switch_status_schema), staff.activateStaff)
+
 router.get('/inactive', staff.getInactiveStaffList)
-router.get('/profile/:id', validator(profile_schema), staff.getStaffProfile)
+router.put('/inactive', validator(switch_status_schema), staff.deactivateStaff)
 
-router.put('/profile/update', validator(update_info_schema), staff.updateStaffInfo)
-
-router.put('/deactivate', validator(switch_status_schema), staff.deactivateStaff)
-router.put('/activate', validator(switch_status_schema), staff.activateStaff)
+router.get('/profiles/:id', validator(profile_schema), staff.getStaffProfile)
+router.put('/profiles', validator(update_info_schema), staff.updateStaffInfo)
 
 module.exports = router

@@ -39,8 +39,8 @@ app.use(
     }).unless({
         path: [
             /^\/api\//,
-            '/fee/get',
-            '/member/pw/reset',
+            '/fee',
+            '/member/password',
         ]
     })
 )

@@ -6,9 +6,9 @@ class SettingStore {
         makeAutoObservable(this)
     }
 
-    updateMembershipFee = async (values) => await http.put('/fee/change', values)
+    updateMembershipFee = async (values) => await http.put('/fee', values)
 
-    getMembershipFee = async () => await http.get('/fee/get')
+    getMembershipFee = async () => await http.get('/fee')
 
 }
 

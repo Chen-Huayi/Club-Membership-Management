@@ -104,6 +104,7 @@ exports.login = (req, res) => {
 
 
 /*Get staff list by membership different statuses*/
+/*Update status for a staff*/
 
 exports.getActiveStaffList = async (req, res) => {
     const staffs = await staffModel.find({
@@ -114,6 +115,15 @@ exports.getActiveStaffList = async (req, res) => {
     })
 }
 
+exports.activateStaff = (req, res) => {
+    updateInfo(
+        req.body.staff_id,
+        {membership_status: true},
+        res
+    )
+}
+
+
 exports.getInactiveStaffList = async (req, res) => {
     const staffs = await staffModel.find({
         membership_status: false
@@ -122,6 +132,15 @@ exports.getInactiveStaffList = async (req, res) => {
         staff_list: staffs
     })
 }
+
+exports.deactivateStaff = (req, res) => {
+    updateInfo(
+        req.body.staff_id,
+        {membership_status: false},
+        res
+    )
+}
+
 
 exports.getStaffProfile = (req, res) => {
     const staff_id = req.params.id
@@ -149,30 +168,10 @@ exports.getStaffProfile = (req, res) => {
         })
 }
 
-
 exports.updateStaffInfo = (req, res) => {
     updateInfo(
         req.body.staff_id,
         req.body,
-        res
-    )
-}
-
-
-/*Update status for a staff*/
-
-exports.deactivateStaff = (req, res) => {
-    updateInfo(
-        req.body.staff_id,
-        {membership_status: false},
-        res
-    )
-}
-
-exports.activateStaff = (req, res) => {
-    updateInfo(
-        req.body.staff_id,
-        {membership_status: true},
         res
     )
 }

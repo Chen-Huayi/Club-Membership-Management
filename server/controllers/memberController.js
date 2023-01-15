@@ -143,6 +143,7 @@ exports.login = (req, res) => {
 
 
 /* Get user information */
+/* Switch membership status of members */
 exports.getActiveMemberList = async (req, res) => {
     const members = await memberModel.find({
         membership_status: true
@@ -152,6 +153,29 @@ exports.getActiveMemberList = async (req, res) => {
     })
 }
 
+exports.activateMember = async (req, res) => {
+    const member = await getUserById(memberModel, req.body.member_id)
+
+    if (!member) {
+        return res.handleMessage('Wrong Member ID!')
+    }
+    const {expire_date, effective_date} = calculateDates(member)  // Calculate expire_date and effective_date
+    const recent_renewal_date = formatDateString(new Date())  // To be today
+
+    updateInfo(
+        req.body.member_id,
+        {
+            membership_status: true,
+            expire_date,
+            effective_date,
+            recent_renewal_date,
+        },
+        (member.recent_renewal_date === 'Never renew') ?
+            'Activate membership' : 'Renew membership',  // Activate for new member, Renew for existing member
+        res
+    )
+}
+
 exports.getInactiveMemberList = async (req, res) => {
     const members = await memberModel.find({
         membership_status: false
@@ -159,6 +183,15 @@ exports.getInactiveMemberList = async (req, res) => {
     res.send({
         member_list: members
     })
+}
+
+exports.deactivateMember = (req, res) => {
+    updateInfo(
+        req.body.member_id,
+        {membership_status: false, expire_date: formatDateString(new Date())},
+        'Deactivate member',
+        res
+    )
 }
 
 /* Get a member's personal information */
@@ -226,44 +259,12 @@ exports.updatePassword = (req, res) => {
 
 /* For users who forgot password and reset through security code */
 exports.resetPassword = (req, res) => {
+    const newPassword = bcrypt.hashSync(req.body.password, 10)
+
     updateInfo(
         req.body.member_id,
-        {password: req.body.password, account_locked: false, fail_login_count: 0},
+        {password: newPassword, account_locked: false, fail_login_count: 0},
         'Password reset',
-        res
-    )
-}
-
-
-/* Switch membership status of members */
-exports.deactivateMember = (req, res) => {
-    updateInfo(
-        req.body.member_id,
-        {membership_status: false, expire_date: formatDateString(new Date())},
-        'Deactivate member',
-        res
-    )
-}
-
-exports.activateMember = async (req, res) => {
-    const member = await getUserById(memberModel, req.body.member_id)
-
-    if (!member) {
-        return res.handleMessage('Wrong Member ID!')
-    }
-    const {expire_date, effective_date} = calculateDates(member)  // Calculate expire_date and effective_date
-    const recent_renewal_date = formatDateString(new Date())  // To be today
-
-    updateInfo(
-        req.body.member_id,
-        {
-            membership_status: true,
-            expire_date,
-            effective_date,
-            recent_renewal_date,
-        },
-        (member.recent_renewal_date === 'Never renew') ?
-            'Activate membership' : 'Renew membership',  // Activate for new member, Renew for existing member
         res
     )
 }
@@ -321,6 +322,16 @@ exports.requestReplaceCard = (req, res) => {
     )
 }
 
+/* After responses to each sending card request, set that member user as waiting to receive, and set "has_card" to true */
+exports.deliverCard = (req, res) => {
+    updateInfo(
+        req.body.member_id,
+        {has_card: true},
+        'Membership card will deliver soon',
+        res
+    )
+}
+
 /* Get member list of whom newly registered since last Monday */
 exports.getSendCardList = async (req, res) => {
     const members = await memberModel.find({
@@ -355,13 +366,4 @@ exports.getReplaceCardList = async (req, res) => {
     }
 }
 
-/* After responses to each sending card request, set that member user as waiting to receive, and set "has_card" to true */
-exports.deliverCard = (req, res) => {
-    updateInfo(
-        req.body.member_id,
-        {has_card: true},
-        'Membership card will deliver soon',
-        res
-    )
-}
 
