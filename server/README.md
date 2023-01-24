@@ -1,6 +1,7 @@
 # Backend Environment
 ### Framework
-Node.js (Express)
+Node.js (Express)  
++ node version: 18.12.1
 + Dependencies:
   + @escook/express-joi: ^1.1.1
   + bcryptjs: ^2.4.3
@@ -26,7 +27,6 @@ In `config.js` file:
 + company *( company name )*
 + fee *( default annual membership fee )*
 + sysAdmin *( default system admin staff, **staff_id**: `sysAdmin`, **password**: `000000` )*
-
 
 ### Cloud Database (Azure Cosmos DB)
 MongoDB database URL should be like this:
