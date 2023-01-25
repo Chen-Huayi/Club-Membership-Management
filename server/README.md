@@ -1,7 +1,7 @@
 # Backend Environment
 ### Framework
 Node.js (Express)  
-+ node version: 18.12.1
++ Version: 18.12.1
 + Dependencies:
   + @escook/express-joi: ^1.1.1
   + bcryptjs: ^2.4.3
@@ -20,13 +20,13 @@ npm start
 ```
 ### Configuration
 In `config.js` file:
-+ jwtSecretKey *( JSON web token secret key )*
-+ expiresIn *( token expire time duration )*
-+ port *( must be the same with frontend port, default `12138` )*
-+ databaseURL *( the url to connect to mongodb database )*
-+ company *( company name )*
-+ fee *( default annual membership fee )*
-+ sysAdmin *( default system admin staff, **staff_id**: `sysAdmin`, **password**: `000000` )*
++ jwtSecretKey ( *JSON web token secret key* )
++ expiresIn ( *token expire time duration* )
++ port ( *must be the same with frontend port, default `12138`* )
++ databaseURL ( *the url to connect to mongodb database* )
++ company ( *company name* )
++ fee ( *default annual membership fee* )
++ sysAdmin ( *default system admin staff, **staff_id**: `sysAdmin`, **password**: `000000`* )
 
 ### Cloud Database (Azure Cosmos DB)
 MongoDB database URL should be like this:
@@ -37,5 +37,5 @@ const host=example
 const port=example
 const db_name=example
 const config=example
-const DB_URL=`mongodb://${username}:${password}@${host}:${port}/${db_name}?${config}`
+const databaseURL=`mongodb://${username}:${password}@${host}:${port}/${db_name}?${config}`
 ```

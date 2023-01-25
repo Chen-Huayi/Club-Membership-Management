@@ -19,5 +19,5 @@ npm start
 ```
 ### Configuration
 In `config.js` file:
-+ secretKey *( secret key for local storage )*
-+ port *( must be the same with backend port, default `12138` )*
++ secretKey ( *secret key for local storage* )
++ port ( *must be the same with backend port, default `12138`* )
