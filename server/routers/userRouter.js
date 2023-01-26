@@ -8,11 +8,11 @@ const staff = require('../controllers/staffController')
 
 // Router start with:
 // http://localhost:12138/api
-router.post('/member/signup', validator(member_signup_schema), member.signup)
-router.post('/login-checked', validator(login_check_schema), member.checkLocked)
-router.post('/member/login', validator(member_login_schema), member.login)
+router.post('/signup/member', validator(member_signup_schema), member.signup)
+router.post('/signup/staff', validator(staff_signup_schema), staff.signup)
 
-router.post('/staff/signup', validator(staff_signup_schema), staff.signup)
-router.post('/staff/login', validator(staff_login_schema), staff.login)
+router.post('/login/checked', validator(login_check_schema), member.checkLocked)
+router.post('/login/member', validator(member_login_schema), member.login)
+router.post('/login/staff', validator(staff_login_schema), staff.login)
 
 module.exports = router

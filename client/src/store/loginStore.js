@@ -12,6 +12,7 @@ import {
     token,
     user_role
 } from '../utils';
+import {HttpManager} from "../api";
 
 
 class LoginStore {
@@ -30,11 +31,11 @@ class LoginStore {
     }
 
     checkAccountLocked = async (values) => {
-        return await http.post('/api/login-checked', values)
+        return await http.post(`${HttpManager.login_url}/checked`, values)
     }
 
     memberLogin = async (values) => {
-        await http.post('/api/member/login', values)
+        await http.post(`${HttpManager.login_url}/member`, values)
             .then(result => {
                 if (result.status === 1) {
                     this.token = ''
@@ -55,7 +56,7 @@ class LoginStore {
     }
 
     staffLogin = async (values) => {
-        await http.post('/api/staff/login', values)
+        await http.post(`${HttpManager.login_url}/staff`, values)
             .then(result => {
                 if (result.status === 1) {
                     this.token = ''

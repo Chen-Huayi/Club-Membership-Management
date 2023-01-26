@@ -1,27 +1,28 @@
 import {makeAutoObservable} from "mobx";
 import {http} from "../utils";
+import {HttpManager} from "../api";
 
 class UpdateStore {
     constructor() {
         makeAutoObservable(this)
     }
 
-    updateMemberInfo = async (values) => await http.put('/member/profiles', values)
-    updateStaffInfo = async (values) => await http.put('/staff/profiles', values)
+    updateMemberInfo = async (values) => await http.put(HttpManager.memberProfile_url, values)
+    updateStaffInfo = async (values) => await http.put(HttpManager.staffProfile_url, values)
 
-    updatePassword = async (values) => await http.patch('/member/password', values)
-    resetPassword = async (values) => await http.put('/member/password', values)
+    updatePassword = async (values) => await http.patch(HttpManager.memberPassword_url, values)
+    resetPassword = async (values) => await http.put(HttpManager.memberPassword_url, values)
 
-    activateMember = async (values) => await http.put('/member/active', values)
-    deactivateMember = async (values) => await http.put('/member/inactive', values)
+    activateMember = async (values) => await http.put(HttpManager.activeMember_url, values)
+    deactivateMember = async (values) => await http.put(HttpManager.inactiveMember_url, values)
 
-    activateStaff = async (values) => await http.put('/staff/active', values)
-    deactivateStaff = async (values) => await http.put('/staff/inactive', values)
+    activateStaff = async (values) => await http.put(HttpManager.activeStaff_url, values)
+    deactivateStaff = async (values) => await http.put(HttpManager.inactiveStaff_url, values)
 
-    requestReplaceCard = (values) => http.put('/member/cards', values)
+    requestReplaceCard = (values) => http.put(HttpManager.memberCard_url, values)
 
-    membershipActivateRecord = (values) => http.post('/membership/record/activate', values)
-    membershipDeactivateRecord = (values) => http.post('/membership/record/deactivate', values)
+    membershipActivateRecord = (values) => http.post(`${HttpManager.membershipRecord_url}/activate`, values)
+    membershipDeactivateRecord = (values) => http.post(`${HttpManager.membershipRecord_url}/deactivate`, values)
 
 }
 
